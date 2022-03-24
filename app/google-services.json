@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "463736987253",
+    "project_id": "money-care-df1b9",
+    "storage_bucket": "money-care-df1b9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:463736987253:android:d6c77b499fc9027305223c",
+        "android_client_info": {
+          "package_name": "com.example.moneycare"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "463736987253-4lvp7ql700rk7jt7b6dphsjc5mer8b31.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBNEVp0NxuE8DGqiVAM3sZM3Ek_DSmrRV8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "463736987253-4lvp7ql700rk7jt7b6dphsjc5mer8b31.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
