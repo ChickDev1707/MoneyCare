@@ -1,4 +1,4 @@
-package com.example.moneycare.ui.viewmodels;
+package com.example.moneycare.ui.viewmodel;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
