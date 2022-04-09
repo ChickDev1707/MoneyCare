@@ -14,5 +14,14 @@
         android:id="@+id/transactionFragment"
         android:name="com.example.moneycare.ui.view.TransactionFragment"
         android:label="fragment_transaction_list"
-        tools:layout="@layout/fragment_transaction_list" />
+        tools:layout="@layout/fragment_transaction_list" >
+        <action
+            android:id="@+id/action_transactionFragment_to_newTransaction"
+            app:destination="@id/newTransaction" />
+    </fragment>
+    <fragment
+        android:id="@+id/newTransaction"
+        android:name="com.example.moneycare.ui.view.NewTransaction"
+        android:label="fragment_new_transaction"
+        tools:layout="@layout/fragment_new_transaction" />
 </navigation>
