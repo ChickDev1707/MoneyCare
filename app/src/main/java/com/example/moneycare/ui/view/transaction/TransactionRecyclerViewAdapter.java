@@ -1,4 +1,4 @@
-package com.example.moneycare.ui.view;
+package com.example.moneycare.ui.view.transaction;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -6,33 +6,34 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.moneycare.data.model.Transaction;
-import com.example.moneycare.databinding.FragmentTransactionBinding;
+import com.example.moneycare.data.model.UserTransaction;
+import com.example.moneycare.databinding.TransactionItemBinding;
 import com.example.moneycare.utils.DateUtil;
 import java.util.List;
 
 /**
  * TODO: Replace the implementation with code for your data type.
  */
-public class MyTransactionRecyclerViewAdapter extends RecyclerView.Adapter<MyTransactionRecyclerViewAdapter.ViewHolder> {
+public class TransactionRecyclerViewAdapter extends RecyclerView.Adapter<TransactionRecyclerViewAdapter.ViewHolder> {
 
-    private List<Transaction> transactions;
+    private List<UserTransaction> transactions;
 
-    public MyTransactionRecyclerViewAdapter(List<Transaction> items) {
+    public TransactionRecyclerViewAdapter(List<UserTransaction> items) {
         transactions = items;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        return new ViewHolder(FragmentTransactionBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
+        return new ViewHolder(TransactionItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
 
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.moneyView.setText(Double.toString(transactions.get(position).money));
-        holder.dateView.setText(DateUtil.getStringDate(transactions.get(position).date));
+        UserTransaction transaction = transactions.get(position);
+        holder.moneyView.setText(Long.toString(transaction.money));
+        holder.dateView.setText(DateUtil.getStringDate(transaction.date));
     }
 
     @Override
@@ -40,7 +41,7 @@ public class MyTransactionRecyclerViewAdapter extends RecyclerView.Adapter<MyTra
         return transactions.size();
     }
 
-    public void updateTransactionList(List<Transaction> newTransList){
+    public void updateTransactionList(List<UserTransaction> newTransList){
         this.transactions.clear();
         this.transactions = newTransList;
         notifyDataSetChanged();
@@ -48,9 +49,8 @@ public class MyTransactionRecyclerViewAdapter extends RecyclerView.Adapter<MyTra
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final TextView moneyView;
         public final TextView dateView;
-        public Transaction transaction;
 
-        public ViewHolder(FragmentTransactionBinding binding) {
+        public ViewHolder(TransactionItemBinding binding) {
             super(binding.getRoot());
             moneyView = binding.transactionMoney;
             dateView = binding.transactionDate;

@@ -9,15 +9,17 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Transaction {
+public class UserTransaction {
     public long money;
     public Date date;
     public String group;
+    public String note;
     public String wallet;
-    public Transaction(long money, Date date, String group, String wallet){
+    public UserTransaction(long money, String group, String note, Date date, String wallet){
         this.money = money;
         this.date = date;
         this.group = group;
+        this.note = note;
         this.wallet = wallet;
     }
     @Exclude
@@ -25,17 +27,19 @@ public class Transaction {
         FirebaseFirestore fs = FirebaseFirestore.getInstance();
         HashMap<String, Object> result = new HashMap<>();
         result.put("money", money);
-        result.put("date", date.getTime());
+        result.put("date", new Timestamp(date));
         result.put("group", fs.document(group));
+        result.put("note", note);
         result.put("wallet", fs.document(wallet));
-
         return result;
     }
-    public static Transaction fromMap(Map<String, Object> map){
-        return new Transaction(
+    public static UserTransaction fromMap(Map<String, Object> map){
+        Timestamp ts = (Timestamp) map.get("date");
+        return new UserTransaction(
             (Long) map.get("money"),
-            ((Timestamp) map.get("date")).toDate(),
             ((DocumentReference) map.get("group")).getPath(),
+            ((String) map.get("note")),
+            ts.toDate(),
             ((DocumentReference) map.get("wallet")).getPath()
         );
     }
