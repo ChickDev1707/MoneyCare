@@ -44,7 +44,6 @@ public class NewTransactionFragment extends Fragment {
 
     private NewTransactionViewModel newTransViewModel;
     private FragmentNewTransactionBinding binding;
-    private List<Group> groups;
 
     public NewTransactionFragment() {
         // Required empty public constructor
@@ -130,7 +129,7 @@ public class NewTransactionFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 NavController navController = Navigation.findNavController(view);
-                navController.navigate(R.id.action_newTransactionFragment_to_groupFragment);
+                navController.navigate(R.id.newTransactionToGroupAction);
             }
         });
     }

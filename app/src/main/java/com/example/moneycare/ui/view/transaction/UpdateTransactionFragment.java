@@ -2,13 +2,35 @@ package com.example.moneycare.ui.view.transaction;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.moneycare.R;
+import com.example.moneycare.data.model.Group;
+import com.example.moneycare.data.model.UserTransaction;
+import com.example.moneycare.databinding.FragmentNewTransactionBinding;
+import com.example.moneycare.databinding.FragmentUpdateTransactionBinding;
+import com.example.moneycare.ui.viewmodel.transaction.NewTransactionViewModel;
+import com.example.moneycare.ui.viewmodel.transaction.UpdateTransactionViewModel;
+import com.example.moneycare.utils.appenum.TransactionTimeFrame;
+
+import org.jetbrains.annotations.NotNull;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -16,51 +38,98 @@ import com.example.moneycare.R;
  * create an instance of this fragment.
  */
 public class UpdateTransactionFragment extends Fragment {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private UpdateTransactionViewModel updateTransViewModel;
+    private FragmentUpdateTransactionBinding binding;
+//    private Tran binding;
 
     public UpdateTransactionFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment UpdateTransactionFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static UpdateTransactionFragment newInstance(String param1, String param2) {
         UpdateTransactionFragment fragment = new UpdateTransactionFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+        setHasOptionsMenu(true);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_update_transaction, container, false);
+        updateTransViewModel =  new ViewModelProvider(this).get(UpdateTransactionViewModel.class);
+        binding = FragmentUpdateTransactionBinding.inflate(getLayoutInflater());
+        binding.setUpdateTransVM(updateTransViewModel);
+        binding.setLifecycleOwner(this);
+
+        Toolbar toolbar = binding.getRoot().findViewById(R.id.update_app_bar);
+        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+
+        initSelectGroupEvent();
+        observeSelectGroup();
+        initUpdateTransactionBtn();
+        return binding.getRoot();
     }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        UserTransaction transaction = TransactionFragmentArgs.fromBundle(getArguments()).getTransactionArg();
+        updateTransViewModel.initTransaction(transaction);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull @NotNull Menu menu, @NonNull @NotNull MenuInflater inflater) {
+        inflater.inflate(R.menu.update_app_bar, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull @NotNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.update_item:
+                updateTransViewModel.switchUpdateMode();
+                return true;
+            case R.id.delete_item:
+                return true;
+            default:
+        }
+        return super.onOptionsItemSelected(item);
+    }
+    private void observeSelectGroup(){
+        NavController navController = NavHostFragment.findNavController(this);
+        MutableLiveData<Bundle> liveData = navController.getCurrentBackStackEntry()
+                .getSavedStateHandle()
+                .getLiveData("bundle");
+        liveData.observe(getViewLifecycleOwner(), new Observer<Bundle>() {
+            @Override
+            public void onChanged(Bundle bundle) {
+                Group group = (Group) bundle.getParcelable("group");
+                updateTransViewModel.setGroup(group);
+                System.out.println(group.name);
+            }
+        });
+    }
+    private void initSelectGroupEvent(){
+        binding.updateTransGroup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Navigation.findNavController(view).navigate(R.id.updateTransactionToGroupAction);
+            }
+        });
+    }
+    private void initUpdateTransactionBtn(){
+        binding.updateTransBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                updateTransViewModel.updateTransaction();
+            }
+        });
+    }
+
 }

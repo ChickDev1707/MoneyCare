@@ -17,8 +17,18 @@
         tools:layout="@layout/fragment_transaction_list" >
 
         <action
-            android:id="@+id/action_transactionFragment_to_newTransactionFragment"
+            android:id="@+id/addNewTransactionAction"
             app:destination="@id/newTransactionFragment" />
+        <action
+            android:id="@+id/updateTransactionAction"
+            app:destination="@id/updateTransactionFragment" >
+            <argument
+                android:name="transactionArg"
+                app:argType="com.example.moneycare.data.model.UserTransaction" />
+        </action>
+        <argument
+            android:name="transactionArg"
+            app:argType="com.example.moneycare.data.model.UserTransaction" />
     </fragment>
     <fragment
         android:id="@+id/newTransactionFragment"
@@ -26,7 +36,7 @@
         android:label="fragment_new_transaction"
         tools:layout="@layout/fragment_new_transaction" >
         <action
-            android:id="@+id/action_newTransactionFragment_to_groupFragment"
+            android:id="@+id/newTransactionToGroupAction"
             app:destination="@id/groupFragment" />
     </fragment>
     <fragment
@@ -34,5 +44,13 @@
         android:name="com.example.moneycare.ui.view.transaction.GroupFragment"
         android:label="fragment_group_list"
         tools:layout="@layout/fragment_group_list" />
-
+    <fragment
+        android:id="@+id/updateTransactionFragment"
+        android:name="com.example.moneycare.ui.view.transaction.UpdateTransactionFragment"
+        android:label="fragment_update_transaction"
+        tools:layout="@layout/fragment_update_transaction" >
+        <action
+            android:id="@+id/updateTransactionToGroupAction"
+            app:destination="@id/groupFragment" />
+    </fragment>
 </navigation>

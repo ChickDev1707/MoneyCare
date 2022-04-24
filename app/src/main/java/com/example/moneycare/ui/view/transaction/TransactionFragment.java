@@ -99,7 +99,7 @@ public class TransactionFragment extends Fragment {
         binding.newTransBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Navigation.findNavController(view).navigate(R.id.action_transactionFragment_to_newTransactionFragment);
+                Navigation.findNavController(view).navigate(R.id.addNewTransactionAction);
             }
         });
     }
@@ -117,7 +117,6 @@ public class TransactionFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull @NotNull MenuItem item) {
-        System.out.println("selected");
         switch (item.getItemId()){
             case R.id.date:
                     openPickDateDialog();

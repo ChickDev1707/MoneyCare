@@ -40,7 +40,7 @@ public class NewTransactionViewModel extends ViewModel {
         group.setValue(selectedGroup);
     }
     public void saveNewTransaction(){
-        this.transactionRepository.saveNewTrans(money.getValue(), group.getValue(), note.getValue(), date.getValue());
+        this.transactionRepository.saveNewTransaction(money.getValue(), group.getValue(), note.getValue(), date.getValue());
         cleanUpFields();
     }
     private void cleanUpFields(){

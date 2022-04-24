@@ -1,11 +1,16 @@
 package com.example.moneycare.ui.view.transaction;
 
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.moneycare.data.model.Group;
 import com.example.moneycare.data.model.UserTransaction;
 import com.example.moneycare.databinding.TransactionItemBinding;
 import com.example.moneycare.utils.DateUtil;
@@ -34,7 +39,20 @@ public class TransactionRecyclerViewAdapter extends RecyclerView.Adapter<Transac
         UserTransaction transaction = transactions.get(position);
         holder.moneyView.setText(Long.toString(transaction.money));
         holder.dateView.setText(DateUtil.getStringDate(transaction.date));
+        holder.transactionItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                Bundle bundle = getTransactionBundle(transaction);
+                TransactionFragmentDirections.UpdateTransactionAction action = TransactionFragmentDirections.updateTransactionAction(transaction);
+                Navigation.findNavController(view).navigate(action);
+            }
+        });
     }
+//    private Bundle getTransactionBundle(UserTransaction transaction){
+//        Bundle bundle = new Bundle();
+//        bundle.putParcelable("transaction", transaction);
+//        return bundle;
+//    }
 
     @Override
     public int getItemCount() {
@@ -49,11 +67,13 @@ public class TransactionRecyclerViewAdapter extends RecyclerView.Adapter<Transac
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final TextView moneyView;
         public final TextView dateView;
+        public final LinearLayout transactionItem;
 
         public ViewHolder(TransactionItemBinding binding) {
             super(binding.getRoot());
             moneyView = binding.transactionMoney;
             dateView = binding.transactionDate;
+            transactionItem = binding.transactionItem;
         }
 
         @Override
