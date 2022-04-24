@@ -53,4 +53,19 @@
             android:id="@+id/updateTransactionToGroupAction"
             app:destination="@id/groupFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/reportFragment"
+        android:name="com.example.moneycare.ui.view.report.ReportFragment"
+        android:label="fragment_report"
+        tools:layout="@layout/fragment_report" />
+    <fragment
+        android:id="@+id/planFragment"
+        android:name="com.example.moneycare.ui.view.plan.PlanFragment"
+        android:label="fragment_plan"
+        tools:layout="@layout/fragment_plan" />
+    <fragment
+        android:id="@+id/accountFragment"
+        android:name="com.example.moneycare.ui.view.account.AccountFragment"
+        android:label="fragment_account"
+        tools:layout="@layout/fragment_account" />
 </navigation>

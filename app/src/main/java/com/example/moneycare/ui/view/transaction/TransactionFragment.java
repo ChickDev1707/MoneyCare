@@ -91,18 +91,9 @@ public class TransactionFragment extends Fragment {
         Toolbar toolbar = binding.getRoot().findViewById(R.id.top_app_bar);
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
 
-        initNewTransBtn();
         return binding.getRoot();
     }
 
-    private void initNewTransBtn(){
-        binding.newTransBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Navigation.findNavController(view).navigate(R.id.addNewTransactionAction);
-            }
-        });
-    }
     public RecyclerView createTransList(){
         RecyclerView transList = binding.groupTransactionListTemplate;
         viewModel.fetchTransactions(timeFrameMode, selectedDate , groupTransactionList -> transList.setAdapter(new GroupTransactionRecyclerViewAdapter(groupTransactionList)));

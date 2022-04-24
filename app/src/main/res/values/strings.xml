@@ -11,4 +11,12 @@
     <string name="login_failed">"Login failed"</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- bottom nav -->
+    <string name="bot_nav_transaction_title">Giao dịch</string>
+    <string name="bot_nav_report_title">Báo cáo</string>
+    <string name="bot_nav_plan_title">Kế hoạch</string>
+    <string name="bot_nav_account_title">Tài khoản</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 </resources>
