@@ -18,8 +18,8 @@ public class TransactionViewModel extends ViewModel {
 
     private TransactionRepository transactionRepository;
 
-    public MutableLiveData<Long> money;
-    public MutableLiveData<Date> date;
+    public MutableLiveData<Long> money = new MutableLiveData<Long>();
+    public MutableLiveData<Date> date = new MutableLiveData<Date>();
 
     MutableLiveData<List<Transaction>> liveTransactions;
 //    List<Transaction> transactions;

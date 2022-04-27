@@ -33,7 +33,7 @@
             android:layout_marginTop="30dp"
             android:ems="10"
             android:hint="money"
-            android:text="@={transViewmodel.money.toString()}"
+            android:text="@{transViewmodel.money.toString()}"
             android:inputType="number"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"

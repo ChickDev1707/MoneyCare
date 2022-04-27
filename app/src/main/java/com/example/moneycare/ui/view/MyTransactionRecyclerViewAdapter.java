@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.example.moneycare.data.model.Transaction;
 import com.example.moneycare.databinding.FragmentTransactionBinding;
 import com.example.moneycare.utils.DateUtil;
+
 import java.util.List;
 
 /**
@@ -34,7 +35,6 @@ public class MyTransactionRecyclerViewAdapter extends RecyclerView.Adapter<MyTra
         holder.moneyView.setText(Double.toString(transactions.get(position).money));
         holder.dateView.setText(DateUtil.getStringDate(transactions.get(position).date));
     }
-
     @Override
     public int getItemCount() {
         return transactions.size();

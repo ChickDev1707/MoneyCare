@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.view.AddBudgetFragment">
+   <LinearLayout
+       android:orientation="vertical"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content">
+       <RelativeLayout
+           android:paddingHorizontal="10dp"
+           android:layout_width="match_parent"
+           android:layout_height="50dp"
+           android:background="@color/purple_200">
+           <TextView
+               android:text="Số dư: 0.00"
+               android:textSize="16sp"
+               android:layout_centerVertical="true"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"/>
+           <TextView
+               android:textSize="16sp"
+               android:text="Tổng ngân sách: 1.000.000"
+               android:layout_alignParentRight="true"
+               android:layout_centerVertical="true"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"/>
+       </RelativeLayout>
+       <RelativeLayout
+           android:paddingHorizontal="10dp"
+           android:layout_marginTop="20dp"
+           android:orientation="horizontal"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content">
+           <ImageView
+               android:id="@+id/img_trans_group"
+               android:background="@color/black"
+               android:layout_width="40dp"
+               android:layout_marginRight="20dp"
+               android:layout_height="40dp"/>
+           <LinearLayout
+               android:orientation="vertical"
+               android:layout_toRightOf="@id/img_trans_group"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content">
+               <TextView
+                   android:text="Ăn uống"
+                   android:id="@+id/trans_gr_name"
+                   android:textSize="24dp"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"/>
+               <TextView
+                   android:layout_marginTop="40dp"
+                   android:text="Giới hạn trong tháng 4"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"/>
+               <EditText
+                   android:text="0"
+                   android:drawableLeft="@drawable/ic_vietnamese_dong"
+                   android:drawablePadding="5dp"
+                   android:textSize="20dp"
+                   android:textStyle="bold"
+                   android:inputType="numberDecimal"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"/>
+           </LinearLayout>
+       </RelativeLayout>
+   </LinearLayout>
+
+</FrameLayout>
