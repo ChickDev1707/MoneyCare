@@ -3,4 +3,13 @@
     <dimen name="fragment_horizontal_margin">16dp</dimen>
     <dimen name="fragment_vertical_margin">16dp</dimen>
     <dimen name="text_margin">16dp</dimen>
+    <dimen name="layout_padding">16dp</dimen>
+    <dimen name="layout_bottom_padding">60dp</dimen>
+
+    <dimen name="font_size_extra_large">24sp</dimen>
+    <dimen name="font_size_large">22sp</dimen>
+    <dimen name="font_size_medium">20sp</dimen>
+    <dimen name="font_size_normal">18sp</dimen>
+    <dimen name="font_size_small">16sp</dimen>
+    <dimen name="font_size_extra_small">13sp</dimen>
 </resources>

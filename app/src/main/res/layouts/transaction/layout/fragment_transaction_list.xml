@@ -6,32 +6,134 @@
         <variable
             name="transactionListVM"
             type="com.example.moneycare.ui.viewmodel.transaction.TransactionViewModel" />
+        <import type="com.example.moneycare.utils.BindingConverter"/>
     </data>
     <LinearLayout
         android:gravity="center_horizontal"
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/gray_100"
+        >
         <include
             layout="@layout/app_bar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="500dp">
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/group_transaction_list_template"
-                android:name="com.example.moneycare.TransactionFragment"
+            android:layout_height="match_parent"
+            android:paddingBottom="@dimen/layout_bottom_padding"
+            >
+            <LinearLayout
+                android:id="@+id/statistic_panel"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                app:layoutManager="LinearLayoutManager"
-                tools:context=".ui.view.transaction.TransactionFragment"
-                tools:listitem="@layout/group_transaction_item" />
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingBottom="@dimen/layout_padding"
+                    android:paddingLeft="@dimen/layout_padding"
+                    android:paddingRight="@dimen/layout_padding"
+                    android:background="@color/white"
+                    android:layout_marginBottom="30dp"
+                    >
+
+                    <TextView
+                        android:id="@+id/time_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/font_size_large"
+                        android:text="@{transactionListVM.timeTitle}"
+                        android:textStyle="bold"
+                        android:textColor="@color/blue_grey_main"
+                        android:drawableLeft="@drawable/ic_time_24"
+                        android:drawablePadding="5dp"
+                        android:layout_marginTop="@dimen/layout_padding"
+                        android:layout_marginBottom="@dimen/layout_padding"
+                        />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="start"
+                            android:layout_weight="1"
+                            android:textSize="@dimen/font_size_normal"
+                            android:text="Tiền vào"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="end"
+                            android:textSize="@dimen/font_size_normal"
+                            android:layout_weight="1"
+                            android:textColor="@color/green_main"
+                            android:text="@{BindingConverter.longToString(transactionListVM.moneyIn)}"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="start"
+                            android:textSize="@dimen/font_size_normal"
+                            android:layout_weight="1"
+                            android:text="Tiền ra"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="end"
+                            android:textSize="@dimen/font_size_normal"
+                            android:textColor="@color/red_main"
+                            android:layout_weight="1"
+                            android:text="@{BindingConverter.longToString(transactionListVM.moneyOut)}"/>
+                    </LinearLayout>
+                    <View
+                        android:layout_width="wrap_content"
+                        android:layout_height="2dp"
+                        android:gravity="end"
+                        android:layout_weight="1"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:background="@color/gray_100" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="end"
+                        android:textSize="@dimen/font_size_normal"
+                        android:layout_weight="1"
+                        android:textStyle="bold"
+                        android:textColor="@color/blue_grey_main"
+                        android:layout_marginBottom="10dp"
+                        android:text="@{BindingConverter.longToString(transactionListVM.moneyTotal)}"/>
+                    <com.google.android.material.button.MaterialButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:cornerRadius="20dp"
+                        android:backgroundTint="@color/blue_100"
+                        android:layout_gravity="center"
+                        android:stateListAnimator="@null"
+                        android:textColor="@color/light_blue_600"
+                        android:textStyle="bold"
+                        android:padding="12dp"
+                        android:textAllCaps="false"
+                        android:text="Xem báo cáo cho giai đoạn này"/>
+                </LinearLayout>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/group_transaction_list_template"
+                    android:name="com.example.moneycare.TransactionFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layoutManager="LinearLayoutManager"
+                    tools:context=".ui.view.transaction.TransactionFragment"
+                    tools:listitem="@layout/group_transaction_item" />
+            </LinearLayout>
         </ScrollView>
     </LinearLayout>
 </layout>

@@ -27,6 +27,8 @@ import com.example.moneycare.R;
 import com.example.moneycare.data.model.Group;
 import com.example.moneycare.databinding.FragmentNewTransactionBinding;
 import com.example.moneycare.ui.viewmodel.transaction.NewTransactionViewModel;
+import com.google.android.material.bottomappbar.BottomAppBar;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 
@@ -69,8 +71,8 @@ public class NewTransactionFragment extends Fragment {
         binding = FragmentNewTransactionBinding.inflate(getLayoutInflater());
         binding.setNewTransVM(newTransViewModel);
         binding.setLifecycleOwner(this);
-        // Set up binding
 
+        // Set up binding
         initPickDateInput();
         initSelectGroupEvent();
         initSaveTransBtn();

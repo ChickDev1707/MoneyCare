@@ -58,7 +58,7 @@ public class GroupFragment extends Fragment {
         repository = new TransactionRepository();
         // Set the adapter
         RecyclerView recyclerView = view.findViewById(R.id.group_list);
-        repository.fetchGroups(groups-> recyclerView.setAdapter(new GroupRecyclerViewAdapter(view, groups)));
+//        repository.fetchGroups(groups-> recyclerView.setAdapter(new GroupRecyclerViewAdapter(groups)));
         return view;
     }
 }

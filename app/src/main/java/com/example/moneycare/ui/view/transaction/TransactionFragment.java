@@ -1,6 +1,7 @@
 package com.example.moneycare.ui.view.transaction;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -9,9 +10,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.Navigation;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
@@ -20,6 +18,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.moneycare.R;
 import com.example.moneycare.databinding.FragmentTransactionListBinding;
@@ -50,9 +49,8 @@ public class TransactionFragment extends Fragment {
     private TransactionViewModel viewModel;
     private FragmentTransactionListBinding binding;
     private TransactionTimeFrame timeFrameMode;
-    private Date selectedDate;
+//    private Date selectedDate;
 
-//    TransactionRepository repository;
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
@@ -91,13 +89,18 @@ public class TransactionFragment extends Fragment {
         Toolbar toolbar = binding.getRoot().findViewById(R.id.top_app_bar);
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
 
+        initTransactionSetting();
+        showTransList(new Date());
+
         return binding.getRoot();
     }
 
-    public RecyclerView createTransList(){
+    public void showTransList(Date date){
         RecyclerView transList = binding.groupTransactionListTemplate;
-        viewModel.fetchTransactions(timeFrameMode, selectedDate , groupTransactionList -> transList.setAdapter(new GroupTransactionRecyclerViewAdapter(groupTransactionList)));
-        return transList;
+        viewModel.setTransactionUI(timeFrameMode, date , groupTransactionList -> {
+            transList.setAdapter(new GroupTransactionRecyclerViewAdapter(groupTransactionList));
+            viewModel.initMoneyInAndOut(groupTransactionList);
+        });
     }
 
     @Override
@@ -113,17 +116,22 @@ public class TransactionFragment extends Fragment {
                     openPickDateDialog();
                 return true;
             case R.id.time_frame_day:
-                timeFrameMode = TransactionTimeFrame.DAY;
+                handleSelectTimeFrame(TransactionTimeFrame.DAY);
                 return true;
             case R.id.time_frame_month:
-                timeFrameMode = TransactionTimeFrame.MONTH;
+                handleSelectTimeFrame(TransactionTimeFrame.MONTH);
                 return true;
             case R.id.time_frame_year:
-                timeFrameMode = TransactionTimeFrame.YEAR;
+                handleSelectTimeFrame(TransactionTimeFrame.YEAR);
                 return true;
             default:
         }
         return super.onOptionsItemSelected(item);
+    }
+    private void handleSelectTimeFrame(TransactionTimeFrame timeFrame){
+        timeFrameMode = timeFrame;
+        saveTransactionSetting();
+        showTransList(new Date());
     }
     private void openPickDateDialog(){
         switch (timeFrameMode){
@@ -137,7 +145,6 @@ public class TransactionFragment extends Fragment {
                 showYearPicker();
                 break;
         }
-
     }
     private void showDatePicker(){
         Long today = MaterialDatePicker.todayInUtcMilliseconds();
@@ -151,8 +158,8 @@ public class TransactionFragment extends Fragment {
         datePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener() {
             @Override
             public void onPositiveButtonClick(Object selection) {
-                selectedDate = new Date((Long) selection);
-                createTransList();
+                Date selectedDate = new Date((Long) selection);
+                showTransList(selectedDate);
             }
         });
     }
@@ -161,8 +168,8 @@ public class TransactionFragment extends Fragment {
         MonthPickerDialog.Builder builder = new MonthPickerDialog.Builder(getContext(), new MonthPickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(int selectedMonth, int selectedYear) {
-                selectedDate = DateUtil.createDate(1, selectedMonth, selectedYear);
-                createTransList();
+                Date selectedDate = DateUtil.createDate(1, selectedMonth, selectedYear);
+                showTransList(selectedDate);
             }
         }, today.get(Calendar.YEAR), today.get(Calendar.MONTH));
         builder.setActivatedMonth(Calendar.JULY)
@@ -178,8 +185,8 @@ public class TransactionFragment extends Fragment {
         MonthPickerDialog.Builder builder = new MonthPickerDialog.Builder(getContext(), new MonthPickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(int selectedMonth, int selectedYear) {
-                selectedDate = DateUtil.createDate(1, selectedMonth, selectedYear);
-                createTransList();
+                Date selectedDate = DateUtil.createDate(1, selectedMonth, selectedYear);
+                showTransList(selectedDate);
             }
         }, today.get(Calendar.YEAR), today.get(Calendar.MONTH));
         builder.setActivatedMonth(Calendar.JULY)
@@ -190,5 +197,17 @@ public class TransactionFragment extends Fragment {
                 .showYearOnly()
                 .build()
                 .show();
+    }
+
+    private void saveTransactionSetting(){
+        SharedPreferences sharedPref = getActivity().getSharedPreferences(getString(R.string.transaction_preference_key), Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putInt(getString(R.string.time_frame_key), timeFrameMode.getValue());
+        editor.apply();
+    }
+    public void initTransactionSetting(){
+        SharedPreferences sharedPref = getActivity().getSharedPreferences(getString(R.string.transaction_preference_key), Context.MODE_PRIVATE);
+        int timeFrameValue = sharedPref.getInt(getString(R.string.time_frame_key), 1);
+        timeFrameMode = TransactionTimeFrame.getTimeFrame(timeFrameValue);
     }
 }

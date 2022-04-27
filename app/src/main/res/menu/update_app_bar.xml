@@ -5,7 +5,7 @@
     >
     <item
         android:id="@+id/update_item"
-        android:icon="@drawable/ic_update_24"
+        android:icon="@drawable/ic_edit_24"
         app:showAsAction="ifRoom"
         android:title="cập nhật" />
     <item

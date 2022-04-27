@@ -4,6 +4,9 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,11 +24,11 @@ import java.util.List;
 public class GroupRecyclerViewAdapter extends RecyclerView.Adapter<GroupRecyclerViewAdapter.ViewHolder> {
 
     private final List<Group> groups;
-    private View view;
+    private final GroupActivity activity;
 
-    public GroupRecyclerViewAdapter(View view, List<Group> groups) {
+    public GroupRecyclerViewAdapter(GroupActivity activity, List<Group> groups) {
         this.groups = groups;
-        this.view = view;
+        this.activity = activity;
     }
 
     @Override
@@ -38,6 +41,8 @@ public class GroupRecyclerViewAdapter extends RecyclerView.Adapter<GroupRecycler
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         Group group = groups.get(position);
+
+        View view = holder.groupIcon.getRootView();
         Glide.with(view).load(group.imgUrl).into(holder.groupIcon);
         holder.groupName.setText(group.name);
         initGroupItemClickEvent(holder, group);
@@ -46,18 +51,22 @@ public class GroupRecyclerViewAdapter extends RecyclerView.Adapter<GroupRecycler
         holder.groupItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                NavController navController = Navigation.findNavController(view);
-                Bundle bundle = getGroupBundle(group);
-                navController.getPreviousBackStackEntry().getSavedStateHandle().set("bundle", bundle);
-                navController.popBackStack();
+//                NavController navController = Navigation.findNavController(view);
+//                Bundle bundle = getGroupBundle(group);
+//                navController.getPreviousBackStackEntry().getSavedStateHandle().set("bundle", bundle);
+//                navController.popBackStack();
+                Intent intent = new Intent();
+                intent.putExtra("group", group);
+                activity.setResult(Activity.RESULT_OK, intent);
+                activity.finish();
             }
         });
     }
-    private Bundle getGroupBundle(Group group){
-        Bundle bundle = new Bundle();
-        bundle.putParcelable("group", group);
-        return bundle;
-    }
+//    private Bundle getGroupBundle(Group group){
+//        Bundle bundle = new Bundle();
+//        bundle.putParcelable("group", group);
+//        return bundle;
+//    }
 
     @Override
     public int getItemCount() {

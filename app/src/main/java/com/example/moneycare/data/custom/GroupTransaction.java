@@ -14,10 +14,11 @@ public class GroupTransaction {
         this.group = group;
         this.transactionList = transactions;
     }
-    public int getNoTransaction(){
-        return transactionList.size();
-    }
-    public Long getTotalMoney(){
-        return 0L;
+    public long getTotalMoney(){
+        long total = 0L;
+        for(UserTransaction transaction:transactionList){
+            total+= transaction.money;
+        }
+        return total;
     }
 }

@@ -7,8 +7,18 @@ import java.util.Date;
 
 public class DateUtil {
     private static Calendar calendar = Calendar.getInstance();
-    public static String getStringDate(Date date){
-        SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
+    public static String getDateString(Date date){
+        SimpleDateFormat formatter = new SimpleDateFormat("EEE, d MMM yyyy");
+        String sDate = formatter.format(date);
+        return sDate;
+    }
+    public static String getMonthString(Date date){
+        SimpleDateFormat formatter = new SimpleDateFormat("MMM, yyyy");
+        String sDate = formatter.format(date);
+        return sDate;
+    }
+    public static String getYearString(Date date){
+        SimpleDateFormat formatter = new SimpleDateFormat("YYYY");
         String sDate = formatter.format(date);
         return sDate;
     }
