@@ -10,13 +10,14 @@
         android:id="@+id/new_trans_action_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        
+        app:navigationIcon="?attr/homeAsUpIndicator"
         style="@style/Theme.AppCompat.DayNight.DarkActionBar"
         >
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Thêm giao dịch"
+            android:textColor="@color/black"
             android:textSize="@dimen/font_size_normal"/>
     </com.google.android.material.appbar.MaterialToolbar>
 

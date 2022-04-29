@@ -1,11 +1,17 @@
 package com.example.moneycare.ui.view.transaction;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-import androidx.navigation.Navigation;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
 import android.content.Context;
-import android.os.Bundle;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +22,7 @@ import com.example.moneycare.R;
 import com.example.moneycare.data.model.Group;
 import com.example.moneycare.data.model.UserTransaction;
 import com.example.moneycare.databinding.TransactionItemBinding;
+import com.example.moneycare.ui.view.MainActivity;
 import com.example.moneycare.utils.DateUtil;
 import java.util.List;
 
@@ -28,7 +35,7 @@ public class TransactionRecyclerViewAdapter extends RecyclerView.Adapter<Transac
     private Group group;
 
     public TransactionRecyclerViewAdapter(Group group, List<UserTransaction> items) {
-        transactions = items;
+        this.transactions = items;
         this.group = group;
     }
 
@@ -48,9 +55,12 @@ public class TransactionRecyclerViewAdapter extends RecyclerView.Adapter<Transac
         holder.transactionItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Bundle bundle = getTransactionBundle(transaction);
-                TransactionFragmentDirections.UpdateTransactionAction action = TransactionFragmentDirections.updateTransactionAction(transaction);
-                Navigation.findNavController(view).navigate(action);
+                MainActivity context = (MainActivity) holder.transactionDate.getContext();
+                ActivityResultLauncher<Intent> launcher = context.getReloadTransListLauncher();
+
+                Intent intent = new Intent(context, UpdateTransactionActivity.class);
+                intent.putExtra("transaction", transaction);
+                launcher.launch(intent);
             }
         });
     }
@@ -60,12 +70,6 @@ public class TransactionRecyclerViewAdapter extends RecyclerView.Adapter<Transac
         int color = group.type? ContextCompat.getColor(context, R.color.green_main) : ContextCompat.getColor(context, R.color.red_main);
         transactionMoney.setTextColor(color);
     }
-//    private Bundle getTransactionBundle(UserTransaction transaction){
-//        Bundle bundle = new Bundle();
-//        bundle.putParcelable("transaction", transaction);
-//        return bundle;
-//    }
-
     @Override
     public int getItemCount() {
         return transactions.size();

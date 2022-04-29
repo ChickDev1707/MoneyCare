@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MoneyCare">
         <activity
+            android:name=".ui.view.transaction.UpdateTransactionActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.view.transaction.GroupActivity"
             android:exported="false" />
         <activity

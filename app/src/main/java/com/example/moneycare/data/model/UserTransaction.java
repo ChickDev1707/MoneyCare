@@ -3,6 +3,7 @@ package com.example.moneycare.data.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.example.moneycare.utils.FirestoreUtil;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.Exclude;
@@ -34,6 +35,7 @@ public class UserTransaction implements Parcelable {
         group = in.readString();
         note = in.readString();
         wallet = in.readString();
+        date = (java.util.Date) in.readSerializable();
     }
 
     public static final Creator<UserTransaction> CREATOR = new Creator<UserTransaction>() {
@@ -50,13 +52,12 @@ public class UserTransaction implements Parcelable {
 
     @Exclude
     public Map<String, Object> toMap() {
-        FirebaseFirestore fs = FirebaseFirestore.getInstance();
         HashMap<String, Object> result = new HashMap<>();
         result.put("money", money);
         result.put("date", new Timestamp(date));
-        result.put("group", fs.document(group));
+        result.put("group", FirestoreUtil.getReferenceFromString(group));
         result.put("note", note);
-        result.put("wallet", fs.document(wallet));
+        result.put("wallet", FirestoreUtil.getReferenceFromString(wallet));
         return result;
     }
     public static UserTransaction fromMap(String id, Map<String, Object> map){
@@ -83,5 +84,6 @@ public class UserTransaction implements Parcelable {
         parcel.writeString(group);
         parcel.writeString(note);
         parcel.writeString(wallet);
+        parcel.writeSerializable(date);
     }
 }

@@ -6,6 +6,7 @@ import com.example.moneycare.data.custom.GroupTransaction;
 import com.example.moneycare.data.model.Group;
 import com.example.moneycare.data.model.UserTransaction;
 import com.example.moneycare.utils.DateUtil;
+import com.example.moneycare.utils.FirestoreUtil;
 import com.example.moneycare.utils.appinterface.FirestoreListCallback;
 import com.example.moneycare.utils.appinterface.FirestoreObjectCallback;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -65,7 +66,6 @@ public class TransactionRepository {
                     getGroupTransactionList(transactions, callback);
                 }
             }
-
         });
     }
     public void fetchDayTransactions(Date dayDate, FirestoreListCallback callback){
@@ -116,7 +116,7 @@ public class TransactionRepository {
             }
         });
     }
-    // save new transactions
+    // crud transactions
     public void saveNewTransaction(long money, Group group, String note, Date date){
         CollectionReference transactionsRef = db.collection("users").document("LE3oa0LyuujvLqmvxoQw").collection("transactions");
         String groupPath = "transaction-groups/" + group.id;
@@ -156,6 +156,17 @@ public class TransactionRepository {
             @Override
             public void onFailure(@NonNull Exception e) {
                 System.out.println("Update wallet failed");
+            }
+        });
+    }
+    public void deleteTransaction(UserTransaction transaction, Group group){
+        DocumentReference docRef = db.collection("users").document("LE3oa0LyuujvLqmvxoQw").collection("transactions").document(transaction.id);
+        docRef.delete()
+        .addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                System.out.println("delete trans success");
+                updateWallet("wall-1", transaction.money, group);
             }
         });
     }
@@ -203,7 +214,7 @@ public class TransactionRepository {
         return -1;
     }
     // update transactions
-    public void updateTransaction(UserTransaction userTransaction, Group group){
+    public void updateTransaction(UserTransaction userTransaction, Group group, FirestoreObjectCallback callback){
         DocumentReference transactionRef = db.collection("users").document("LE3oa0LyuujvLqmvxoQw").collection("transactions").document(userTransaction.id);
         String walletString = "users/LE3oa0LyuujvLqmvxoQw/" + userTransaction.wallet;
         DocumentReference walletRef = db.document(walletString);
@@ -222,7 +233,7 @@ public class TransactionRepository {
                 transaction.update(walletRef, "money", newUpdatedMoney);
 
                 transaction.update(transactionRef, "money", userTransaction.money);
-                transaction.update(transactionRef, "group", userTransaction.group);
+                transaction.update(transactionRef, "group", FirestoreUtil.getReferenceFromString(userTransaction.group));
                 transaction.update(transactionRef, "note", userTransaction.note);
                 transaction.update(transactionRef, "date", userTransaction.date);
 
@@ -232,6 +243,7 @@ public class TransactionRepository {
             @Override
             public void onSuccess(Void result) {
                 System.out.println("Update transaction success");
+                callback.onCallback(null);
             }
         })
         .addOnFailureListener(new OnFailureListener() {

@@ -33,10 +33,9 @@ public class NewTransactionActivity extends AppCompatActivity {
         public void onActivityResult(ActivityResult result) {
             if (result.getResultCode() == Activity.RESULT_OK) {
                 // There are no request codes
-                System.out.println("result");
                 Intent data = result.getData();
                 Group group = data.getParcelableExtra("group");
-                System.out.println(group.name);
+                newTransViewModel.setGroup(group);
             }
         }
     });
@@ -50,22 +49,25 @@ public class NewTransactionActivity extends AppCompatActivity {
         binding.setLifecycleOwner(this);
         setContentView(binding.getRoot());
 
+        // Set up binding
+        initToolbar();
+        initPickDateInput();
+        initSaveTransBtn();
+        initSelectGroupEvent();
+        // Inflate the layout for this fragment
+    }
+    private void initToolbar(){
         Toolbar toolbar = findViewById(R.id.new_trans_action_bar);
         this.setSupportActionBar(toolbar);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // back button pressed
+                NewTransactionActivity.this.finish();
+                onBackPressed();
             }
         });
-
-        // Set up binding
-        initPickDateInput();
-        initSaveTransBtn();
-        initSelectGroupEvent();
-        // Inflate the layout for this fragment
     }
-
     private void initPickDateInput(){
 //        binding.newTransDate.setEnabled(false);
         binding.newTransDate.setOnClickListener(new View.OnClickListener() {
@@ -91,7 +93,9 @@ public class NewTransactionActivity extends AppCompatActivity {
         binding.saveNewTransBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                newTransViewModel.saveNewTransaction();
+                NewTransactionActivity.this.setResult(RESULT_OK);
+                NewTransactionActivity.this.finish();
             }
         });
     }

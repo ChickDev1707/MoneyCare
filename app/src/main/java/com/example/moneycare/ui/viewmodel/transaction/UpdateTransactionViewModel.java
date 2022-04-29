@@ -8,6 +8,7 @@ import com.example.moneycare.data.model.User;
 import com.example.moneycare.data.model.UserTransaction;
 import com.example.moneycare.data.repository.TransactionRepository;
 import com.example.moneycare.utils.appinterface.FirestoreListCallback;
+import com.example.moneycare.utils.appinterface.FirestoreObjectCallback;
 
 import java.util.Date;
 
@@ -21,22 +22,27 @@ public class UpdateTransactionViewModel extends ViewModel {
 
     public UpdateTransactionViewModel() {
         this.transactionRepository = new TransactionRepository();
-
+        init();
+    }
+    private void init(){
         transaction = new MutableLiveData<>();
+        group = new MutableLiveData<>();
         updateMode = new MutableLiveData<>(false);
     }
     public void initTransaction(UserTransaction transaction){
         this.transaction.setValue(transaction);
-        this.transactionRepository.fetchGroup(transaction.group, groupData-> group = new MutableLiveData<>((Group) groupData));
+        this.transactionRepository.fetchGroup(transaction.group, groupData-> group.setValue((Group) groupData));
     }
     public void switchUpdateMode(){
         updateMode.setValue(!updateMode.getValue());
     }
-    public void updateTransaction(){
-//        System.out.println(transaction.getValue().money);
-        this.transactionRepository.updateTransaction(transaction.getValue(), group.getValue());
+    public void updateTransaction(FirestoreObjectCallback callback){
+        this.transactionRepository.updateTransaction(transaction.getValue(), group.getValue(), callback);
     }
     public void setGroup(Group selectedGroup){
         group.setValue(selectedGroup);
+    }
+    public void deleteTransaction(){
+        this.transactionRepository.deleteTransaction(transaction.getValue(), group.getValue());
     }
 }

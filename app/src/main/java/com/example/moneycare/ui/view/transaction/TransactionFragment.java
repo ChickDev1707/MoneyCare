@@ -1,9 +1,11 @@
 package com.example.moneycare.ui.view.transaction;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,6 +24,7 @@ import android.widget.TextView;
 
 import com.example.moneycare.R;
 import com.example.moneycare.databinding.FragmentTransactionListBinding;
+import com.example.moneycare.ui.view.MainActivity;
 import com.example.moneycare.ui.viewmodel.transaction.TransactionViewModel;
 import com.example.moneycare.utils.DateUtil;
 import com.example.moneycare.utils.appenum.TransactionTimeFrame;
@@ -49,7 +52,7 @@ public class TransactionFragment extends Fragment {
     private TransactionViewModel viewModel;
     private FragmentTransactionListBinding binding;
     private TransactionTimeFrame timeFrameMode;
-//    private Date selectedDate;
+    private Date selectedDate;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -90,14 +93,17 @@ public class TransactionFragment extends Fragment {
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
 
         initTransactionSetting();
-        showTransList(new Date());
+        initTransList();
 
         return binding.getRoot();
     }
-
-    public void showTransList(Date date){
+    private void initTransList(){
+        selectedDate = new Date();
+        showTransList();
+    }
+    public void showTransList(){
         RecyclerView transList = binding.groupTransactionListTemplate;
-        viewModel.setTransactionUI(timeFrameMode, date , groupTransactionList -> {
+        viewModel.setTransactionUI(timeFrameMode, selectedDate , groupTransactionList -> {
             transList.setAdapter(new GroupTransactionRecyclerViewAdapter(groupTransactionList));
             viewModel.initMoneyInAndOut(groupTransactionList);
         });
@@ -131,7 +137,7 @@ public class TransactionFragment extends Fragment {
     private void handleSelectTimeFrame(TransactionTimeFrame timeFrame){
         timeFrameMode = timeFrame;
         saveTransactionSetting();
-        showTransList(new Date());
+        initTransList();
     }
     private void openPickDateDialog(){
         switch (timeFrameMode){
@@ -158,8 +164,8 @@ public class TransactionFragment extends Fragment {
         datePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener() {
             @Override
             public void onPositiveButtonClick(Object selection) {
-                Date selectedDate = new Date((Long) selection);
-                showTransList(selectedDate);
+                selectedDate = new Date((Long) selection);
+                showTransList();
             }
         });
     }
@@ -168,8 +174,8 @@ public class TransactionFragment extends Fragment {
         MonthPickerDialog.Builder builder = new MonthPickerDialog.Builder(getContext(), new MonthPickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(int selectedMonth, int selectedYear) {
-                Date selectedDate = DateUtil.createDate(1, selectedMonth, selectedYear);
-                showTransList(selectedDate);
+                selectedDate = DateUtil.createDate(1, selectedMonth, selectedYear);
+                showTransList();
             }
         }, today.get(Calendar.YEAR), today.get(Calendar.MONTH));
         builder.setActivatedMonth(Calendar.JULY)
@@ -185,8 +191,8 @@ public class TransactionFragment extends Fragment {
         MonthPickerDialog.Builder builder = new MonthPickerDialog.Builder(getContext(), new MonthPickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(int selectedMonth, int selectedYear) {
-                Date selectedDate = DateUtil.createDate(1, selectedMonth, selectedYear);
-                showTransList(selectedDate);
+                selectedDate = DateUtil.createDate(1, selectedMonth, selectedYear);
+                showTransList();
             }
         }, today.get(Calendar.YEAR), today.get(Calendar.MONTH));
         builder.setActivatedMonth(Calendar.JULY)

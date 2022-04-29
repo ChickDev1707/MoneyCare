@@ -1,11 +1,15 @@
 package com.example.moneycare.ui.view.transaction;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -23,7 +27,7 @@ public class GroupTransactionRecyclerViewAdapter extends RecyclerView.Adapter<Gr
     private List<GroupTransaction> groupTransactions;
 
     public GroupTransactionRecyclerViewAdapter(List<GroupTransaction> items) {
-        groupTransactions = items;
+        this.groupTransactions = items;
     }
 
     @Override

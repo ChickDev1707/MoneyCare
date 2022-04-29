@@ -8,7 +8,7 @@ import java.util.Date;
 public class DateUtil {
     private static Calendar calendar = Calendar.getInstance();
     public static String getDateString(Date date){
-        SimpleDateFormat formatter = new SimpleDateFormat("EEE, d MMM yyyy");
+        SimpleDateFormat formatter = new SimpleDateFormat("EE, dd/MM/yyyy");
         String sDate = formatter.format(date);
         return sDate;
     }
