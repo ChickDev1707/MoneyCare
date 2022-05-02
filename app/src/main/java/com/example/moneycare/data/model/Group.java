@@ -17,20 +17,22 @@ public class Group implements Parcelable {
     public String id;
     public String name;
     public boolean type;
-    public String imgUrl;
+    public String image;
+    public boolean isDefault = true;
     public Group(){}
-    public Group(String id, String name, boolean type, String imgUrl){
+    public Group(String id, String name, boolean type, String image){
         this.id = id;
         this.name = name;
         this.type = type;
-        this.imgUrl = imgUrl;
+        this.image = image;
     }
 
     protected Group(Parcel in) {
         id = in.readString();
         name = in.readString();
         type = in.readByte() != 0;
-        imgUrl = in.readString();
+        image = in.readString();
+        isDefault = in.readByte() != 0;
     }
 
     public static final Creator<Group> CREATOR = new Creator<Group>() {
@@ -50,7 +52,7 @@ public class Group implements Parcelable {
         HashMap<String, Object> result = new HashMap<>();
         result.put("name", name);
         result.put("type", type);
-        result.put("imgUrl", imgUrl);
+        result.put("image", image);
         return result;
     }
     public static Group fromMap(String id, Map<String, Object> map){
@@ -58,7 +60,7 @@ public class Group implements Parcelable {
                 id,
                 map.get("name").toString(),
                 (Boolean) map.get("type"),
-                map.get("imgUrl").toString()
+                map.get("image").toString()
         );
     }
 
@@ -72,6 +74,10 @@ public class Group implements Parcelable {
         parcel.writeString(id);
         parcel.writeString(name);
         parcel.writeByte((byte) (type ? 1 : 0));
-        parcel.writeString(imgUrl);
+        parcel.writeString(image);
+        parcel.writeByte((byte) (isDefault ? 1 : 0));
+    }
+    public void setDefaultType(boolean value){
+        this.isDefault = value;
     }
 }

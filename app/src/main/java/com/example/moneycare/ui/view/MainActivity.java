@@ -4,7 +4,6 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
@@ -15,15 +14,12 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 
-import com.example.moneycare.data.model.Group;
-import com.example.moneycare.ui.view.transaction.NewTransactionActivity;
-import com.example.moneycare.R;
 import com.example.moneycare.databinding.ActivityMainBinding;
-import com.example.moneycare.ui.view.transaction.TransactionFragment;
+import com.example.moneycare.ui.view.transaction.trans.NewTransactionActivity;
+import com.example.moneycare.R;
+import com.example.moneycare.ui.view.transaction.trans.TransactionFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 
 public class MainActivity extends AppCompatActivity {

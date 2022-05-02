@@ -1,21 +1,18 @@
-package com.example.moneycare.ui.view.transaction;
+package com.example.moneycare.ui.view.transaction.trans;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.moneycare.data.custom.GroupTransaction;
 import com.example.moneycare.databinding.GroupTransactionItemBinding;
+import com.example.moneycare.utils.ImageUtil;
 
 import java.util.List;
 
@@ -44,8 +41,8 @@ public class GroupTransactionRecyclerViewAdapter extends RecyclerView.Adapter<Gr
         holder.totalTransaction.setText(totalTransFullText);
         holder.totalMoney.setText(Long.toString(groupTransaction.getTotalMoney()));
 
-        Context context = holder.groupIcon.getContext();
-        Glide.with(context).load(groupTransaction.group.imgUrl).into(holder.groupIcon);
+        Bitmap bitmapIcon = ImageUtil.toBitmap(groupTransaction.group.image);
+        holder.groupIcon.setImageBitmap(bitmapIcon);
         holder.transactionListView.setAdapter(new TransactionRecyclerViewAdapter(groupTransaction.group, groupTransaction.transactionList));
     }
 

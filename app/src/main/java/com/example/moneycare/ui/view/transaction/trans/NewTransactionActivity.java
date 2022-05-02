@@ -1,11 +1,9 @@
-package com.example.moneycare.ui.view.transaction;
+package com.example.moneycare.ui.view.transaction.trans;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProvider;
@@ -14,11 +12,11 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 
 import com.example.moneycare.R;
 import com.example.moneycare.data.model.Group;
 import com.example.moneycare.databinding.ActivityNewTransactionBinding;
+import com.example.moneycare.ui.view.transaction.group.SelectGroupActivity;
 import com.example.moneycare.ui.viewmodel.transaction.NewTransactionViewModel;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
@@ -57,7 +55,8 @@ public class NewTransactionActivity extends AppCompatActivity {
         // Inflate the layout for this fragment
     }
     private void initToolbar(){
-        Toolbar toolbar = findViewById(R.id.new_trans_action_bar);
+        Toolbar toolbar = findViewById(R.id.basic_app_bar);
+        toolbar.setTitle(R.string.title_new_trans);
         this.setSupportActionBar(toolbar);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,7 +102,7 @@ public class NewTransactionActivity extends AppCompatActivity {
         binding.newTransGroup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(NewTransactionActivity.this, GroupActivity.class);
+                Intent intent = new Intent(NewTransactionActivity.this, SelectGroupActivity.class);
                 toGroupActivityLauncher.launch(intent);
             }
         });

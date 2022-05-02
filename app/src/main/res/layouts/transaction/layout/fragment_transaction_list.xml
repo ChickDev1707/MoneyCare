@@ -16,7 +16,7 @@
         android:background="@color/gray_100"
         >
         <include
-            layout="@layout/app_bar"
+            layout="@layout/main_app_bar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -130,7 +130,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:layoutManager="LinearLayoutManager"
-                    tools:context=".ui.view.transaction.TransactionFragment"
+                    tools:context=".ui.view.transaction.trans.TransactionFragment"
                     android:nestedScrollingEnabled="false"
                     tools:listitem="@layout/group_transaction_item" />
             </LinearLayout>

@@ -28,9 +28,6 @@ public class NewTransactionViewModel extends ViewModel {
         note = new MutableLiveData<>("");
         group = new MutableLiveData<>();
     }
-    public void loadGroupsList(FirestoreListCallback callback){
-        this.transactionRepository.fetchGroups(callback);
-    }
 
     public void setDate(Object selection){
         Date pickedDate = new Date((Long) selection);

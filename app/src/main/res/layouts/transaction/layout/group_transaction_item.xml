@@ -68,7 +68,7 @@
             android:layout_height="wrap_content"
             android:nestedScrollingEnabled="false"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:context=".ui.view.transaction.TransactionFragment"
+            tools:context=".ui.view.transaction.trans.TransactionFragment"
             tools:listitem="@layout/transaction_item" />
     </LinearLayout>
 </LinearLayout>

@@ -1,13 +1,10 @@
-package com.example.moneycare.ui.view.transaction;
+package com.example.moneycare.ui.view.transaction.trans;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
-import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
@@ -20,11 +17,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.example.moneycare.R;
 import com.example.moneycare.databinding.FragmentTransactionListBinding;
-import com.example.moneycare.ui.view.MainActivity;
 import com.example.moneycare.ui.viewmodel.transaction.TransactionViewModel;
 import com.example.moneycare.utils.DateUtil;
 import com.example.moneycare.utils.appenum.TransactionTimeFrame;
@@ -34,10 +29,8 @@ import com.whiteelephant.monthpicker.MonthPickerDialog;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 
 /**
@@ -90,6 +83,7 @@ public class TransactionFragment extends Fragment {
         timeFrameMode = TransactionTimeFrame.DAY;
 
         Toolbar toolbar = binding.getRoot().findViewById(R.id.top_app_bar);
+        toolbar.setTitle("");
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
 
         initTransactionSetting();

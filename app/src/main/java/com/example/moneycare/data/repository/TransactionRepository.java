@@ -35,7 +35,7 @@ public class TransactionRepository {
         db = FirebaseFirestore.getInstance();
     }
     // get transactions
-    public void fetchYearTransactions(Date yearDate, FirestoreListCallback callback){
+    public void fetchYearTransactions(Date yearDate, FirestoreListCallback<GroupTransaction> callback){
         CollectionReference colRef =  db.collection("users").document("LE3oa0LyuujvLqmvxoQw").collection("transactions");
         colRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -52,7 +52,7 @@ public class TransactionRepository {
 
         });
     }
-    public void fetchMonthTransactions(Date monthDate, FirestoreListCallback callback){
+    public void fetchMonthTransactions(Date monthDate, FirestoreListCallback<GroupTransaction> callback){
         CollectionReference colRef =  db.collection("users").document("LE3oa0LyuujvLqmvxoQw").collection("transactions");
         colRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -68,7 +68,7 @@ public class TransactionRepository {
             }
         });
     }
-    public void fetchDayTransactions(Date dayDate, FirestoreListCallback callback){
+    public void fetchDayTransactions(Date dayDate, FirestoreListCallback<GroupTransaction> callback){
         CollectionReference colRef =  db.collection("users").document("LE3oa0LyuujvLqmvxoQw").collection("transactions");
         colRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -86,24 +86,42 @@ public class TransactionRepository {
         });
     }
     // work with group
-    public void fetchGroups(FirestoreListCallback callback){
+    public void fetchGroups(FirestoreListCallback<Group> callback){
 
-        CollectionReference colRef =  db.collection("transaction-groups");
-        colRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        CollectionReference defaultGroupRef =  db.collection("transaction-groups");
+        defaultGroupRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
-                List<Group> groups = new ArrayList<Group>();
-                if(task.isSuccessful()){
-                    for(DocumentSnapshot snapshot:task.getResult()){
-                        Group group = Group.fromMap(snapshot.getId(), snapshot.getData());
-                        groups.add(group);
-                    }
-                    callback.onCallback(groups);
-                }
+                List<Group> defaultGroups = getGroups(task);
+                fetchUserGroups(defaultGroups, callback);
+            }
+        });
+
+    }
+    public void fetchUserGroups(List<Group> defaultGroups, FirestoreListCallback<Group> callback){
+        CollectionReference userGroupRef = db.collection("users").document("LE3oa0LyuujvLqmvxoQw").collection("transaction-groups");
+        userGroupRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
+                List<Group> allGroups = new ArrayList<>(defaultGroups);
+                List<Group> userGroups = getGroups(task);
+                allGroups.addAll(userGroups);
+                callback.onCallback(allGroups);
             }
         });
     }
-    public void fetchGroup(String groupPath, FirestoreObjectCallback callback){
+
+    private List<Group> getGroups(Task<QuerySnapshot> task){
+        List<Group> groups = new ArrayList<Group>();
+        if(task.isSuccessful()){
+            for(DocumentSnapshot snapshot:task.getResult()){
+                Group group = Group.fromMap(snapshot.getId(), snapshot.getData());
+                groups.add(group);
+            }
+        }
+        return groups;
+    }
+    public void fetchGroup(String groupPath, FirestoreObjectCallback<Group> callback){
         DocumentReference groupRef =  db.document(groupPath);
         groupRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -113,6 +131,23 @@ public class TransactionRepository {
                     Group group = Group.fromMap(snapshot.getId(), snapshot.getData());
                     callback.onCallback(group);
                 }
+            }
+        });
+    }
+    public void saveNewGroup(String name, boolean type, String image){
+        CollectionReference groupsRef = db.collection("users").document("LE3oa0LyuujvLqmvxoQw").collection("transaction-groups");
+        Group newGroup = new Group(null, name, type, image);
+        groupsRef.add(newGroup.toMap())
+        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+            @Override
+            public void onSuccess(DocumentReference documentReference) {
+                System.out.println("add group success");
+            }
+        })
+        .addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull @NotNull Exception e) {
+                System.out.println(e);
             }
         });
     }
@@ -171,7 +206,7 @@ public class TransactionRepository {
         });
     }
     // get transactions with group
-    private void getGroupTransactionList(List<UserTransaction> transactions, FirestoreListCallback callback){
+    private void getGroupTransactionList(List<UserTransaction> transactions, FirestoreListCallback<GroupTransaction> callback){
         fetchGroups(groups->{
             List<GroupTransaction> groupTransactionList = new ArrayList<>();
             for(UserTransaction transaction:transactions){
@@ -214,7 +249,7 @@ public class TransactionRepository {
         return -1;
     }
     // update transactions
-    public void updateTransaction(UserTransaction userTransaction, Group group, FirestoreObjectCallback callback){
+    public void updateTransaction(UserTransaction userTransaction, Group group, FirestoreObjectCallback<UserTransaction> callback){
         DocumentReference transactionRef = db.collection("users").document("LE3oa0LyuujvLqmvxoQw").collection("transactions").document(userTransaction.id);
         String walletString = "users/LE3oa0LyuujvLqmvxoQw/" + userTransaction.wallet;
         DocumentReference walletRef = db.document(walletString);

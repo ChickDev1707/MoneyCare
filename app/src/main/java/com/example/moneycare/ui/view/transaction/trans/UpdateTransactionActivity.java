@@ -1,4 +1,4 @@
-package com.example.moneycare.ui.view.transaction;
+package com.example.moneycare.ui.view.transaction.trans;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
@@ -20,6 +20,7 @@ import com.example.moneycare.R;
 import com.example.moneycare.data.model.Group;
 import com.example.moneycare.data.model.UserTransaction;
 import com.example.moneycare.databinding.ActivityUpdateTransactionBinding;
+import com.example.moneycare.ui.view.transaction.group.SelectGroupActivity;
 import com.example.moneycare.ui.viewmodel.transaction.UpdateTransactionViewModel;
 
 import org.jetbrains.annotations.NotNull;
@@ -95,7 +96,7 @@ public class UpdateTransactionActivity extends AppCompatActivity {
         binding.updateTransGroup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(UpdateTransactionActivity.this, GroupActivity.class);
+                Intent intent = new Intent(UpdateTransactionActivity.this, SelectGroupActivity.class);
                 toGroupActivityLauncher.launch(intent);
             }
         });

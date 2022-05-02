@@ -1,9 +1,11 @@
-package com.example.moneycare.ui.view.transaction;
+package com.example.moneycare.ui.view.transaction.group;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,32 +16,31 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.moneycare.data.model.Group;
 import com.example.moneycare.databinding.GroupItemBinding;
+import com.example.moneycare.utils.ImageUtil;
 
 import java.util.List;
 
 public class GroupRecyclerViewAdapter extends RecyclerView.Adapter<GroupRecyclerViewAdapter.ViewHolder> {
 
     private final List<Group> groups;
-    private final GroupActivity activity;
+    private final AppCompatActivity activity;
 
-    public GroupRecyclerViewAdapter(GroupActivity activity, List<Group> groups) {
+    public GroupRecyclerViewAdapter(AppCompatActivity activity, List<Group> groups) {
         this.groups = groups;
         this.activity = activity;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
         return new ViewHolder(GroupItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
-
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         Group group = groups.get(position);
 
-        View view = holder.groupIcon.getRootView();
-        Glide.with(view).load(group.imgUrl).into(holder.groupIcon);
+        Bitmap bitmapIcon = ImageUtil.toBitmap(group.image);
+        holder.groupIcon.setImageBitmap(bitmapIcon);
         holder.groupName.setText(group.name);
         initGroupItemClickEvent(holder, group);
     }
