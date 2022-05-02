@@ -60,6 +60,7 @@ public class UpdateTransactionActivity extends AppCompatActivity {
 
     private void initToolbar(){
         Toolbar toolbar = findViewById(R.id.update_app_bar);
+        toolbar.setTitle("Sửa giao dịch");
         setSupportActionBar(toolbar);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override

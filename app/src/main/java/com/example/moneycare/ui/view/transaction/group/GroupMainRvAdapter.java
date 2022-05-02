@@ -13,19 +13,18 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.example.moneycare.data.model.Group;
 import com.example.moneycare.databinding.GroupItemBinding;
 import com.example.moneycare.utils.ImageUtil;
 
 import java.util.List;
 
-public class GroupRecyclerViewAdapter extends RecyclerView.Adapter<GroupRecyclerViewAdapter.ViewHolder> {
+public class GroupMainRvAdapter extends RecyclerView.Adapter<GroupMainRvAdapter.ViewHolder> {
 
-    private final List<Group> groups;
-    private final AppCompatActivity activity;
+    protected List<Group> groups;
+    protected AppCompatActivity activity;
 
-    public GroupRecyclerViewAdapter(AppCompatActivity activity, List<Group> groups) {
+    public GroupMainRvAdapter(AppCompatActivity activity, List<Group> groups) {
         this.groups = groups;
         this.activity = activity;
     }
@@ -38,23 +37,15 @@ public class GroupRecyclerViewAdapter extends RecyclerView.Adapter<GroupRecycler
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         Group group = groups.get(position);
-
+        
         Bitmap bitmapIcon = ImageUtil.toBitmap(group.image);
         holder.groupIcon.setImageBitmap(bitmapIcon);
         holder.groupName.setText(group.name);
-        initGroupItemClickEvent(holder, group);
+
+        String groupType = group.isDefault? "" : "C";
+        holder.groupType.setText(groupType);
     }
-    private void initGroupItemClickEvent(ViewHolder holder, Group group){
-        holder.groupItem.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent();
-                intent.putExtra("group", group);
-                activity.setResult(Activity.RESULT_OK, intent);
-                activity.finish();
-            }
-        });
-    }
+
 
     @Override
     public int getItemCount() {
@@ -65,12 +56,14 @@ public class GroupRecyclerViewAdapter extends RecyclerView.Adapter<GroupRecycler
         public final LinearLayout groupItem;
         public final ImageView groupIcon;
         public final TextView groupName;
+        public final TextView groupType;
 
         public ViewHolder(GroupItemBinding binding) {
             super(binding.getRoot());
             groupItem = binding.groupItem;
             groupIcon = binding.groupIcon;
             groupName = binding.groupName;
+            groupType = binding.groupType;
         }
 
         @Override

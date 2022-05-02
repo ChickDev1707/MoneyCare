@@ -92,7 +92,7 @@ public class TransactionRepository {
         defaultGroupRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
-                List<Group> defaultGroups = getGroups(task);
+                List<Group> defaultGroups = getGroups(task, true);
                 fetchUserGroups(defaultGroups, callback);
             }
         });
@@ -104,18 +104,19 @@ public class TransactionRepository {
             @Override
             public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
                 List<Group> allGroups = new ArrayList<>(defaultGroups);
-                List<Group> userGroups = getGroups(task);
+                List<Group> userGroups = getGroups(task, false);
                 allGroups.addAll(userGroups);
                 callback.onCallback(allGroups);
             }
         });
     }
 
-    private List<Group> getGroups(Task<QuerySnapshot> task){
+    private List<Group> getGroups(Task<QuerySnapshot> task, boolean isDefault){
         List<Group> groups = new ArrayList<Group>();
         if(task.isSuccessful()){
             for(DocumentSnapshot snapshot:task.getResult()){
                 Group group = Group.fromMap(snapshot.getId(), snapshot.getData());
+                group.isDefault = isDefault;
                 groups.add(group);
             }
         }
@@ -148,6 +149,38 @@ public class TransactionRepository {
             @Override
             public void onFailure(@NonNull @NotNull Exception e) {
                 System.out.println(e);
+            }
+        });
+    }
+    public void updateGroup(Group group){
+        DocumentReference groupRef = db.collection("users").document("LE3oa0LyuujvLqmvxoQw").collection("transaction-groups").document(group.id);
+        db.runTransaction(new Transaction.Function<Void>() {
+            @Override
+            public Void apply(Transaction transaction) throws FirebaseFirestoreException {
+                transaction.update(groupRef, "name", group.name);
+                transaction.update(groupRef, "image", group.image);
+                return null;
+            }
+        }).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void result) {
+                System.out.println("Update group success");
+            }
+        })
+        .addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                System.out.println("Update group failed");
+            }
+        });
+    }
+    public void deleteGroup(Group group){
+        DocumentReference docRef = db.collection("users").document("LE3oa0LyuujvLqmvxoQw").collection("transaction-groups").document(group.id);
+        docRef.delete()
+        .addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                System.out.println("delete group success");
             }
         });
     }

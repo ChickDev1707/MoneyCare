@@ -21,6 +21,7 @@
         <entry key="..\:/Courses/third/HKII/java/project/source/app/src/main/res/layout/activity_manage_group.xml" value="0.25833333333333336" />
         <entry key="..\:/Courses/third/HKII/java/project/source/app/src/main/res/layout/activity_new_group.xml" value="0.25833333333333336" />
         <entry key="..\:/Courses/third/HKII/java/project/source/app/src/main/res/layout/activity_new_transaction.xml" value="0.11875" />
+        <entry key="..\:/Courses/third/HKII/java/project/source/app/src/main/res/layout/activity_update_group.xml" value="0.1203125" />
         <entry key="..\:/Courses/third/HKII/java/project/source/app/src/main/res/layout/activity_update_transaction.xml" value="0.25833333333333336" />
         <entry key="..\:/Courses/third/HKII/java/project/source/app/src/main/res/layout/app_bar.xml" value="0.11614583333333334" />
         <entry key="..\:/Courses/third/HKII/java/project/source/app/src/main/res/layout/basic_app_bar.xml" value="0.1203125" />
@@ -47,12 +48,15 @@
         <entry key="..\:/Courses/third/HKII/java/project/source/app/src/main/res/layouts/transaction/layout/activity_new_group.xml" value="0.25833333333333336" />
         <entry key="..\:/Courses/third/HKII/java/project/source/app/src/main/res/layouts/transaction/layout/activity_new_transaction.xml" value="0.25833333333333336" />
         <entry key="..\:/Courses/third/HKII/java/project/source/app/src/main/res/layouts/transaction/layout/activity_select_group.xml" value="0.25833333333333336" />
+        <entry key="..\:/Courses/third/HKII/java/project/source/app/src/main/res/layouts/transaction/layout/activity_update_group.xml" value="0.1203125" />
+        <entry key="..\:/Courses/third/HKII/java/project/source/app/src/main/res/layouts/transaction/layout/activity_update_transaction.xml" value="0.1203125" />
         <entry key="..\:/Courses/third/HKII/java/project/source/app/src/main/res/layouts/transaction/layout/fragment_group.xml" value="0.12563323201621074" />
         <entry key="..\:/Courses/third/HKII/java/project/source/app/src/main/res/layouts/transaction/layout/fragment_group_list.xml" value="0.12563323201621074" />
         <entry key="..\:/Courses/third/HKII/java/project/source/app/src/main/res/layouts/transaction/layout/fragment_group_main.xml" value="0.25833333333333336" />
         <entry key="..\:/Courses/third/HKII/java/project/source/app/src/main/res/layouts/transaction/layout/fragment_new_transaction.xml" value="0.11096014492753623" />
         <entry key="..\:/Courses/third/HKII/java/project/source/app/src/main/res/layouts/transaction/layout/fragment_transaction_list.xml" value="0.105" />
         <entry key="..\:/Courses/third/HKII/java/project/source/app/src/main/res/layouts/transaction/layout/fragment_update_transaction.xml" value="0.264" />
+        <entry key="..\:/Courses/third/HKII/java/project/source/app/src/main/res/layouts/transaction/layout/group_item.xml" value="0.1203125" />
         <entry key="..\:/Courses/third/HKII/java/project/source/app/src/main/res/layouts/transaction/layout/group_transaction_item.xml" value="0.12563323201621074" />
         <entry key="..\:/Courses/third/HKII/java/project/source/app/src/main/res/layouts/transaction/layout/new_trans_app_bar.xml" value="0.25833333333333336" />
         <entry key="..\:/Courses/third/HKII/java/project/source/app/src/main/res/layouts/transaction/layout/transaction_item.xml" value="0.6" />

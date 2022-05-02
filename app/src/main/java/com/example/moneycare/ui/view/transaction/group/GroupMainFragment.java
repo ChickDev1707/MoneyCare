@@ -26,6 +26,7 @@ public class GroupMainFragment extends Fragment {
     private FragmentGroupMainBinding binding;
     public GroupMainFragment() {
         // Required empty public constructor
+
     }
 
     public static GroupMainFragment newInstance(String param1, String param2) {

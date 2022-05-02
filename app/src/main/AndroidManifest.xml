@@ -12,12 +12,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MoneyCare">
         <activity
+            android:name=".ui.view.transaction.group.UpdateGroupActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.view.transaction.group.NewGroupActivity"
             android:exported="false" />
         <activity
             android:name=".ui.view.transaction.group.ManageGroupActivity"
-            android:noHistory="true"
-            android:exported="false" />
+            android:exported="false"
+            android:noHistory="true" />
         <activity
             android:name=".ui.view.transaction.trans.UpdateTransactionActivity"
             android:exported="false" />

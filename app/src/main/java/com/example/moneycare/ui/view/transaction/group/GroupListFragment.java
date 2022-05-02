@@ -32,7 +32,14 @@ public class GroupListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentGroupListBinding.inflate(getLayoutInflater());
-        binding.groupList.setAdapter(new GroupRecyclerViewAdapter(activity, groups));
+        initGroupList();
         return binding.getRoot();
+    }
+    public void initGroupList(){
+        if(activity.getClass() == SelectGroupActivity.class){
+            binding.groupList.setAdapter(new GroupSelectRvAdapter(activity, groups));
+        }else if(activity.getClass() == ManageGroupActivity.class){
+            binding.groupList.setAdapter(new GroupManageRvAdapter(activity, groups));
+        }
     }
 }

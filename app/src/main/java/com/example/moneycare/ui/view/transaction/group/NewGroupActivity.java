@@ -70,7 +70,7 @@ public class NewGroupActivity extends AppCompatActivity {
             @Override
             public void onClick(View v)
             {
-                SelectImage();
+                selectImage();
             }
         });
     }
@@ -98,7 +98,7 @@ public class NewGroupActivity extends AppCompatActivity {
             }
         });
     }
-    private void SelectImage()
+    private void selectImage()
     {
         // Defining Implicit Intent to mobile gallery
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);

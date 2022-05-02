@@ -77,7 +77,4 @@ public class Group implements Parcelable {
         parcel.writeString(image);
         parcel.writeByte((byte) (isDefault ? 1 : 0));
     }
-    public void setDefaultType(boolean value){
-        this.isDefault = value;
-    }
 }
