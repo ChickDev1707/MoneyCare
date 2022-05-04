@@ -15,11 +15,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.moneycare.data.model.Budget;
+import com.example.moneycare.data.model.TransactionGroup;
 import com.example.moneycare.databinding.FragmentBudgetBinding;
 import com.example.moneycare.ui.viewmodel.BudgetViewModel;
 import com.example.moneycare.R;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class BudgetFragment extends Fragment {
@@ -75,14 +78,15 @@ public class BudgetFragment extends Fragment {
         } else {
             budgetGroupList.setLayoutManager(new GridLayoutManager(context, mColumnCount));
         }
-        viewModel.fetchTransactionGroups(groups -> budgetGroupList.setAdapter(new MyBudgetGroupRecyclerViewAdapter(groups)));
+        viewModel.fetchTransactionGroupsBYBudget(groups ->
+                budgetGroupList.setAdapter(new MyBudgetGroupRecyclerViewAdapter((List<TransactionGroup>)groups)));
         viewModel.fetchInMonth((budgets) -> {
             if(budgets.size() > 0){
                 viewModel.daysLeft.setValue(LocalDate.now().lengthOfMonth() - LocalDate.now().getDayOfMonth() + 1);
             }
             final Long[] sum = {0L};
-            budgets.forEach(n-> {
-                sum[0] = sum[0] + n.getBudget();
+            ((List<Budget>)budgets).forEach(n-> {
+                sum[0] = sum[0] + n.getBudgetOfMonth();
             });
             viewModel.totalBudget.setValue(sum[0]);
         });

@@ -32,10 +32,19 @@
         <action
             android:id="@+id/action_budgetFragment_to_addBudgetFragment"
             app:destination="@id/addBudgetFragment" />
+        <action
+            android:id="@+id/action_budgetFragment_to_budgetDetailFragment"
+            app:destination="@id/budgetDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/addBudgetFragment"
         android:name="com.example.moneycare.ui.view.AddBudgetFragment"
         android:label="fragment_add_budget"
         tools:layout="@layout/fragment_add_budget" />
+    <fragment
+        android:id="@+id/budgetDetailFragment"
+        android:name="com.example.moneycare.ui.view.BudgetDetailFragment"
+        android:label="fragment_budget_detail"
+        tools:layout="@layout/fragment_budget_detail" >
+    </fragment>
 </navigation>

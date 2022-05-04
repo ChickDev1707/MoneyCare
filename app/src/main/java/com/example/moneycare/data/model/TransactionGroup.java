@@ -71,4 +71,8 @@ public class TransactionGroup {
         );
     }
 
+    @Override
+    public String toString() {
+        return name;
+    }
 }

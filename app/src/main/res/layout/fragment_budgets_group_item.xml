@@ -6,34 +6,25 @@
     android:paddingTop="10dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
-    <RelativeLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <ImageView
-            android:id="@+id/img_item"
-            android:layout_centerVertical="true"
-            android:layout_width="40dp"
-            android:layout_marginRight="20dp"
-            android:layout_height="40dp"/>
-        <TextView
-            android:id="@+id/budget_group_name"
-            android:layout_toRightOf="@id/img_item"
-            android:layout_centerVertical="true"
-            android:textSize="18dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_add_budget"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Thêm"
-            android:layout_alignParentRight="true"
-            android:textAllCaps="false"
-            app:cornerRadius="16sp"
-            style="?attr/materialButtonOutlinedStyle"
-            />
-    </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/item_container"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/img_item"
+                android:layout_centerVertical="true"
+                android:layout_width="40dp"
+                android:layout_marginRight="20dp"
+                android:layout_height="40dp"/>
+            <TextView
+                android:id="@+id/budget_group_name"
+                android:layout_toRightOf="@id/img_item"
+                android:layout_centerVertical="true"
+                android:textSize="18dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </RelativeLayout>
     <com.google.android.material.divider.MaterialDivider
         android:layout_marginTop="10dp"
         style="@style/Widget.MaterialComponents.MaterialDivider"

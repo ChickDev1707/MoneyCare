@@ -1,9 +1,12 @@
 package com.example.moneycare.ui.view;
 
+import android.annotation.SuppressLint;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.navigation.Navigation;
@@ -12,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.moneycare.R;
 import com.example.moneycare.data.model.TransactionGroup;
 import com.example.moneycare.databinding.FragmentBudgetsGroupItemBinding;
+import com.example.moneycare.generated.callback.OnClickListener;
 import com.example.moneycare.utils.LoadImage;
 import com.google.android.material.button.MaterialButton;
 
@@ -32,14 +36,16 @@ public class MyBudgetGroupRecyclerViewAdapter extends RecyclerView.Adapter<MyBud
 
     }
     @Override
-    public void onBindViewHolder(final MyBudgetGroupRecyclerViewAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, int position) {
         holder.itemName.setText(transactionGroups.get(position).getName());
         LoadImage loadImage = new LoadImage(holder.imgView);
         loadImage.execute(transactionGroups.get(position).getImgUrl());
-        holder.button.setOnClickListener(new View.OnClickListener() {
+        holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                Navigation.findNavController(view).navigate(R.id.action_budgetFragment_to_addBudgetFragment);
+            public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                bundle.putString("idBudget", transactionGroups.get(position).getId());
+                Navigation.findNavController(v).navigate(R.id.action_budgetFragment_to_budgetDetailFragment, bundle);
             }
         });
     }
@@ -51,14 +57,14 @@ public class MyBudgetGroupRecyclerViewAdapter extends RecyclerView.Adapter<MyBud
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final TextView itemName;
         public final ImageView imgView;
-        public final MaterialButton button;
+        public final RelativeLayout relativeLayout;
         public TransactionGroup transactionGroups;
 
         public ViewHolder(FragmentBudgetsGroupItemBinding binding) {
             super(binding.getRoot());
             itemName = binding.budgetGroupName;
             imgView = binding.imgItem;
-            button =binding.btnAddBudget;
+            relativeLayout = binding.itemContainer;
         }
 
         @Override

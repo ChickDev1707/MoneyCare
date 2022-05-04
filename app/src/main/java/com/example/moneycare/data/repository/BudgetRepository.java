@@ -1,12 +1,16 @@
 package com.example.moneycare.data.repository;
 
 import androidx.annotation.NonNull;
+import androidx.navigation.Navigation;
 
 import com.example.moneycare.data.model.Budget;
 import com.example.moneycare.data.model.TransactionGroup;
 import com.example.moneycare.utils.DateUtil;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -25,22 +29,6 @@ public class BudgetRepository {
     public BudgetRepository(){
         db = FirebaseFirestore.getInstance();
     }
-//    public void fetchBudgetById(BudgetRepository.FirestoreCallback callback,String id){
-//        DocumentReference docRef = db.collection("budgets").document(id);
-//        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-//            @Override
-//            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-//                if (task.isSuccessful()) {
-//                    DocumentSnapshot document = task.getResult();
-//                    if (document.exists()) {
-//                        Budget budget = Budget.fromMap(document.getData());
-//                        System.out.println(budget.getGroup_id());
-//                        callback.onCallback(budget);
-//                    }
-//                }
-//            }
-//        });
-//    }
 
     public void fetchBudgetsInMonth(BudgetRepository.FirestoreCallback callback){
         Query query =  db.collection("budgets").whereGreaterThanOrEqualTo("date", DateUtil.getFirstDateOfMonth())
@@ -61,7 +49,79 @@ public class BudgetRepository {
         });
     }
 
-    public interface FirestoreCallback {
-        public void onCallback(List<Budget> budgets);
+    public void fetchGroupByBudgetInMonth(FirestoreCallback callback){
+        fetchBudgetsInMonth(budgets->{
+            List<TransactionGroup> transactionGroups = new ArrayList<>();
+            for (Budget budget: (List<Budget>)budgets){
+               fetchGroupByPath(group -> {
+                   transactionGroups.add((TransactionGroup)group);
+                   callback.onCallback(transactionGroups);
+               }, budget.getGroup_id());
+            }
+        });
+    }
+    public void fetchGroupByPath(FirestoreObjectCallback callback, String docPath){
+        DocumentReference docRef = db.document(docPath);
+        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                TransactionGroup group = TransactionGroup.fromMap(documentSnapshot.getData());
+                group.setId(documentSnapshot.getId());
+                callback.onCallback(group);
+            }
+        });
+    }
+
+    public void fetchBudgetById(FirestoreObjectCallback callback, String id){
+        DocumentReference docRef = db.collection("budgets").document(id);
+        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                Budget budget = Budget.fromMap(documentSnapshot.getData());
+                budget.setId(documentSnapshot.getId());
+                callback.onCallback(budget);
+            }
+        });
+    }
+
+    public void insertBudget(Budget budget){
+        db.collection("budgets")
+                .add(budget.toMap())
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        System.out.println("Insert successfully!!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        System.out.println("Error writing document:" + e);
+                    }
+                });
+    }
+
+    public void updateBudget(String id, Long money){
+        db.collection("budgets").document(id)
+            .update("budgetOfMonth", money)
+            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    System.out.println("DocumentSnapshot successfully updated!");
+                }
+            })
+            .addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    System.out.println("Error updating document" +  e);
+                }
+            });
+    }
+
+    public interface FirestoreCallback<T> {
+        public void onCallback(List<T> list);
+    }
+    public interface FirestoreObjectCallback<T> {
+        public void onCallback(T list);
     }
 }

@@ -39,7 +39,6 @@ public class TransactionRepository {
                     }
                     callback.onCallback(transactions);
                 }
-
             }
 
         });

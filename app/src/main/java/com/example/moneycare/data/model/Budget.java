@@ -12,19 +12,16 @@ import java.util.Map;
 public class Budget {
     private String id;
     private String group_id;
-    private Long budget;
-    private Long money_spent;
+    private Long budgetOfMonth;
     private Date date;
 
     public Budget(){}
 
-    public Budget(String group_id, Long budget, Long money_spent, Date date) {
+    public Budget(String group_id, Long budget, Date date) {
         this.group_id = group_id;
-        this.budget = budget;
-        this.money_spent = money_spent;
+        this.budgetOfMonth = budget;
         this.date = date;
     }
-
     public Date getDate() {
         return date;
     }
@@ -33,20 +30,12 @@ public class Budget {
         this.date = date;
     }
 
-    public Long getMoney_spent() {
-        return money_spent;
+    public Long getBudgetOfMonth() {
+        return budgetOfMonth;
     }
 
-    public void setMoney_spent(Long money_spent) {
-        this.money_spent = money_spent;
-    }
-
-    public Long getBudget() {
-        return budget;
-    }
-
-    public void setBudget(Long budget) {
-        this.budget = budget;
+    public void setBudget(Long money) {
+        this.budgetOfMonth = money;
     }
 
     public String getGroup_id() {
@@ -67,19 +56,18 @@ public class Budget {
 
     @Exclude
     public Map<String, Object> toMap() {
+        FirebaseFirestore fs = FirebaseFirestore.getInstance();
         HashMap<String, Object> result = new HashMap<>();
-        result.put("group_id", group_id);
-        result.put("date", date.getTime());
-        result.put("budget", budget);
-        result.put("money_spent", money_spent);
+        result.put("group_id",fs.document(group_id));
+        result.put("date", date);
+        result.put("budgetOfMonth", budgetOfMonth);
         return result;
     }
 
     public static Budget fromMap(Map<String, Object> map) {
         return new Budget(
                 ((DocumentReference) map.get("group_id")).getPath(),
-                ((Long) map.get("budget")),
-                ((Long) map.get("money_spent")),
+                ((Long) map.get("budgetOfMonth")),
                 ((Timestamp) map.get("date")).toDate()
         );
     }

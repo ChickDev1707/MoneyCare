@@ -41,6 +41,7 @@ public class TransactionGroupRepository {
 
         });
     }
+
     public interface FirestoreCallback {
         public void onCallback(List<TransactionGroup> transGr);
     }
