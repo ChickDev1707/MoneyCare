@@ -1,7 +1,10 @@
 package com.example.moneycare.ui.view.transaction.trans;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -20,8 +23,11 @@ import android.view.ViewGroup;
 
 import com.example.moneycare.R;
 import com.example.moneycare.databinding.FragmentTransactionListBinding;
+import com.example.moneycare.ui.view.MainActivity;
+import com.example.moneycare.ui.view.transaction.wallet.SelectWalletActivity;
 import com.example.moneycare.ui.viewmodel.transaction.TransactionViewModel;
 import com.example.moneycare.utils.DateUtil;
+import com.example.moneycare.utils.ImageUtil;
 import com.example.moneycare.utils.appenum.TransactionTimeFrame;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
@@ -88,6 +94,8 @@ public class TransactionFragment extends Fragment {
 
         initTransactionSetting();
         initTransList();
+        initOpenWalletListBtn();
+        initWalletFromPreference();
 
         return binding.getRoot();
     }
@@ -209,5 +217,30 @@ public class TransactionFragment extends Fragment {
         SharedPreferences sharedPref = getActivity().getSharedPreferences(getString(R.string.transaction_preference_key), Context.MODE_PRIVATE);
         int timeFrameValue = sharedPref.getInt(getString(R.string.time_frame_key), 1);
         timeFrameMode = TransactionTimeFrame.getTimeFrame(timeFrameValue);
+    }
+    private void initOpenWalletListBtn(){
+        binding.mainAppBar.walletIconBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                Intent toSelectWalletIntent = new Intent(getActivity(), SelectWalletActivity.class);
+//                startActivity(toSelectWalletIntent);
+                ((MainActivity) getActivity()).launchReloadWallet();
+            }
+        });
+    }
+    public void initWalletFromPreference(){
+        SharedPreferences sharedPref = getActivity().getSharedPreferences(getString(R.string.transaction_preference_key), Context.MODE_PRIVATE);
+        String walletId = sharedPref.getString(getString(R.string.current_wallet_key), "wall-2");
+
+        viewModel.fetchWallet(walletId, wallet->{
+            binding.mainAppBar.walletName.setText(wallet.name);
+            binding.mainAppBar.walletMoney.setText(Long.toString(wallet.money));
+
+            if(wallet.image!= ""){
+                Bitmap walletBimapImg = ImageUtil.toBitmap(wallet.image);
+                BitmapDrawable walletBitmapDrawable = new BitmapDrawable(getResources(), walletBimapImg);
+                binding.mainAppBar.walletIconBtn.setBackground(walletBitmapDrawable);
+            }
+        });
     }
 }

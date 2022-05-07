@@ -19,6 +19,7 @@ import com.example.moneycare.databinding.ActivityMainBinding;
 import com.example.moneycare.ui.view.transaction.trans.NewTransactionActivity;
 import com.example.moneycare.R;
 import com.example.moneycare.ui.view.transaction.trans.TransactionFragment;
+import com.example.moneycare.ui.view.transaction.wallet.SelectWalletActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 
@@ -38,6 +39,22 @@ public class MainActivity extends AppCompatActivity {
                     if(firstFragment.getClass().equals(TransactionFragment.class)){
                         TransactionFragment fragment = (TransactionFragment) firstFragment;
                         fragment.showTransList();
+                    }
+                }
+            }
+    });
+    ActivityResultLauncher<Intent> reloadWalletLauncher = registerForActivityResult(
+        new ActivityResultContracts.StartActivityForResult(),
+        new ActivityResultCallback<ActivityResult>() {
+            @Override
+            public void onActivityResult(ActivityResult result) {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    // There are no request codes
+                    Fragment navHostFragment = getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+                    Fragment firstFragment = navHostFragment.getChildFragmentManager().getFragments().get(0);
+                    if(firstFragment.getClass().equals(TransactionFragment.class)){
+                        TransactionFragment fragment = (TransactionFragment) firstFragment;
+                        fragment.initWalletFromPreference();
                     }
                 }
             }
@@ -72,5 +89,9 @@ public class MainActivity extends AppCompatActivity {
     }
     public ActivityResultLauncher<Intent> getReloadTransListLauncher(){
         return reloadTransListLauncher;
+    }
+    public void launchReloadWallet(){
+        Intent intent = new Intent(MainActivity.this, SelectWalletActivity.class);
+        reloadWalletLauncher.launch(intent);
     }
 }

@@ -22,7 +22,9 @@
     <string name="bot_nav_account_title">Tài khoản</string>
 
     <string name="transaction_preference_key">transaction_setting</string>
+    <string name="wallet_preference_key">wallet_preference</string>
     <string name="time_frame_key">time_mode</string>
+    <string name="current_wallet_key">current_wallet</string>
     <string name="title_activity_manage_group">ManageGroupActivity</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>

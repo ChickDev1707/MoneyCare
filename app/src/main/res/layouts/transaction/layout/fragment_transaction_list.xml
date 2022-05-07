@@ -16,6 +16,7 @@
         android:background="@color/gray_100"
         >
         <include
+            android:id="@+id/main_app_bar"
             layout="@layout/main_app_bar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
