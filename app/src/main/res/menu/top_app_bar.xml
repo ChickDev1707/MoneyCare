@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+    <item
+        android:id="@+id/date"
+        android:icon="@drawable/ic_calendar_today_24"
+        app:showAsAction="ifRoom"
+        android:title="pick date" />
+    <item
+        android:id="@+id/time_frame"
+        app:showAsAction="never"
+        android:title="Khoảng thời gian" >
+        <menu>
+            <item
+                android:id="@+id/time_frame_day"
+                android:title="Ngày"
+                />
+            <item
+                android:id="@+id/time_frame_month"
+                android:title="Tháng"
+                />
+            <item
+                android:id="@+id/time_frame_year"
+                android:title="Năm"
+                />
+        </menu>
+    </item>
+</menu>
