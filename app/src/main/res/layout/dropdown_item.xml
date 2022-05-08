@@ -1,5 +1,6 @@
 <TextView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/textView"
     android:text="text view"
     android:padding="14dp"
     android:layout_width="match_parent"

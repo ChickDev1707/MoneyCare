@@ -124,18 +124,20 @@
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
                     app:boxBackgroundColor="@android:color/transparent"
                     app:startIconDrawable="@drawable/ic_account_balance_wallet_24"
                     android:hint="ví"
                     android:layout_marginBottom="@dimen/text_field_bottom_margin"
                     >
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/new_trans_wallet"
+                    <AutoCompleteTextView
+                        android:id="@+id/new_trans_wallets_selector"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@{newTransVM.wallet}"
+                        android:inputType="none"
+                        android:focusable="false"
+
                         />
 
                 </com.google.android.material.textfield.TextInputLayout>

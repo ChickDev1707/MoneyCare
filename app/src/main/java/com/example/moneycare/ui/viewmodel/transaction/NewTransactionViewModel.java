@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.moneycare.data.model.Group;
+import com.example.moneycare.data.model.Wallet;
 import com.example.moneycare.data.repository.TransactionRepository;
 import com.example.moneycare.utils.appinterface.FirestoreListCallback;
 
@@ -16,7 +17,7 @@ public class NewTransactionViewModel extends ViewModel {
     public MutableLiveData<Group> group;
     public MutableLiveData<Date> date;
     public MutableLiveData<String> note;
-    public MutableLiveData<String> wallet;
+    public MutableLiveData<String> walletId;
 
     public NewTransactionViewModel() {
         this.transactionRepository = new TransactionRepository();
@@ -27,6 +28,7 @@ public class NewTransactionViewModel extends ViewModel {
         date = new MutableLiveData<>(new Date());
         note = new MutableLiveData<>("");
         group = new MutableLiveData<>();
+        walletId = new MutableLiveData<>();
     }
 
     public void setDate(Object selection){
@@ -39,6 +41,12 @@ public class NewTransactionViewModel extends ViewModel {
     public void saveNewTransaction(){
         this.transactionRepository.saveNewTransaction(money.getValue(), group.getValue(), note.getValue(), date.getValue());
         cleanUpFields();
+    }
+    public void setWalletId(String id){
+        walletId.setValue(id);
+    }
+    public void setWalletList(FirestoreListCallback<Wallet> callback){
+        this.transactionRepository.fetchWallets(callback);
     }
     private void cleanUpFields(){
         money.setValue(0L);

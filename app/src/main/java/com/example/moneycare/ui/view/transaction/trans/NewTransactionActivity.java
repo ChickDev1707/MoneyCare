@@ -12,14 +12,20 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 
 import com.example.moneycare.R;
 import com.example.moneycare.data.model.Group;
+import com.example.moneycare.data.model.Wallet;
 import com.example.moneycare.databinding.ActivityNewTransactionBinding;
 import com.example.moneycare.ui.view.transaction.group.SelectGroupActivity;
 import com.example.moneycare.ui.viewmodel.transaction.NewTransactionViewModel;
+import com.example.moneycare.ui.viewmodel.transaction.WalletArrayAdapter;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
+
+import java.util.List;
 
 public class NewTransactionActivity extends AppCompatActivity {
     private NewTransactionViewModel newTransViewModel;
@@ -52,6 +58,7 @@ public class NewTransactionActivity extends AppCompatActivity {
         initPickDateInput();
         initSaveTransBtn();
         initSelectGroupEvent();
+        initWalletList();
         // Inflate the layout for this fragment
     }
     private void initToolbar(){
@@ -106,5 +113,22 @@ public class NewTransactionActivity extends AppCompatActivity {
                 toGroupActivityLauncher.launch(intent);
             }
         });
+    }
+    private void initWalletList(){
+        newTransViewModel.setWalletList(wallets->{
+            WalletArrayAdapter adapter = new WalletArrayAdapter(this, R.layout.dropdown_item, wallets);
+            binding.newTransWalletsSelector.setAdapter(adapter);
+            binding.newTransWalletsSelector.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    Wallet wallet = (Wallet) adapterView.getItemAtPosition(i);
+                    newTransViewModel.setWalletId(wallet.id);
+                }
+            });
+        });
+    }
+    private void getWalletsNameList(List<Wallet> wallets){
+        String[] names = new String[wallets.size()];
+
     }
 }
