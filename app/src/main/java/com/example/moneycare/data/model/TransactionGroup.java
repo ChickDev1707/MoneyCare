@@ -11,13 +11,13 @@ import java.util.Map;
 
 public class TransactionGroup {
     private String id;
-    private String imgUrl;
+    private String image;
     private String name;
     private Boolean type;
 
     public TransactionGroup() {}
-    public TransactionGroup(String imgUrl, String name, Boolean type) {
-        this.imgUrl = imgUrl;
+    public TransactionGroup(String image, String name, Boolean type) {
+        this.image = image;
         this.name = name;
         this.type = type;
     }
@@ -30,12 +30,12 @@ public class TransactionGroup {
         this.name = name;
     }
 
-    public String getImgUrl() {
-        return imgUrl;
+    public String getImage() {
+        return image;
     }
 
-    public void setImgUrl(String imgUrl) {
-        this.imgUrl = imgUrl;
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public Boolean getType() {
@@ -57,7 +57,7 @@ public class TransactionGroup {
     public Map<String, Object> toMap() {
         FirebaseFirestore fs = FirebaseFirestore.getInstance();
         HashMap<String, Object> result = new HashMap<>();
-        result.put("imgUrl", imgUrl);
+        result.put("image", image);
         result.put("name", name);
         result.put("type", type);
         return result;
@@ -65,7 +65,7 @@ public class TransactionGroup {
 
     public static TransactionGroup fromMap(Map<String, Object> map) {
         return new TransactionGroup(
-                (String) map.get("imgUrl"),
+                (String) map.get("image"),
                 ((String) map.get("name")),
                 ((Boolean) map.get("type"))
         );

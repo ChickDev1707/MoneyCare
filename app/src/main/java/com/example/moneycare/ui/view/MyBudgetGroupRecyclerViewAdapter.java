@@ -39,7 +39,7 @@ public class MyBudgetGroupRecyclerViewAdapter extends RecyclerView.Adapter<MyBud
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.itemName.setText(transactionGroups.get(position).getName());
         LoadImage loadImage = new LoadImage(holder.imgView);
-        loadImage.execute(transactionGroups.get(position).getImgUrl());
+        loadImage.execute(transactionGroups.get(position).getImage());
         holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
