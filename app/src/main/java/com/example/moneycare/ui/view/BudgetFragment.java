@@ -20,8 +20,10 @@ import com.example.moneycare.data.model.TransactionGroup;
 import com.example.moneycare.databinding.FragmentBudgetBinding;
 import com.example.moneycare.ui.viewmodel.BudgetViewModel;
 import com.example.moneycare.R;
+import com.example.moneycare.utils.Convert;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -63,6 +65,7 @@ public class BudgetFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         viewModel = new ViewModelProvider(this).get(BudgetViewModel.class);
+        viewModel.init();
         FragmentBudgetBinding binding = FragmentBudgetBinding.inflate(inflater, container, false);
         binding.setBudgetVM(viewModel);
         binding.setLifecycleOwner(this);
@@ -78,9 +81,12 @@ public class BudgetFragment extends Fragment {
         } else {
             budgetGroupList.setLayoutManager(new GridLayoutManager(context, mColumnCount));
         }
-        viewModel.fetchTransactionGroupsBYBudget(groups ->
-                budgetGroupList.setAdapter(new MyBudgetGroupRecyclerViewAdapter((List<TransactionGroup>)groups)));
-        viewModel.fetchInMonth((budgets) -> {
+        MyBudgetGroupRecyclerViewAdapter adapter = new MyBudgetGroupRecyclerViewAdapter();
+        viewModel.fetchTransactionGroupsByBudget((groups, budgets) ->{
+            adapter.setBudgets(budgets);
+            adapter.setTransactionGroups(groups);
+
+            budgetGroupList.setAdapter(adapter);
             if(budgets.size() > 0){
                 viewModel.daysLeft.setValue(LocalDate.now().lengthOfMonth() - LocalDate.now().getDayOfMonth() + 1);
             }
@@ -88,8 +94,13 @@ public class BudgetFragment extends Fragment {
             ((List<Budget>)budgets).forEach(n-> {
                 sum[0] = sum[0] + n.getBudgetOfMonth();
             });
-            viewModel.totalBudget.setValue(sum[0]);
+            viewModel.activeGroups = groups;
+            viewModel.totalBudgetImpl = sum[0];
+            viewModel.totalBudget.setValue(Convert.convertToMoneyCompact(sum[0]));
+
         });
+
+        viewModel.getTotalSpentInMonth();
         return view;
     }
 }

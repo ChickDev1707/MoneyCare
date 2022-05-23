@@ -16,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import com.example.moneycare.R;
 import com.example.moneycare.data.model.Budget;
@@ -24,6 +25,7 @@ import com.example.moneycare.data.repository.TransactionGroupRepository;
 import com.example.moneycare.databinding.FragmentAddBudgetBinding;
 import com.example.moneycare.databinding.FragmentBudgetBinding;
 import com.example.moneycare.ui.viewmodel.BudgetViewModel;
+import com.example.moneycare.utils.LoadImage;
 import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.text.DecimalFormat;
@@ -45,6 +47,8 @@ public class AddBudgetFragment extends Fragment {
     List<TransactionGroup> items;
     TransactionGroupRepository transactionGroupRepository;
     BudgetViewModel budgetsVM;
+
+    List<String> activeGroups;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -76,9 +80,9 @@ public class AddBudgetFragment extends Fragment {
         super.onCreate(savedInstanceState);
         transactionGroupRepository = new TransactionGroupRepository();
         items = new ArrayList<TransactionGroup>();
+        activeGroups = new ArrayList<String>();
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            activeGroups = getArguments().getStringArrayList("activeGroups");
         }
     }
 
@@ -92,21 +96,34 @@ public class AddBudgetFragment extends Fragment {
         binding.setLifecycleOwner(this);
         View view = binding.getRoot();
 
+        ImageView imgView = view.findViewById(R.id.img_item_select_group);
+        //load list group
         AutoCompleteTextView acTextView = view.findViewById(R.id.autoComplete);
         transactionGroupRepository.fetchTransactionGroups(groups -> {
             for(TransactionGroup group:groups){
-                items.add(group);
+                if(!activeGroups.contains(group.getId())){
+                    items.add(group);
+                }
             }
         });
+
         ArrayAdapter<TransactionGroup> adapter = new ArrayAdapter<TransactionGroup>(inflater.getContext(),R.layout.fragment_autocomplete_group_item,items);
         acTextView.setAdapter(adapter);
         acTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                 TransactionGroup selectedGroup =(TransactionGroup) parent.getAdapter().getItem(position);
                 budgetsVM.groupSelected.setValue(selectedGroup);
+                System.out.println(selectedGroup.getImage());
+                //Load image
+
+                LoadImage loadImage = new LoadImage(imgView);
+                loadImage.execute(selectedGroup.getImage());
+                imgView.setBackgroundColor(0xFFFFFF);
             }
         });
+
+        //Enter money
         EditText moneyEditText= view.findViewById(R.id.money_txt);
         moneyEditText.addTextChangedListener(new TextWatcher() {
             @Override

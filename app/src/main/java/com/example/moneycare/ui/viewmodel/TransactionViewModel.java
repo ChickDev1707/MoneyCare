@@ -35,7 +35,7 @@ public class TransactionViewModel extends ViewModel {
         date.setValue(new Date());
     }
 
-    public void fetchTransactions(TransactionRepository.FirestoreCallback firestoreCallback){
+    public void fetchTransactions(TransactionRepository.FirestoreListCallback firestoreCallback){
         transactionRepository.fetchTransactions(firestoreCallback);
     }
 

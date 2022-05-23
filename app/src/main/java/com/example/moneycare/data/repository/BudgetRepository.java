@@ -31,7 +31,8 @@ public class BudgetRepository {
     }
 
     public void fetchBudgetsInMonth(BudgetRepository.FirestoreCallback callback){
-        Query query =  db.collection("budgets").whereGreaterThanOrEqualTo("date", DateUtil.getFirstDateOfMonth())
+        Query query =  db.collection("budgets")
+                .whereGreaterThanOrEqualTo("date", DateUtil.getFirstDateOfMonth())
                 .whereLessThanOrEqualTo("date", DateUtil.getLastDateOfMonth());
         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -49,17 +50,6 @@ public class BudgetRepository {
         });
     }
 
-    public void fetchGroupByBudgetInMonth(FirestoreCallback callback){
-        fetchBudgetsInMonth(budgets->{
-            List<TransactionGroup> transactionGroups = new ArrayList<>();
-            for (Budget budget: (List<Budget>)budgets){
-               fetchGroupByPath(group -> {
-                   transactionGroups.add((TransactionGroup)group);
-                   callback.onCallback(transactionGroups);
-               }, budget.getGroup_id());
-            }
-        });
-    }
     public void fetchGroupByPath(FirestoreObjectCallback callback, String docPath){
         DocumentReference docRef = db.document(docPath);
         docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -121,7 +111,10 @@ public class BudgetRepository {
     public interface FirestoreCallback<T> {
         public void onCallback(List<T> list);
     }
+    public interface FirestoreMultiCallback<T> {
+        public void onCallback(List<T> list1, List<T> list2);
+    }
     public interface FirestoreObjectCallback<T> {
-        public void onCallback(T list);
+        public void onCallback(T object);
     }
 }

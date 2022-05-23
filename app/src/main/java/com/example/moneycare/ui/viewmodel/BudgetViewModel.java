@@ -1,5 +1,8 @@
 package com.example.moneycare.ui.viewmodel;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.View;
 
 import androidx.lifecycle.MutableLiveData;
@@ -11,10 +14,14 @@ import com.example.moneycare.data.model.Budget;
 import com.example.moneycare.data.model.TransactionGroup;
 import com.example.moneycare.data.repository.BudgetRepository;
 import com.example.moneycare.data.repository.TransactionGroupRepository;
-import com.google.type.DateTime;
+import com.example.moneycare.data.repository.TransactionRepository;
+import com.example.moneycare.ui.view.AddBudgetFragment;
+import com.example.moneycare.ui.view.BudgetFragment;
+import com.example.moneycare.utils.Convert;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -24,42 +31,117 @@ public class BudgetViewModel extends ViewModel {
 
     private TransactionGroupRepository transGroupRepository;
     private BudgetRepository budgetRepository;
+    private TransactionRepository transactionRepository;
+
+    public List<TransactionGroup> activeGroups;
 
     //fragment budget
     public MutableLiveData<String> name = new MutableLiveData<String>();
-    public MutableLiveData<Long> totalBudget = new MutableLiveData<Long>();
-    public MutableLiveData<Long> totalSpent = new MutableLiveData<Long>();
+    public MutableLiveData<String> totalBudget = new MutableLiveData<String>();
+    public Long totalBudgetImpl;
+    public MutableLiveData<String> totalSpent = new MutableLiveData<String>();
+    public Long totalSpentImpl;
     public MutableLiveData<Integer> daysLeft = new MutableLiveData<Integer>();
+    public MutableLiveData<String> spendableMoney = new MutableLiveData<String>();
+    public Long spendableMoneyImpl;
+
 
     //fragment add budget
     public MutableLiveData<TransactionGroup> groupSelected  = new MutableLiveData<TransactionGroup>();
     public MutableLiveData<Long> moneyLimit  = new MutableLiveData<Long>();
+    public MutableLiveData<Integer> currMonth  = new MutableLiveData<Integer>();
+
+    //fragment detail budget
+    public MutableLiveData<String> totalSpentByGroup  = new MutableLiveData<String>(); // Tổng đã chi
+    public MutableLiveData<String> limitOfMonth  = new MutableLiveData<String>(); // Giới hạn
+    public MutableLiveData<String> spendPerDay  = new MutableLiveData<String>(); // Nên chi hàng ngày
 
     MutableLiveData<List<TransactionGroup>> liveTransactionGroups;
 
     public BudgetViewModel() {
         this.transGroupRepository = new TransactionGroupRepository();
         this.budgetRepository = new BudgetRepository();
+        this.transactionRepository = new TransactionRepository();
         init();
     }
     public void init(){
         System.out.println("init");
         name.setValue("Hello");
-        totalBudget.setValue(0L);
-        totalSpent.setValue(0L);
+        totalBudget.setValue("0.0 K");
+        totalSpent.setValue("0.0 K");
+        spendableMoney.setValue("0.0 K");
         daysLeft.setValue(0);
+        totalBudgetImpl = 0L;
+        totalSpentImpl = 0L;
+        spendableMoneyImpl = 0L;
+
         moneyLimit.setValue(0L);
+        currMonth.setValue(LocalDate.now().getMonth().getValue());
+
+        totalSpentByGroup.setValue("0");
+        limitOfMonth.setValue("0");
+        spendPerDay.setValue("0");
     }
 
-    public void fetchTransactionGroupsBYBudget(BudgetRepository.FirestoreCallback firestoreCallback){
-         budgetRepository.fetchGroupByBudgetInMonth(firestoreCallback);
-    }
-    public void fetchInMonth(BudgetRepository.FirestoreCallback firestoreCallback){
-        budgetRepository.fetchBudgetsInMonth(firestoreCallback);
+    public void calculateSpendPerDay(){
+        Long spd = 0L;
+        Long remainMoney = Convert.convertToNumber(limitOfMonth.getValue()) - Convert.convertToNumber(totalSpentByGroup.getValue());
+
+        daysLeft.setValue(LocalDate.now().lengthOfMonth() - LocalDate.now().getDayOfMonth() + 1);
+        if(remainMoney <= 0){
+            spd = 0L;
+        }
+        else if (daysLeft.getValue() == 1){
+            spd = remainMoney;
+        }
+        else{
+            spd = remainMoney / daysLeft.getValue();
+        }
+        spendPerDay.setValue(Convert.convertToThousandsSeparator(spd));
     }
 
+    public void getTotalSpentInMonth(){
+        budgetRepository.fetchBudgetsInMonth(budgets -> {
+           for (Budget budget : (List<Budget>)budgets){
+               transactionRepository.getTotalSpendByGroup(total -> {
+                   totalSpentImpl = totalSpentImpl + (Long)total;
+                   totalSpent.setValue(Convert.convertToMoneyCompact(totalSpentImpl));
+                   spendableMoneyImpl = totalBudgetImpl - totalSpentImpl;
+                   spendableMoney.setValue(Convert.convertToMoneyCompact(spendableMoneyImpl));
+               },budget.getDate(), budget.getGroup_id());
+           }
+        });
+    }
+    public void fetchTransactionsByGroup(Date startDate, String idGroup){
+        transactionRepository.getTotalSpendByGroup(total -> {
+            totalSpentByGroup.setValue(Convert.convertToThousandsSeparator((Long)total));
+            calculateSpendPerDay();
+        }, startDate, idGroup);
+    }
+    public void fetchTransactionGroupsByBudget(BudgetRepository.FirestoreMultiCallback callback){
+         transGroupRepository.fetchTransactionGroups(groups -> {
+             budgetRepository.fetchBudgetsInMonth(budgets -> {
+                 List<TransactionGroup> groupList = new ArrayList<TransactionGroup>();
+                 ((List<Budget>)budgets).forEach(element -> {
+                     TransactionGroup group = ((List<TransactionGroup>)groups).stream()
+                             .filter(x -> x.getId().equals(element.getGroup_id().split("/")[1]))
+                             .findFirst()
+                             .orElse(null);
+                     if(group != null)
+                        groupList.add(group);
+                 });
+                 callback.onCallback(groupList, budgets);
+             });
+         });
+    }
     public void goToFragmentAddBudget(View view){
-        Navigation.findNavController(view).navigate(R.id.action_budgetFragment_to_addBudgetFragment);
+        List<String> arrGroups = new ArrayList<String>();
+        for(TransactionGroup gr:activeGroups){
+            arrGroups.add(gr.getId());
+        }
+        Bundle bundle = new Bundle();
+        bundle.putStringArrayList("activeGroups", (ArrayList<String>) arrGroups);
+        Navigation.findNavController(view).navigate(R.id.action_budgetFragment_to_addBudgetFragment, bundle);
     }
     public void addBudget(View view){
         budgetRepository.insertBudget(new Budget("transaction-groups/" + groupSelected.getValue().getId(),Long.parseLong(moneyLimit.getValue().toString())

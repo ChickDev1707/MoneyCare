@@ -19,13 +19,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <ImageView
-                android:id="@+id/img_item_select_group"
+                android:id="@+id/img_item_detail"
                 android:layout_width="40dp"
                 android:layout_marginRight="20dp"
                 android:layout_gravity="center_vertical"
-                android:background="@color/teal_200"
                 android:layout_height="40dp"/>
             <TextView
+                android:id="@+id/item_group_name_detail"
                 android:text="Ăn uống"
                 android:textSize="24dp"
                 android:layout_gravity="center_vertical"
@@ -46,13 +46,15 @@
                     android:layout_centerVertical="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
+
                 <TextView
-                    android:text="1,000,000"
-                    android:textSize="22dp"
-                    android:layout_centerVertical="true"
-                    android:layout_alignParentRight="true"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:id="@+id/tv_limit_of_month"
+                    android:text="@{budgetVM.limitOfMonth.toString()}"
+                    android:textSize="22dp" />
                 <com.google.android.material.divider.MaterialDivider
                     android:layout_alignParentBottom="true"
                     style="@style/Widget.MaterialComponents.MaterialDivider"
@@ -69,7 +71,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
                 <TextView
-                    android:text="500,000"
+                    android:id="@+id/tv_total_spend"
+                    android:text="@{budgetVM.totalSpentByGroup.toString()}"
                     android:textSize="22dp"
                     android:layout_centerVertical="true"
                     android:layout_alignParentRight="true"
@@ -90,13 +93,15 @@
                     android:layout_centerVertical="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
+
                 <TextView
-                    android:text="100,000"
-                    android:textSize="22dp"
-                    android:layout_centerVertical="true"
-                    android:layout_alignParentRight="true"
+                    android:id="@+id/tv_spend_per_day"
+                    android:text="@{budgetVM.spendPerDay.toString()}"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:textSize="22dp" />
                 <com.google.android.material.divider.MaterialDivider
                     android:layout_alignParentBottom="true"
                     style="@style/Widget.MaterialComponents.MaterialDivider"
