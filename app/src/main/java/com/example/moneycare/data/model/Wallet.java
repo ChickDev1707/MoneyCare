@@ -1,12 +1,15 @@
 package com.example.moneycare.data.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.firebase.firestore.Exclude;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class Wallet {
+public class Wallet implements Parcelable {
     public String id;
     public String name;
     public long money;
@@ -18,6 +21,26 @@ public class Wallet {
         this.money = money;
         this.image = image;
     }
+
+    protected Wallet(Parcel in) {
+        id = in.readString();
+        name = in.readString();
+        money = in.readLong();
+        image = in.readString();
+    }
+
+    public static final Creator<Wallet> CREATOR = new Creator<Wallet>() {
+        @Override
+        public Wallet createFromParcel(Parcel in) {
+            return new Wallet(in);
+        }
+
+        @Override
+        public Wallet[] newArray(int size) {
+            return new Wallet[size];
+        }
+    };
+
     @Exclude
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
@@ -33,5 +56,18 @@ public class Wallet {
                 (Long) map.get("money"),
                 map.get("image").toString()
         );
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(id);
+        parcel.writeString(name);
+        parcel.writeLong(money);
+        parcel.writeString(image);
     }
 }

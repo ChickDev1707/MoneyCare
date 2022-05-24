@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel;
 import com.example.moneycare.data.custom.GroupTransaction;
 import com.example.moneycare.data.model.Wallet;
 import com.example.moneycare.data.repository.TransactionRepository;
+import com.example.moneycare.data.repository.WalletRepository;
 import com.example.moneycare.utils.DateUtil;
 import com.example.moneycare.utils.appenum.TransactionTimeFrame;
 import com.example.moneycare.utils.appinterface.FirestoreListCallback;
@@ -17,6 +18,7 @@ import java.util.List;
 public class TransactionViewModel extends ViewModel {
 
     private TransactionRepository transactionRepository;
+    private WalletRepository walletRepository;
     public MutableLiveData<String> timeTitle;
     public MutableLiveData<Long> moneyIn;
     public MutableLiveData<Long> moneyOut;
@@ -24,6 +26,8 @@ public class TransactionViewModel extends ViewModel {
 
     public TransactionViewModel() {
         this.transactionRepository = new TransactionRepository();
+        this.walletRepository = new WalletRepository();
+
         this.timeTitle = new MutableLiveData<>();
         this.moneyIn = new MutableLiveData<>(0L);
         this.moneyOut = new MutableLiveData<>(0L);
@@ -60,6 +64,9 @@ public class TransactionViewModel extends ViewModel {
         moneyOut.setValue(out);
     }
     public void fetchWallet(String id, FirestoreObjectCallback<Wallet> callback){
-        this.transactionRepository.fetchWallet(id, callback);
+        this.walletRepository.fetchWallet(id, callback);
+    }
+    public void fetchFirstWallet(FirestoreObjectCallback<Wallet> callback){
+        this.walletRepository.fetchFirstWallet(callback);
     }
 }

@@ -8,14 +8,15 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.moneycare.data.model.Group;
-import com.example.moneycare.data.repository.TransactionRepository;
+import com.example.moneycare.data.repository.GroupRepository;
 import com.example.moneycare.utils.ImageUtil;
 import com.example.moneycare.utils.appinterface.FirestoreListCallback;
+import com.example.moneycare.utils.appinterface.FirestoreObjectCallback;
 
 import java.util.Date;
 
 public class NewGroupViewModel extends ViewModel {
-    private TransactionRepository transactionRepository;
+    private GroupRepository groupRepository;
 
     public MutableLiveData<String> name;
     public MutableLiveData<Boolean> type;
@@ -23,7 +24,7 @@ public class NewGroupViewModel extends ViewModel {
     public MutableLiveData<String> imgUrl;
 
     public NewGroupViewModel() {
-        this.transactionRepository = new TransactionRepository();
+        this.groupRepository = new GroupRepository();
         initValues();
     }
     public void initValues(){
@@ -41,6 +42,6 @@ public class NewGroupViewModel extends ViewModel {
     }
     public void saveNewGroup(){
         String imageBase64 = ImageUtil.toBase64(image.getValue());
-        this.transactionRepository.saveNewGroup(name.getValue(), type.getValue(), imageBase64);
+        this.groupRepository.saveNewGroup(name.getValue(), type.getValue(), imageBase64);
     }
 }

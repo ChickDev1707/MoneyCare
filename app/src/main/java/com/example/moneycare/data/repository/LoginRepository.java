@@ -1,48 +1,37 @@
 package com.example.moneycare.data.repository;
 
-import com.example.moneycare.data.custom.Result;
 import com.example.moneycare.data.model.User;
+import com.example.moneycare.data.model.Wallet;
+import com.example.moneycare.utils.appinterface.FirestoreObjectCallback;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
-/**
- * Class that requests authentication and user information from the remote data source and
- * maintains an in-memory cache of login status and user credentials information.
- */
 public class LoginRepository {
+    FirebaseFirestore db;
 
-    private static volatile LoginRepository instance;
-
-    // If user credentials will be cached in local storage, it is recommended it be encrypted
-    // @see https://developer.android.com/training/articles/keystore
-    private User user = null;
-
-    public static LoginRepository getInstance() {
-        if (instance == null) {
-//            instance = new LoginRepository(dataSource);
-        }
-        return instance;
+    public LoginRepository(){
+        db = FirebaseFirestore.getInstance();
     }
-
-    public boolean isLoggedIn() {
-        return user != null;
+    public void createNewUser(FirebaseUser user, Wallet wallet, FirestoreObjectCallback<String> callback){
+        String userId = user.getUid();
+        User dbUser = new User(user.getDisplayName(), user.getEmail(), user.getPhotoUrl().toString());
+        db.collection("users").document(userId).set(dbUser.toMap()).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                createInitWallet(userId, wallet, callback);
+            }
+        });
     }
-
-    public void logout() {
-        user = null;
-//        dataSource.logout();
-    }
-
-    private void setLoggedInUser(User user) {
-        this.user = user;
-        // If user credentials will be cached in local storage, it is recommended it be encrypted
-        // @see https://developer.android.com/training/articles/keystore
-    }
-
-    public Result<User> login(String username, String password) {
-        // handle login
-        Result<User> result = null;
-//        if (result instanceof Result.Success) {
-//            setLoggedInUser(((Result.Success<User>) result).getData());
-//        }
-        return result;
+    private void createInitWallet(String userId, Wallet wallet, FirestoreObjectCallback<String> callback){
+        CollectionReference walletsRef = db.collection("users").document(userId).collection("wallets");
+        walletsRef.add(wallet.toMap()).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+            @Override
+            public void onSuccess(DocumentReference documentReference) {
+                callback.onCallback(documentReference.getId());
+            }
+        });
     }
 }

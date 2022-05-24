@@ -3,6 +3,7 @@
     package="com.example.moneycare">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -11,6 +12,30 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MoneyCare">
+        <activity
+            android:name=".ui.view.transaction.wallet.UpdateWalletActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.view.transaction.wallet.NewWalletActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.view.transaction.wallet.ManageWalletActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.view.account.RegisterActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.view.IntroActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.view.account.InitWalletActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.view.transaction.wallet.SelectWalletActivity"
             android:exported="false" />
@@ -22,8 +47,7 @@
             android:exported="false" />
         <activity
             android:name=".ui.view.transaction.group.ManageGroupActivity"
-            android:exported="false"
-            android:noHistory="true" />
+            android:exported="false" />
         <activity
             android:name=".ui.view.transaction.trans.UpdateTransactionActivity"
             android:exported="false" />
@@ -35,13 +59,7 @@
             android:exported="false" />
         <activity
             android:name=".ui.view.MainActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:exported="true" />
     </application>
 
 </manifest>

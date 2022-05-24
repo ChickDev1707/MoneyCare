@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+        <variable
+            name="initWalletVM"
+            type="com.example.moneycare.ui.viewmodel.account.InitWalletViewModel" />
+        <import type="com.example.moneycare.utils.BindingConverter"/>
+    </data>
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".ui.view.account.InitWalletActivity">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="40dp"
+            >
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/init_wallet_title"
+                android:textSize="@dimen/font_size_extra_large"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textStyle="bold"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/init_wallet_description"
+                android:textSize="@dimen/font_size_normal"
+                android:textAlignment="center"
+                android:paddingLeft="@dimen/layout_padding"
+                android:paddingRight="@dimen/layout_padding"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="40dp"
+            >
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                app:cardCornerRadius="35dp"
+                app:cardElevation="1dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="10dp"
+                >
+                <ImageView
+                    android:id="@+id/wallet_image_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    />
+            </com.google.android.material.card.MaterialCardView>
+            <Button
+                android:id="@+id/select_image_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Đổi ảnh"
+                android:elevation="0dp"
+                android:layout_gravity="center"
+                android:backgroundTint="@color/white"
+                android:textColor="@color/colorPrimary"
+                android:textStyle="bold"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="40dp"
+            android:paddingRight="40dp"
+            >
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+                app:boxBackgroundColor="@android:color/transparent"
+                android:hint="Tên ví"
+                android:layout_marginBottom="20dp"
+                >
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/font_size_large"
+                    android:text="@={initWalletVM.name}"
+                    />
+            </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+                app:boxBackgroundColor="@android:color/transparent"
+                android:hint="Số tiền"
+                android:layout_marginBottom="80dp"
+                >
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/new_trans_money"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:textSize="@dimen/font_size_large"
+                    android:text="@={``+initWalletVM.money}"
+                    />
+            </com.google.android.material.textfield.TextInputLayout>
+            <Button
+                android:id="@+id/create_wallet_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Tạo ví"
+                android:textStyle="bold"
+                android:paddingTop="@dimen/layout_padding"
+                android:paddingBottom="@dimen/layout_padding"
+                android:textSize="@dimen/font_size_normal"/>
+        </LinearLayout>
+    </LinearLayout>
+</layout>

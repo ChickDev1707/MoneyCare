@@ -14,6 +14,7 @@
     <string name="title_new_trans">Thêm giao dịch</string>
     <string name="title_new_group">Thêm nhóm</string>
     <string name="title_trans_group">Nhóm giao dịch</string>
+    <string name="title_new_wallet">Thêm ví</string>
 
     <!-- bottom nav -->
     <string name="bot_nav_transaction_title">Giao dịch</string>
@@ -34,4 +35,9 @@
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="init_wallet_title">Tạo ví đầu tiên</string>
+    <string name="init_wallet_description">Money care giúp bạn quản lý chi tiêu từ các ví. Bạn có thể tạo mới và điều chỉnh các ví tùy biến.</string>
+    <string name="intro_description">Ứng dụng quản lý chi tiêu hàng đầu trên thị trường, được mọi người tin tưởng sử dụng.</string>
+    <string name="register_description">Đăng ký tài khoản để truy cập các tính năng tuyệt vời từ money care</string>
+
 </resources>

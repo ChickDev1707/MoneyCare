@@ -1,4 +1,4 @@
-package com.example.moneycare.ui.view.transaction.group;
+package com.example.moneycare.ui.view.transaction.wallet;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
@@ -6,7 +6,6 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.app.Activity;
@@ -16,19 +15,17 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
-import android.widget.RadioGroup;
 
 import com.example.moneycare.R;
-import com.example.moneycare.databinding.ActivityNewGroupBinding;
-import com.example.moneycare.ui.view.transaction.trans.NewTransactionActivity;
-import com.example.moneycare.ui.viewmodel.transaction.NewGroupViewModel;
+import com.example.moneycare.databinding.ActivityNewWalletBinding;
+import com.example.moneycare.ui.viewmodel.transaction.NewWalletViewModel;
 
 import java.io.IOException;
 
-public class NewGroupActivity extends AppCompatActivity {
+public class NewWalletActivity extends AppCompatActivity {
 
-    ActivityNewGroupBinding binding;
-    NewGroupViewModel viewModel;
+    ActivityNewWalletBinding binding;
+    NewWalletViewModel viewModel;
     ActivityResultLauncher<Intent> launcher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
@@ -41,11 +38,10 @@ public class NewGroupActivity extends AppCompatActivity {
                     }
                 }
             });
-
     private void handleSelectImage(Uri selectedImage){
         try {
             Bitmap bitmapImg = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
-            binding.groupImageView.setImageBitmap(bitmapImg);
+            binding.walletImageView.setImageBitmap(bitmapImg);
             viewModel.setImage(selectedImage, bitmapImg);
         } catch (IOException e) {
             e.printStackTrace();
@@ -54,19 +50,18 @@ public class NewGroupActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityNewGroupBinding.inflate(getLayoutInflater());
-        viewModel = new ViewModelProvider(this).get(NewGroupViewModel.class);
-        binding.setNewGroupVM(viewModel);
+        binding = ActivityNewWalletBinding.inflate(getLayoutInflater());
+        viewModel = new ViewModelProvider(this).get(NewWalletViewModel.class);
+        binding.setNewWalletVM(viewModel);
         binding.setLifecycleOwner(this);
         setContentView(binding.getRoot());
 
         initToolbar();
         initImagePicker();
-        initGroupTypeRadio();
         initSaveBtn();
     }
     private void initImagePicker(){
-        binding.groupImgPicker.setOnClickListener(new View.OnClickListener() {
+        binding.walletImgPicker.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v)
             {
@@ -74,21 +69,10 @@ public class NewGroupActivity extends AppCompatActivity {
             }
         });
     }
-    private void initGroupTypeRadio(){
-        binding.groupTypeRadio.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                viewModel.setGroupType(getRadioValue(i));
-            }
-        });
-    }
-    private boolean getRadioValue(int radioId){
-        if(radioId == R.id.radio_earning) return true;
-        else return false;
-    }
+
     private void initToolbar(){
         Toolbar toolbar = findViewById(R.id.basic_app_bar);
-        toolbar.setTitle(R.string.title_new_group);
+        toolbar.setTitle(R.string.title_new_wallet);
         this.setSupportActionBar(toolbar);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -105,14 +89,13 @@ public class NewGroupActivity extends AppCompatActivity {
         launcher.launch(intent);
     }
     private void initSaveBtn(){
-        binding.saveNewGroupBtn.setOnClickListener(new View.OnClickListener() {
+        binding.saveNewWalletBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                viewModel.saveNewGroup();
-                NewGroupActivity.this.setResult(RESULT_OK);
-                NewGroupActivity.this.finish();
+                viewModel.saveNewWallet();
+                NewWalletActivity.this.setResult(Activity.RESULT_OK);
+                NewWalletActivity.this.finish();
             }
         });
     }
-
 }

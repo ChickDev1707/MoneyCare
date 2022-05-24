@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 
 import com.example.moneycare.R;
 import com.example.moneycare.data.model.Group;
+import com.example.moneycare.data.repository.GroupRepository;
 import com.example.moneycare.data.repository.TransactionRepository;
 import com.example.moneycare.databinding.FragmentGroupMainBinding;
 import com.google.android.material.tabs.TabLayoutMediator;
@@ -22,11 +23,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GroupMainFragment extends Fragment {
-    private TransactionRepository repository = new TransactionRepository();
+    private GroupRepository repository = new GroupRepository();
     private FragmentGroupMainBinding binding;
     public GroupMainFragment() {
         // Required empty public constructor
-
     }
 
     public static GroupMainFragment newInstance(String param1, String param2) {
@@ -39,7 +39,6 @@ public class GroupMainFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -52,9 +51,8 @@ public class GroupMainFragment extends Fragment {
         initTab();
         return binding.getRoot();
     }
-    private void initTab(){
+    public void initTab(){
         this.repository.fetchGroups(this::handleGroup);
-
     }
     private void handleGroup(List<Group> groups){
         GroupViewPagerAdapter adapter = new GroupViewPagerAdapter(this);

@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel;
 import com.example.moneycare.data.model.Group;
 import com.example.moneycare.data.model.User;
 import com.example.moneycare.data.model.UserTransaction;
+import com.example.moneycare.data.repository.GroupRepository;
 import com.example.moneycare.data.repository.TransactionRepository;
 import com.example.moneycare.utils.appinterface.FirestoreListCallback;
 import com.example.moneycare.utils.appinterface.FirestoreObjectCallback;
@@ -14,6 +15,7 @@ import java.util.Date;
 
 public class UpdateTransactionViewModel extends ViewModel {
     private TransactionRepository transactionRepository;
+    private GroupRepository groupRepository;
 
     public MutableLiveData<Group> group;
     public MutableLiveData<UserTransaction> transaction;
@@ -22,6 +24,7 @@ public class UpdateTransactionViewModel extends ViewModel {
 
     public UpdateTransactionViewModel() {
         this.transactionRepository = new TransactionRepository();
+        this.groupRepository = new GroupRepository();
         init();
     }
     private void init(){
@@ -31,7 +34,7 @@ public class UpdateTransactionViewModel extends ViewModel {
     }
     public void initTransaction(UserTransaction transaction){
         this.transaction.setValue(transaction);
-        this.transactionRepository.fetchGroup(transaction.group, groupData-> group.setValue((Group) groupData));
+        this.groupRepository.fetchGroup(transaction.group, groupData-> group.setValue((Group) groupData));
     }
     public void switchUpdateMode(){
         updateMode.setValue(!updateMode.getValue());
