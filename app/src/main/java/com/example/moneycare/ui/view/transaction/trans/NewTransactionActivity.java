@@ -127,8 +127,5 @@ public class NewTransactionActivity extends AppCompatActivity {
             });
         });
     }
-    private void getWalletsNameList(List<Wallet> wallets){
-        String[] names = new String[wallets.size()];
 
-    }
 }

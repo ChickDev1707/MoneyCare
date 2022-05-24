@@ -89,16 +89,17 @@ public class TransactionRepository {
         });
     }
 
-    public void saveNewTransaction(long money, Group group, String note, Date date){
+    public void saveNewTransaction(long money, Group group, String note, Date date, String walletId){
         CollectionReference transactionsRef = db.collection("users").document(currentUserId).collection("transactions");
-        String groupPath = "transaction-groups/" + group.id;
-        UserTransaction newTrans = new UserTransaction(null, money, groupPath, note, date, "wallets/wall-1");
+        String groupPath = getGroupPath(group.id);
+        String walletPath = getWalletPath(walletId);
+        UserTransaction newTrans = new UserTransaction(null, money, groupPath, note, date, walletPath);
         transactionsRef.add(newTrans.toMap())
         .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
             @Override
             public void onSuccess(DocumentReference documentReference) {
                 System.out.println("add trans success");
-                updateWallet("wall-1", money, group);
+                updateWallet(walletPath, money, group);
             }
         })
         .addOnFailureListener(new OnFailureListener() {
@@ -109,7 +110,7 @@ public class TransactionRepository {
         });
     }
     public void updateWallet(String walletPath, long money, Group group){
-        DocumentReference walletRef = db.collection("users").document(currentUserId).collection("wallets").document(walletPath);
+        DocumentReference walletRef = db.document(walletPath);
         db.runTransaction(new Transaction.Function<Long>() {
             @Override
             public Long apply(Transaction transaction) throws FirebaseFirestoreException {
@@ -172,7 +173,7 @@ public class TransactionRepository {
     }
     public Group getGroup(List<Group> groups, String groupPath){
         for(Group group:groups){
-            String path= "transaction-groups/"+ group.id;
+            String path= getGroupPath(group.id);
             if(path.equals(groupPath)) return group;
         }
         return null;
@@ -180,7 +181,7 @@ public class TransactionRepository {
     private int getGroupTransactionByGroupPath(List<GroupTransaction> list, String groupPath){
         int i = 0;
         for(GroupTransaction groupTransaction:list){
-            String path= "transaction-groups/"+ groupTransaction.group.id;
+            String path= getGroupPath(groupTransaction.group.id);
             if(path.equals(groupPath)) return i;
             i++;
         }
@@ -188,8 +189,7 @@ public class TransactionRepository {
     }
     public void updateTransaction(UserTransaction userTransaction, Group group, FirestoreObjectCallback<UserTransaction> callback){
         DocumentReference transactionRef = db.collection("users").document(currentUserId).collection("transactions").document(userTransaction.id);
-        String walletString = "users/LE3oa0LyuujvLqmvxoQw/" + userTransaction.wallet;
-        DocumentReference walletRef = db.document(walletString);
+        DocumentReference walletRef = db.document(userTransaction.wallet);
 
         db.runTransaction(new Transaction.Function<Void>() {
             @Override
@@ -230,6 +230,11 @@ public class TransactionRepository {
         Long newMoney = type == true? oldTotal - absDiff: oldTotal+ absDiff;
         return newMoney;
     }
-
+    private String getWalletPath(String walletId){
+        return String.format("users/%s/wallets/%s", currentUserId, walletId);
+    }
+    private String getGroupPath(String groupId){
+        return String.format("users/%s/transaction-groups/%s", currentUserId, groupId);
+    }
 
 }
