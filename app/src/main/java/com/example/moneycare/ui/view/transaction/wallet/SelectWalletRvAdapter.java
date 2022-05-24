@@ -31,7 +31,7 @@ public class SelectWalletRvAdapter extends WalletMainRvAdapter {
         super(activity, wallets);
     }
 
-    private void initGroupItemClickEvent(WalletMainRvAdapter.ViewHolder holder, int position){
+    private void initWalletItemClickEvent(WalletMainRvAdapter.ViewHolder holder, int position){
         Wallet wallet = wallets.get(position);
         holder.walletItem.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -42,8 +42,7 @@ public class SelectWalletRvAdapter extends WalletMainRvAdapter {
         });
     }
     private void finishActivity(){
-        Intent intent = new Intent();
-        activity.setResult(Activity.RESULT_OK, intent);
+        activity.setResult(Activity.RESULT_OK);
         activity.finish();
     }
     private void saveWalletPreference(String walletId){
@@ -55,6 +54,6 @@ public class SelectWalletRvAdapter extends WalletMainRvAdapter {
     @Override
     public void onBindViewHolder(WalletMainRvAdapter.ViewHolder holder, int position) {
         super.onBindViewHolder(holder, position);
-        initGroupItemClickEvent(holder, position);
+        initWalletItemClickEvent(holder, position);
     }
 }

@@ -22,6 +22,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.moneycare.R;
+import com.example.moneycare.data.model.Wallet;
 import com.example.moneycare.databinding.FragmentTransactionListBinding;
 import com.example.moneycare.ui.view.MainActivity;
 import com.example.moneycare.ui.view.transaction.wallet.SelectWalletActivity;
@@ -230,17 +231,32 @@ public class TransactionFragment extends Fragment {
     }
     public void initWalletFromPreference(){
         SharedPreferences sharedPref = getActivity().getSharedPreferences(getString(R.string.transaction_preference_key), Context.MODE_PRIVATE);
-        String walletId = sharedPref.getString(getString(R.string.current_wallet_key), "wall-2");
+        String walletId = sharedPref.getString(getString(R.string.current_wallet_key), "");
 
-        viewModel.fetchWallet(walletId, wallet->{
-            binding.mainAppBar.walletName.setText(wallet.name);
-            binding.mainAppBar.walletMoney.setText(Long.toString(wallet.money));
+        if(walletId == ""){
+            // no pref
+            viewModel.fetchFirstWallet(wallet->{
+                initWallet(wallet);
+                saveWalletPreference(wallet);
+            });
+        }else{
+            viewModel.fetchWallet(walletId, this::initWallet);
+        }
+    }
+    private void initWallet(Wallet wallet){
+        binding.mainAppBar.walletName.setText(wallet.name);
+        binding.mainAppBar.walletMoney.setText(Long.toString(wallet.money));
 
-            if(wallet.image!= ""){
-                Bitmap walletBimapImg = ImageUtil.toBitmap(wallet.image);
-                BitmapDrawable walletBitmapDrawable = new BitmapDrawable(getResources(), walletBimapImg);
-                binding.mainAppBar.walletIconBtn.setBackground(walletBitmapDrawable);
-            }
-        });
+        if(wallet.image!= ""){
+            Bitmap walletBimapImg = ImageUtil.toBitmap(wallet.image);
+            BitmapDrawable walletBitmapDrawable = new BitmapDrawable(getResources(), walletBimapImg);
+            binding.mainAppBar.walletIconBtn.setBackground(walletBitmapDrawable);
+        }
+    }
+    private void saveWalletPreference(Wallet wallet){
+        SharedPreferences sharedPref = getActivity().getSharedPreferences(getString(R.string.transaction_preference_key), Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString(getString(R.string.current_wallet_key), wallet.id);
+        editor.apply();
     }
 }
