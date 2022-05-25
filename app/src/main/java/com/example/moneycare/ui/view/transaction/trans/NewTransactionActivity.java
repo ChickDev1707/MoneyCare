@@ -99,9 +99,10 @@ public class NewTransactionActivity extends AppCompatActivity {
         binding.saveNewTransBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                newTransViewModel.saveNewTransaction();
-                NewTransactionActivity.this.setResult(RESULT_OK);
-                NewTransactionActivity.this.finish();
+                newTransViewModel.saveNewTransaction(data -> {
+                    NewTransactionActivity.this.setResult(RESULT_OK);
+                    NewTransactionActivity.this.finish();
+                });
             }
         });
     }

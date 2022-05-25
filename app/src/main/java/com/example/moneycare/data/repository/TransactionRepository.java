@@ -89,7 +89,7 @@ public class TransactionRepository {
         });
     }
 
-    public void saveNewTransaction(long money, Group group, String note, Date date, String walletId){
+    public void saveNewTransaction(long money, Group group, String note, Date date, String walletId, FirestoreObjectCallback<Void> callback){
         CollectionReference transactionsRef = db.collection("users").document(currentUserId).collection("transactions");
         String groupPath = getGroupPath(group.id);
         String walletPath = getWalletPath(walletId);
@@ -99,7 +99,7 @@ public class TransactionRepository {
             @Override
             public void onSuccess(DocumentReference documentReference) {
                 System.out.println("add trans success");
-                updateWallet(walletPath, money, group);
+                updateWallet(walletPath, money, group, callback);
             }
         })
         .addOnFailureListener(new OnFailureListener() {
@@ -109,7 +109,7 @@ public class TransactionRepository {
             }
         });
     }
-    public void updateWallet(String walletPath, long money, Group group){
+    public void updateWallet(String walletPath, long money, Group group, FirestoreObjectCallback<Void> callback){
         DocumentReference walletRef = db.document(walletPath);
         db.runTransaction(new Transaction.Function<Long>() {
             @Override
@@ -122,7 +122,7 @@ public class TransactionRepository {
         }).addOnSuccessListener(new OnSuccessListener<Long>() {
             @Override
             public void onSuccess(Long result) {
-                System.out.println("Update wallet success");
+                callback.onCallback(null);
             }
         })
         .addOnFailureListener(new OnFailureListener() {
@@ -132,14 +132,14 @@ public class TransactionRepository {
             }
         });
     }
-    public void deleteTransaction(UserTransaction transaction, Group group){
+    public void deleteTransaction(UserTransaction transaction, Group group, FirestoreObjectCallback<Void> callback){
         DocumentReference docRef = db.collection("users").document(currentUserId).collection("transactions").document(transaction.id);
         docRef.delete()
         .addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 System.out.println("delete trans success");
-                updateWallet("wall-1", transaction.money, group);
+                updateWallet(transaction.wallet, transaction.money, group, callback);
             }
         });
     }

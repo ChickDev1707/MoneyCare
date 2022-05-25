@@ -26,7 +26,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 public class MainActivity extends AppCompatActivity {
     private NavController navController;
     private ActivityMainBinding binding;
-    ActivityResultLauncher<Intent> reloadTransListLauncher = registerForActivityResult(
+    ActivityResultLauncher<Intent> reloadTransFragmentLauncher = registerForActivityResult(
         new ActivityResultContracts.StartActivityForResult(),
         new ActivityResultCallback<ActivityResult>() {
             @Override
@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
                     System.out.println("result");
                     if(firstFragment.getClass().equals(TransactionFragment.class)){
                         TransactionFragment fragment = (TransactionFragment) firstFragment;
-                        fragment.showTransList();
+                        fragment.initElements();
                     }
                 }
             }
@@ -54,7 +54,8 @@ public class MainActivity extends AppCompatActivity {
                     Fragment firstFragment = navHostFragment.getChildFragmentManager().getFragments().get(0);
                     if(firstFragment.getClass().equals(TransactionFragment.class)){
                         TransactionFragment fragment = (TransactionFragment) firstFragment;
-                        fragment.initWalletFromPreference();
+                        String walletId = (String) result.getData().getExtras().get("walletId");
+                        fragment.handleSelectWallet(walletId);
                     }
                 }
             }
@@ -83,12 +84,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, NewTransactionActivity.class);
-                reloadTransListLauncher.launch(intent);
+                reloadTransFragmentLauncher.launch(intent);
             }
         });
     }
-    public ActivityResultLauncher<Intent> getReloadTransListLauncher(){
-        return reloadTransListLauncher;
+    public ActivityResultLauncher<Intent> getReloadTransFragmentLauncher(){
+        return reloadTransFragmentLauncher;
     }
     public void launchReloadWallet(){
         Intent intent = new Intent(MainActivity.this, SelectWalletActivity.class);

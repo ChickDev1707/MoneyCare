@@ -45,7 +45,7 @@ public class UpdateTransactionViewModel extends ViewModel {
     public void setGroup(Group selectedGroup){
         group.setValue(selectedGroup);
     }
-    public void deleteTransaction(){
-        this.transactionRepository.deleteTransaction(transaction.getValue(), group.getValue());
+    public void deleteTransaction(FirestoreObjectCallback<Void> callback){
+        this.transactionRepository.deleteTransaction(transaction.getValue(), group.getValue(), callback);
     }
 }

@@ -8,6 +8,7 @@ import com.example.moneycare.data.model.Wallet;
 import com.example.moneycare.data.repository.TransactionRepository;
 import com.example.moneycare.data.repository.WalletRepository;
 import com.example.moneycare.utils.appinterface.FirestoreListCallback;
+import com.example.moneycare.utils.appinterface.FirestoreObjectCallback;
 
 import java.util.Date;
 
@@ -41,8 +42,8 @@ public class NewTransactionViewModel extends ViewModel {
     public void setGroup(Group selectedGroup){
         group.setValue(selectedGroup);
     }
-    public void saveNewTransaction(){
-        this.transactionRepository.saveNewTransaction(money.getValue(), group.getValue(), note.getValue(), date.getValue(), walletId.getValue());
+    public void saveNewTransaction(FirestoreObjectCallback<Void> callback){
+        this.transactionRepository.saveNewTransaction(money.getValue(), group.getValue(), note.getValue(), date.getValue(), walletId.getValue(), callback);
         cleanUpFields();
     }
     public void setWalletId(String id){

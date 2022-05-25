@@ -84,9 +84,10 @@ public class UpdateTransactionActivity extends AppCompatActivity {
                 updateTransViewModel.switchUpdateMode();
                 return true;
             case R.id.delete_item:
-                updateTransViewModel.deleteTransaction();
-                UpdateTransactionActivity.this.setResult(RESULT_OK);
-                UpdateTransactionActivity.this.finish();
+                updateTransViewModel.deleteTransaction(data -> {
+                    UpdateTransactionActivity.this.setResult(RESULT_OK);
+                    UpdateTransactionActivity.this.finish();
+                });
                 return true;
             default:
         }
