@@ -1,7 +1,6 @@
 package com.example.moneycare.ui.view.transaction.trans;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -25,8 +24,8 @@ import com.example.moneycare.R;
 import com.example.moneycare.data.model.Wallet;
 import com.example.moneycare.databinding.FragmentTransactionListBinding;
 import com.example.moneycare.ui.view.MainActivity;
-import com.example.moneycare.ui.view.transaction.wallet.SelectWalletActivity;
 import com.example.moneycare.ui.viewmodel.transaction.TransactionViewModel;
+import com.example.moneycare.utils.Converter;
 import com.example.moneycare.utils.DateUtil;
 import com.example.moneycare.utils.ImageUtil;
 import com.example.moneycare.utils.appenum.TransactionTimeFrame;
@@ -242,7 +241,7 @@ public class TransactionFragment extends Fragment {
     }
     private void updateWalletUI(Wallet wallet){
         binding.mainAppBar.walletName.setText(wallet.name);
-        binding.mainAppBar.walletMoney.setText(Long.toString(wallet.money));
+        binding.mainAppBar.walletMoney.setText(Converter.toCurrency(wallet.money));
 
         if(!wallet.image.equals("")){
             Bitmap walletBimapImg = ImageUtil.toBitmap(wallet.image);

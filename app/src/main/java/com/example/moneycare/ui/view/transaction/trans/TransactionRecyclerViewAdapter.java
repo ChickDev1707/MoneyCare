@@ -17,6 +17,7 @@ import com.example.moneycare.data.model.Group;
 import com.example.moneycare.data.model.UserTransaction;
 import com.example.moneycare.databinding.TransactionItemBinding;
 import com.example.moneycare.ui.view.MainActivity;
+import com.example.moneycare.utils.Converter;
 import com.example.moneycare.utils.DateUtil;
 import java.util.List;
 
@@ -59,7 +60,7 @@ public class TransactionRecyclerViewAdapter extends RecyclerView.Adapter<Transac
         });
     }
     private void initTransactionMoney(TextView transactionMoney, UserTransaction transaction){
-        transactionMoney.setText(Long.toString(transaction.money));
+        transactionMoney.setText(Converter.toCurrency(transaction.money));
         Context context = transactionMoney.getContext();
         int color = group.type? ContextCompat.getColor(context, R.color.green_main) : ContextCompat.getColor(context, R.color.red_main);
         transactionMoney.setTextColor(color);

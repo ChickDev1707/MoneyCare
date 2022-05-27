@@ -6,7 +6,7 @@
         <variable
             name="transactionListVM"
             type="com.example.moneycare.ui.viewmodel.transaction.TransactionViewModel" />
-        <import type="com.example.moneycare.utils.BindingConverter"/>
+        <import type="com.example.moneycare.utils.Converter"/>
     </data>
     <LinearLayout
         android:gravity="center_horizontal"
@@ -73,7 +73,7 @@
                             android:textSize="@dimen/font_size_normal"
                             android:layout_weight="1"
                             android:textColor="@color/green_main"
-                            android:text="@{BindingConverter.longToString(transactionListVM.moneyIn)}"/>
+                            android:text="@{Converter.toCurrency(transactionListVM.moneyIn)}"/>
                     </LinearLayout>
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -92,7 +92,7 @@
                             android:textSize="@dimen/font_size_normal"
                             android:textColor="@color/red_main"
                             android:layout_weight="1"
-                            android:text="@{BindingConverter.longToString(transactionListVM.moneyOut)}"/>
+                            android:text="@{Converter.toCurrency(transactionListVM.moneyOut)}"/>
                     </LinearLayout>
                     <View
                         android:layout_width="wrap_content"
@@ -111,7 +111,7 @@
                         android:textStyle="bold"
                         android:textColor="@color/blue_grey_main"
                         android:layout_marginBottom="10dp"
-                        android:text="@{BindingConverter.longToString(transactionListVM.moneyTotal)}"/>
+                        android:text="@{Converter.toCurrency(transactionListVM.moneyTotal)}"/>
                     <com.google.android.material.button.MaterialButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

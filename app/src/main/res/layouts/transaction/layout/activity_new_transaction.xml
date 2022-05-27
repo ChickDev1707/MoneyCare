@@ -5,6 +5,7 @@
             name="newTransVM"
             type="com.example.moneycare.ui.viewmodel.transaction.NewTransactionViewModel" />
         <import type="com.example.moneycare.utils.DateUtil"/>
+        <import type="com.example.moneycare.utils.Converter"/>
     </data>
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -55,7 +56,7 @@
                         android:layout_height="wrap_content"
                         android:inputType="number"
                         android:textSize="@dimen/font_size_extra_large"
-                        android:text="@={`` + newTransVM.money}"
+                        android:text="@={Converter.longToString(newTransVM.money)}"
                         />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -137,7 +138,6 @@
                         android:layout_height="wrap_content"
                         android:inputType="none"
                         android:focusable="false"
-
                         />
 
                 </com.google.android.material.textfield.TextInputLayout>

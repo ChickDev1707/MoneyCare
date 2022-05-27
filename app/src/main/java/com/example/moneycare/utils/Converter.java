@@ -9,7 +9,7 @@ import java.text.ParseException;
 import java.util.Currency;
 import java.util.Locale;
 
-public class BindingConverter {
+public class Converter {
 
     private static DecimalFormat formatter;
     static {
@@ -21,7 +21,7 @@ public class BindingConverter {
     }
     @InverseMethod("stringToLong")
     public static String longToString(Long number) {
-        if(number == 0L) return "0";
+        if(number == 0L) return "";
         return number.toString();
     }
 

@@ -5,7 +5,7 @@
             name="updateTransVM"
             type="com.example.moneycare.ui.viewmodel.transaction.UpdateTransactionViewModel" />
         <import type="android.view.View"/>
-        <import type="com.example.moneycare.utils.BindingConverter"/>
+        <import type="com.example.moneycare.utils.Converter"/>
         <import type="com.example.moneycare.utils.DateUtil"/>
     </data>
     <LinearLayout
@@ -56,7 +56,7 @@
                         android:inputType="number"
                         android:textSize="@dimen/font_size_extra_large"
                         android:enabled="@{updateTransVM.updateMode ? true : false}"
-                        android:text="@={BindingConverter.longToString(updateTransVM.transaction.money)}"
+                        android:text="@={Converter.longToString(updateTransVM.transaction.money)}"
                         />
 
                 </com.google.android.material.textfield.TextInputLayout>
