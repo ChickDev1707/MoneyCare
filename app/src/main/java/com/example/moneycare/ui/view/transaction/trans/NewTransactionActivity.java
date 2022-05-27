@@ -9,7 +9,9 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -116,16 +118,41 @@ public class NewTransactionActivity extends AppCompatActivity {
         });
     }
     private void initWalletList(){
+        binding.newTransWalletsSelector.setText("abc");
         newTransViewModel.setWalletList(wallets->{
-            WalletArrayAdapter adapter = new WalletArrayAdapter(this, R.layout.dropdown_item, wallets);
-            binding.newTransWalletsSelector.setAdapter(adapter);
-            binding.newTransWalletsSelector.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    Wallet wallet = (Wallet) adapterView.getItemAtPosition(i);
-                    newTransViewModel.setWalletId(wallet.id);
-                }
-            });
+            initDefaultSelectedWallet(wallets);
+            initSelectWalletEvent(wallets);
+        });
+    }
+    private void initDefaultSelectedWallet(List<Wallet> wallets){
+        Wallet currentWallet = findCurrentWallet(wallets);
+        if(currentWallet != null){
+            binding.newTransWalletsSelector.setText(currentWallet.name);
+            newTransViewModel.setWalletId(currentWallet.id);
+        }
+    }
+    private Wallet findCurrentWallet(List<Wallet> wallets){
+        String currentWalletId = getWalletFromPreference();
+        for(Wallet wallet:wallets){
+            if(wallet.id.equals(currentWalletId)) return wallet;
+        }
+        return null;
+    }
+    private String getWalletFromPreference(){
+        SharedPreferences sharedPref = getSharedPreferences(getString(R.string.transaction_preference_key), Context.MODE_PRIVATE);
+        String walletId = sharedPref.getString(getString(R.string.current_wallet_key), "");
+        return walletId;
+    }
+
+    private void initSelectWalletEvent(List<Wallet> wallets){
+        WalletArrayAdapter adapter = new WalletArrayAdapter(this, R.layout.dropdown_item, wallets);
+        binding.newTransWalletsSelector.setAdapter(adapter);
+        binding.newTransWalletsSelector.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Wallet wallet = (Wallet) adapterView.getItemAtPosition(i);
+                newTransViewModel.setWalletId(wallet.id);
+            }
         });
     }
 
