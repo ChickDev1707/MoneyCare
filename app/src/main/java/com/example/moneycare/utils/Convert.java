@@ -28,7 +28,7 @@ public class Convert {
             Double tmp = Math.round(number.doubleValue() * 100.00 / 1000) / 100.00;
             String str = tmp + " K";
             Long count = 0L;
-            while(tmp > 1000 ){
+            while(tmp >= 1000 ){
                 tmp = Math.round(tmp * 100.00 / 1000) / 100.00;
                 count ++;
                 if(count == 1){

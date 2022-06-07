@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- TODO: Update blank fragment layout -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#EFEFF3"
+        android:orientation="vertical">
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:background="@color/white"
+            android:layout_height="wrap_content">
+            <com.google.android.material.appbar.MaterialToolbar
+                style="@style/Theme.AppCompat.DayNight.DarkActionBar"
+                android:padding="3dp"
+                app:title="Lập Kế Hoạch"
+                app:titleCentered="true"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </com.google.android.material.appbar.AppBarLayout>
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_marginTop="20dp"
+                android:background="@color/white"
+                android:paddingLeft="20dp"
+                android:paddingRight="10dp"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:drawableLeft="@drawable/ic_budget"
+                    android:drawableTint="@color/gray_700"
+                    android:layout_marginRight="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+                <Button
+                    android:id="@+id/btn_budget"
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="18dp"
+                    android:textColor="@color/gray_700"
+                    android:textAllCaps="false"
+                    android:textAlignment="textStart"
+                    android:drawableRight="@drawable/ic_arrow_right_24"
+                    android:text="Ngân sách" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+            <TextView
+                android:paddingLeft="20dp"
+                android:paddingRight="10dp"
+                android:layout_marginTop="10dp"
+                android:textSize="16dp"
+                android:lineHeight="25dp"
+                android:text="Một kế hoạch tài chính giúp bạn cân bằng được khoản thu và khoản chi của mình."
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_marginTop="20dp"
+                android:background="@color/white"
+                android:paddingLeft="20dp"
+                android:paddingRight="10dp"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:drawableLeft="@drawable/ic_budget"
+                    android:drawableTint="@color/gray_700"
+                    android:layout_marginRight="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+                <Button
+                    android:id="@+id/btn_event"
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="18dp"
+                    android:textColor="@color/gray_700"
+                    android:textAllCaps="false"
+                    android:textAlignment="textStart"
+                    android:drawableRight="@drawable/ic_arrow_right_24"
+                    android:text="Sự kiện" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+            <TextView
+                android:paddingLeft="20dp"
+                android:paddingRight="10dp"
+                android:layout_marginTop="10dp"
+                android:lineHeight="25dp"
+                android:textSize="16dp"
+                android:text="Tạo một sự kiện trong ứng dụng để theo dõi việc chi tiêu trong một sự kiện, ví dụ như đi Đà Lạt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

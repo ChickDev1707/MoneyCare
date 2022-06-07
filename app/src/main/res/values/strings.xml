@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Money Care</string>
+    <string name="app_name">Money care</string>
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
@@ -10,4 +10,28 @@
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
     <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_new_trans">Thêm giao dịch</string>
+    <string name="title_new_group">Thêm nhóm</string>
+    <string name="title_trans_group">Nhóm giao dịch</string>
+
+    <!-- bottom nav -->
+    <string name="bot_nav_transaction_title">Giao dịch</string>
+    <string name="bot_nav_report_title">Báo cáo</string>
+    <string name="bot_nav_plan_title">Kế hoạch</string>
+    <string name="bot_nav_account_title">Tài khoản</string>
+
+    <string name="transaction_preference_key">transaction_setting</string>
+    <string name="wallet_preference_key">wallet_preference</string>
+    <string name="time_frame_key">time_mode</string>
+    <string name="current_wallet_key">current_wallet</string>
+    <string name="title_activity_manage_group">ManageGroupActivity</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
 </resources>

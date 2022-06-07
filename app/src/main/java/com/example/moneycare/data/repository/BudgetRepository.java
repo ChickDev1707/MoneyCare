@@ -4,7 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.navigation.Navigation;
 
 import com.example.moneycare.data.model.Budget;
+import com.example.moneycare.data.model.Group;
 import com.example.moneycare.data.model.TransactionGroup;
+import com.example.moneycare.data.model.UserTransaction;
 import com.example.moneycare.utils.DateUtil;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -106,6 +108,18 @@ public class BudgetRepository {
                     System.out.println("Error updating document" +  e);
                 }
             });
+    }
+
+    public void deleteBudget(String idBudget){
+//        DocumentReference docRef = db.collection("users").document("LE3oa0LyuujvLqmvxoQw").collection("budgets").document(idBudget);
+        DocumentReference docRef = db.collection("budgets").document(idBudget);
+        docRef.delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        System.out.println("delete budgets success");
+                    }
+                });
     }
 
     public interface FirestoreCallback<T> {

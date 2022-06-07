@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+        <variable
+            name="newGroupVM"
+            type="com.example.moneycare.ui.viewmodel.transaction.NewGroupViewModel" />
+    </data>
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:background="@color/gray_100"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.view.transaction.group.NewGroupActivity"
+        >
+        <!-- TODO: Update blank fragment layout -->
+        <include
+            layout="@layout/basic_app_bar" />
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:contentPadding="@dimen/layout_padding"
+            app:cardElevation="@dimen/card_elevation"
+            >
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+                    app:boxBackgroundColor="@android:color/transparent"
+                    app:startIconDrawable="@drawable/ic_group_name_24"
+                    android:hint="Tên nhóm"
+                    android:layout_marginBottom="@dimen/layout_padding"
+                    >
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/new_trans_money"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/font_size_extra_large"
+                        android:text="@={newGroupVM.name}"
+                        />
+
+                </com.google.android.material.textfield.TextInputLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="@dimen/layout_padding"
+                    >
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        app:cardCornerRadius="25dp"
+                        android:layout_marginEnd="10dp"
+                        app:cardElevation="1dp"
+                        >
+                        <ImageView
+                            android:id="@+id/group_image_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleType="centerCrop"
+                            />
+                    </com.google.android.material.card.MaterialCardView>
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_height="match_parent"
+                        android:layout_width="match_parent"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+                        app:boxBackgroundColor="@android:color/transparent"
+                        android:hint="Chọn ảnh"
+                        >
+
+                        <AutoCompleteTextView
+                            android:clickable="true"
+                            android:id="@+id/group_img_picker"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="none"
+                            android:focusable="false"
+                            android:text="@{newGroupVM.imgUrl}"
+                            android:singleLine="true"
+                            android:scrollHorizontally="false"
+                            />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginBottom="@dimen/layout_padding"
+                    >
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/font_size_normal"
+                        android:text="Phân loại"/>
+                    <RadioGroup
+                        android:id="@+id/group_type_radio"
+                        android:checkedButton="@+id/radio_button_1"
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <RadioButton
+                            android:id="@+id/radio_earning"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="match_parent"
+                            android:text="Khoảng thu"/>
+                        <RadioButton
+                            android:id="@+id/radio_spending"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="match_parent"
+                            android:text="Khoản chi"/>
+                    </RadioGroup>
+                </LinearLayout>
+                <Button
+                    android:id="@+id/save_new_group_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:text="Thêm"/>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+    </LinearLayout>
+</layout>

@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+        <variable
+            name="updateTransVM"
+            type="com.example.moneycare.ui.viewmodel.transaction.UpdateTransactionViewModel" />
+        <import type="android.view.View"/>
+        <import type="com.example.moneycare.utils.BindingConverter"/>
+        <import type="com.example.moneycare.utils.DateUtil"/>
+    </data>
+    <LinearLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context=".ui.view.transaction.UpdateTransactionFragment"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+        <include
+            layout="@layout/update_app_bar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+        <!-- TODO: Update blank fragment layout -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:contentPadding="@dimen/layout_padding"
+            app:cardElevation="@dimen/card_elevation"
+            >
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+                    app:boxBackgroundColor="@android:color/transparent"
+                    app:startIconDrawable="@drawable/ic_money_32"
+                    android:hint="Số tiền"
+                    android:layout_marginBottom="@dimen/text_field_bottom_margin"
+                    >
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/update_trans_money"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="number"
+                        android:textSize="@dimen/font_size_extra_large"
+                        android:enabled="@{updateTransVM.updateMode ? true : false}"
+                        android:text="@={BindingConverter.longToString(updateTransVM.transaction.money)}"
+                        />
+
+                </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputLayout
+
+                    android:layout_height="match_parent"
+                    android:layout_width="match_parent"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense.ExposedDropdownMenu"
+                    app:boxBackgroundColor="@android:color/transparent"
+                    app:startIconDrawable="@drawable/ic_group_icon_24"
+                    android:hint="Chọn nhóm"
+                    android:layout_marginBottom="@dimen/text_field_bottom_margin"
+                    >
+
+                    <AutoCompleteTextView
+                        android:id="@+id/update_trans_group"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="none"
+                        android:focusable="false"
+                        android:enabled="@{updateTransVM.updateMode ? true : false}"
+                        android:text="@{updateTransVM.group.name}"
+                        />
+
+                </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Ghi chú"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+                    app:boxBackgroundColor="@android:color/transparent"
+                    app:startIconDrawable="@drawable/ic_notes_24"
+                    android:layout_marginBottom="@dimen/text_field_bottom_margin"
+                    >
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/update_trans_note"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textMultiLine"
+                        android:lines="3"
+                        android:gravity="top"
+                        android:enabled="@{updateTransVM.updateMode ? true : false}"
+                        android:text="@={updateTransVM.transaction.note}"
+                        />
+
+                </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Ngày"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+                    app:boxBackgroundColor="@android:color/transparent"
+                    app:startIconDrawable="@drawable/ic_calendar_today_24"
+                    android:layout_marginBottom="@dimen/text_field_bottom_margin"
+                    >
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/update_trans_date"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:enabled="@{updateTransVM.updateMode ? true : false}"
+                        android:text="@{DateUtil.getDateString(updateTransVM.transaction.date)}"
+                        android:inputType="date"
+                        />
+
+                </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+                    app:boxBackgroundColor="@android:color/transparent"
+                    app:startIconDrawable="@drawable/ic_account_balance_wallet_24"
+                    android:hint="ví"
+                    android:layout_marginBottom="@dimen/text_field_bottom_margin"
+                    >
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/update_trans_wallet"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:enabled="@{updateTransVM.updateMode ? true : false}"
+                        android:text="@{updateTransVM.transaction.wallet}"
+                        />
+
+                </com.google.android.material.textfield.TextInputLayout>
+                <Button
+                    android:id="@+id/update_trans_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="right"
+                    android:visibility="@{updateTransVM.updateMode ? View.VISIBLE : View.GONE}"
+                    android:text="Cập nhật"/>
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+    </LinearLayout>
+</layout>

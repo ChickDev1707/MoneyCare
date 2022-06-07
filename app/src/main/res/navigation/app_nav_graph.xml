@@ -3,48 +3,30 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/app_nav_graph"
-    app:startDestination="@id/budgetFragment">
+    app:startDestination="@id/planFragment">
 
     <fragment
-        android:id="@+id/loginFragment"
-        android:name="com.example.moneycare.ui.view.LoginFragment"
-        android:label="fragment_login"
-        tools:layout="@layout/fragment_login" />
-    <fragment
         android:id="@+id/transactionFragment"
-        android:name="com.example.moneycare.ui.view.TransactionFragment"
+        android:name="com.example.moneycare.ui.view.transaction.trans.TransactionFragment"
         android:label="fragment_transaction_list"
         tools:layout="@layout/fragment_transaction_list" >
-        <action
-            android:id="@+id/action_transactionFragment_to_newTransaction"
-            app:destination="@id/newTransaction" />
+        <argument
+            android:name="transactionArg"
+            app:argType="com.example.moneycare.data.model.UserTransaction" />
+    </fragment>
+        android:id="@+id/reportFragment"
+        android:name="com.example.moneycare.ui.view.report.ReportFragment"
+        android:label="fragment_report"
+        tools:layout="@layout/fragment_report" />
+    <fragment
+        android:id="@+id/planFragment"
+        android:name="com.example.moneycare.ui.view.plan.PlanFragment"
+        android:label="fragment_plan"
+        tools:layout="@layout/fragment_plan" >
     </fragment>
     <fragment
-        android:id="@+id/newTransaction"
-        android:name="com.example.moneycare.ui.view.NewTransaction"
-        android:label="fragment_new_transaction"
-        tools:layout="@layout/fragment_new_transaction" />
-    <fragment
-        android:id="@+id/budgetFragment"
-        android:name="com.example.moneycare.ui.view.BudgetFragment"
-        android:label="fragment_budget"
-        tools:layout="@layout/fragment_budget" >
-        <action
-            android:id="@+id/action_budgetFragment_to_addBudgetFragment"
-            app:destination="@id/addBudgetFragment" />
-        <action
-            android:id="@+id/action_budgetFragment_to_budgetDetailFragment"
-            app:destination="@id/budgetDetailFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/addBudgetFragment"
-        android:name="com.example.moneycare.ui.view.AddBudgetFragment"
-        android:label="fragment_add_budget"
-        tools:layout="@layout/fragment_add_budget" />
-    <fragment
-        android:id="@+id/budgetDetailFragment"
-        android:name="com.example.moneycare.ui.view.BudgetDetailFragment"
-        android:label="fragment_budget_detail"
-        tools:layout="@layout/fragment_budget_detail" >
-    </fragment>
+        android:id="@+id/accountFragment"
+        android:name="com.example.moneycare.ui.view.account.AccountFragment"
+        android:label="fragment_account"
+        tools:layout="@layout/fragment_account" />
 </navigation>

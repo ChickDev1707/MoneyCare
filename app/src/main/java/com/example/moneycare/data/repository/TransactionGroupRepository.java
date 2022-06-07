@@ -3,6 +3,7 @@ package com.example.moneycare.data.repository;
 import androidx.annotation.NonNull;
 
 import com.example.moneycare.data.model.TransactionGroup;
+import com.example.moneycare.utils.appinterface.FirestoreListCallback;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
@@ -21,7 +22,7 @@ public class TransactionGroupRepository {
     public TransactionGroupRepository(){
         db = FirebaseFirestore.getInstance();
     }
-    public void fetchTransactionGroups(TransactionGroupRepository.FirestoreCallback callback){
+    public void fetchTransactionGroups(FirestoreListCallback callback){
 
         CollectionReference colRef =  db.collection("transaction-groups");
         colRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -40,9 +41,5 @@ public class TransactionGroupRepository {
             }
 
         });
-    }
-
-    public interface FirestoreCallback {
-        public void onCallback(List<TransactionGroup> transGr);
     }
 }

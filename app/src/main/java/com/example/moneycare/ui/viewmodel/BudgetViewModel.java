@@ -2,7 +2,6 @@ package com.example.moneycare.ui.viewmodel;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.view.View;
 
 import androidx.lifecycle.MutableLiveData;
@@ -11,12 +10,12 @@ import androidx.navigation.Navigation;
 
 import com.example.moneycare.R;
 import com.example.moneycare.data.model.Budget;
+import com.example.moneycare.data.model.Group;
 import com.example.moneycare.data.model.TransactionGroup;
 import com.example.moneycare.data.repository.BudgetRepository;
 import com.example.moneycare.data.repository.TransactionGroupRepository;
 import com.example.moneycare.data.repository.TransactionRepository;
-import com.example.moneycare.ui.view.AddBudgetFragment;
-import com.example.moneycare.ui.view.BudgetFragment;
+import com.example.moneycare.ui.view.plan.AddBudgetActivity;
 import com.example.moneycare.utils.Convert;
 
 import java.time.LocalDate;
@@ -47,7 +46,7 @@ public class BudgetViewModel extends ViewModel {
 
 
     //fragment add budget
-    public MutableLiveData<TransactionGroup> groupSelected  = new MutableLiveData<TransactionGroup>();
+    public MutableLiveData<Group> groupSelected  = new MutableLiveData<Group>();
     public MutableLiveData<Long> moneyLimit  = new MutableLiveData<Long>();
     public MutableLiveData<Integer> currMonth  = new MutableLiveData<Integer>();
 
@@ -133,20 +132,6 @@ public class BudgetViewModel extends ViewModel {
                  callback.onCallback(groupList, budgets);
              });
          });
-    }
-    public void goToFragmentAddBudget(View view){
-        List<String> arrGroups = new ArrayList<String>();
-        for(TransactionGroup gr:activeGroups){
-            arrGroups.add(gr.getId());
-        }
-        Bundle bundle = new Bundle();
-        bundle.putStringArrayList("activeGroups", (ArrayList<String>) arrGroups);
-        Navigation.findNavController(view).navigate(R.id.action_budgetFragment_to_addBudgetFragment, bundle);
-    }
-    public void addBudget(View view){
-        budgetRepository.insertBudget(new Budget("transaction-groups/" + groupSelected.getValue().getId(),Long.parseLong(moneyLimit.getValue().toString())
-                ,Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant())));
-        Navigation.findNavController(view).popBackStack();
     }
 
 }
