@@ -24,6 +24,7 @@ import com.example.moneycare.databinding.ActivityNewTransactionBinding;
 import com.example.moneycare.ui.view.transaction.group.SelectGroupActivity;
 import com.example.moneycare.ui.viewmodel.transaction.NewTransactionViewModel;
 import com.example.moneycare.ui.viewmodel.transaction.WalletArrayAdapter;
+import com.example.moneycare.utils.ValidationUtil;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 
@@ -101,12 +102,20 @@ public class NewTransactionActivity extends AppCompatActivity {
         binding.saveNewTransBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                newTransViewModel.saveNewTransaction(data -> {
-                    NewTransactionActivity.this.setResult(RESULT_OK);
-                    NewTransactionActivity.this.finish();
-                });
+                boolean check = checkAllFields();
+                if(check){
+                    newTransViewModel.saveNewTransaction(data -> {
+                        NewTransactionActivity.this.setResult(RESULT_OK);
+                        NewTransactionActivity.this.finish();
+                    });
+                }
             }
         });
+    }
+    private boolean checkAllFields(){
+        return ValidationUtil.checkEmpty(binding.newTransMoney) &&
+                ValidationUtil.checkEmpty(binding.newTransGroup) &&
+                ValidationUtil.checkEmpty(binding.newTransNote);
     }
     private void initSelectGroupEvent(){
         binding.newTransGroup.setOnClickListener(new View.OnClickListener() {

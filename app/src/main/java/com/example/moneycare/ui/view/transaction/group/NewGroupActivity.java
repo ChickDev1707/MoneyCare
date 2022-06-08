@@ -22,6 +22,7 @@ import com.example.moneycare.R;
 import com.example.moneycare.databinding.ActivityNewGroupBinding;
 import com.example.moneycare.ui.view.transaction.trans.NewTransactionActivity;
 import com.example.moneycare.ui.viewmodel.transaction.NewGroupViewModel;
+import com.example.moneycare.utils.ValidationUtil;
 
 import java.io.IOException;
 
@@ -108,11 +109,18 @@ public class NewGroupActivity extends AppCompatActivity {
         binding.saveNewGroupBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                viewModel.saveNewGroup();
-                NewGroupActivity.this.setResult(RESULT_OK);
-                NewGroupActivity.this.finish();
+                boolean check = checkAllFields();
+                if(check){
+                    viewModel.saveNewGroup();
+                    NewGroupActivity.this.setResult(RESULT_OK);
+                    NewGroupActivity.this.finish();
+                }
             }
         });
+    }
+    private boolean checkAllFields(){
+        return ValidationUtil.checkEmpty(binding.newGroupName) &&
+                ValidationUtil.checkEmpty(binding.groupImgPicker);
     }
 
 }

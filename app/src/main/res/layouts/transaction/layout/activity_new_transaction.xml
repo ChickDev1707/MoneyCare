@@ -69,16 +69,14 @@
                     android:hint="Chọn nhóm"
                     android:layout_marginBottom="@dimen/text_field_bottom_margin"
                     >
-
-                    <AutoCompleteTextView
+                    <com.google.android.material.textfield.MaterialAutoCompleteTextView
                         android:clickable="true"
                         android:id="@+id/new_trans_group"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="none"
-                        android:focusable="false"
                         android:text="@{newTransVM.group.name}"
-                        />
+                        android:focusable="true" />
 
                 </com.google.android.material.textfield.TextInputLayout>
                 <com.google.android.material.textfield.TextInputLayout

@@ -23,6 +23,7 @@ import com.example.moneycare.R;
 import com.example.moneycare.data.model.Wallet;
 import com.example.moneycare.databinding.ActivityUpdateWalletBinding;
 import com.example.moneycare.ui.viewmodel.transaction.UpdateWalletViewModel;
+import com.example.moneycare.utils.ValidationUtil;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -123,10 +124,18 @@ public class UpdateWalletActivity extends AppCompatActivity {
         binding.updateWalletBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                viewModel.updateWallet();
-                UpdateWalletActivity.this.setResult(Activity.RESULT_OK);
-                UpdateWalletActivity.this.finish();
+                boolean check = checkAllFields();
+                if(check){
+                    viewModel.updateWallet();
+                    UpdateWalletActivity.this.setResult(Activity.RESULT_OK);
+                    UpdateWalletActivity.this.finish();
+                }
             }
         });
+    }
+    private boolean checkAllFields(){
+        return ValidationUtil.checkEmpty(binding.updateWalletName) &&
+                ValidationUtil.checkEmpty(binding.updateWalletMoney) &&
+                ValidationUtil.checkEmpty(binding.walletImgPicker);
     }
 }

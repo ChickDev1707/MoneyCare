@@ -138,8 +138,8 @@
                         android:id="@+id/update_trans_wallet"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:enabled="@{updateTransVM.updateMode ? true : false}"
-                        android:text="@{updateTransVM.transaction.wallet}"
+                        android:enabled="false"
+                        android:text="@{updateTransVM.wallet}"
                         />
 
                 </com.google.android.material.textfield.TextInputLayout>

@@ -28,6 +28,7 @@ import com.example.moneycare.databinding.ActivityUpdateTransactionBinding;
 import com.example.moneycare.ui.view.transaction.trans.UpdateTransactionActivity;
 import com.example.moneycare.ui.viewmodel.transaction.UpdateGroupViewModel;
 import com.example.moneycare.ui.viewmodel.transaction.UpdateTransactionViewModel;
+import com.example.moneycare.utils.ValidationUtil;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -135,10 +136,17 @@ public class UpdateGroupActivity extends AppCompatActivity {
         binding.updateGroupBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                viewModel.updateGroup();
-                UpdateGroupActivity.this.setResult(RESULT_OK);
-                UpdateGroupActivity.this.finish();
+                boolean check = checkAllFields();
+                if(check){
+                    viewModel.updateGroup();
+                    UpdateGroupActivity.this.setResult(RESULT_OK);
+                    UpdateGroupActivity.this.finish();
+                }
             }
         });
+    }
+    private boolean checkAllFields(){
+        return ValidationUtil.checkEmpty(binding.newGroupName) &&
+                ValidationUtil.checkEmpty(binding.groupImgPicker);
     }
 }

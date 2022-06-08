@@ -50,6 +50,7 @@ public class WalletRepository {
 
     }
     public void fetchWallet(String walletId, FirestoreObjectCallback<Wallet> callback){
+        // use wallet id to fetch instead of path because we store current wallet in preference by wallet id
         DocumentReference walletRef = db.collection("users").document(currentUserId).collection("wallets").document(walletId);
         walletRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override

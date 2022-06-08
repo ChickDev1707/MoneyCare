@@ -49,7 +49,7 @@
                     >
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/new_wallet_name"
+                        android:id="@+id/update_wallet_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textSize="@dimen/font_size_extra_large"
@@ -69,7 +69,7 @@
                     >
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/new_wallet_money"
+                        android:id="@+id/update_wallet_money"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textSize="@dimen/font_size_normal"

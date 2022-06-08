@@ -19,6 +19,7 @@ import android.view.View;
 import com.example.moneycare.R;
 import com.example.moneycare.databinding.ActivityNewWalletBinding;
 import com.example.moneycare.ui.viewmodel.transaction.NewWalletViewModel;
+import com.example.moneycare.utils.ValidationUtil;
 
 import java.io.IOException;
 
@@ -92,10 +93,18 @@ public class NewWalletActivity extends AppCompatActivity {
         binding.saveNewWalletBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                viewModel.saveNewWallet();
-                NewWalletActivity.this.setResult(Activity.RESULT_OK);
-                NewWalletActivity.this.finish();
+                boolean check = checkAllFields();
+                if(check){
+                    viewModel.saveNewWallet();
+                    NewWalletActivity.this.setResult(Activity.RESULT_OK);
+                    NewWalletActivity.this.finish();
+                }
             }
         });
+    }
+    private boolean checkAllFields(){
+        return ValidationUtil.checkEmpty(binding.newWalletName) &&
+                ValidationUtil.checkEmpty(binding.newWalletMoney) &&
+                ValidationUtil.checkEmpty(binding.walletImgPicker);
     }
 }

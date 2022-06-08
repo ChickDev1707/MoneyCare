@@ -55,9 +55,9 @@ public class UserTransaction implements Parcelable {
         HashMap<String, Object> result = new HashMap<>();
         result.put("money", money);
         result.put("date", new Timestamp(date));
-        result.put("group", FirestoreUtil.getReferenceFromString(group));
+        result.put("group", FirestoreUtil.getReferenceFromPath(group));
         result.put("note", note);
-        result.put("wallet", FirestoreUtil.getReferenceFromString(wallet));
+        result.put("wallet", FirestoreUtil.getReferenceFromPath(wallet));
         return result;
     }
     public static UserTransaction fromMap(String id, Map<String, Object> map){
