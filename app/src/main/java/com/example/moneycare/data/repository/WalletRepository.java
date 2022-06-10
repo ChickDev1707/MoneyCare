@@ -76,24 +76,24 @@ public class WalletRepository {
         });
     }
 
-    public void saveNewWallet(String name, Long money, String image){
+    public void saveNewWallet(String name, Long money, String image, FirestoreObjectCallback<Void> successCallback, FirestoreObjectCallback<Void> failureCallback){
         CollectionReference groupsRef = db.collection("users").document(currentUserId).collection("wallets");
         Wallet wallet = new Wallet(null, name, money, image);
         groupsRef.add(wallet.toMap())
         .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
             @Override
             public void onSuccess(DocumentReference documentReference) {
-                System.out.println("add wallet success");
+                successCallback.onCallback(null);
             }
         })
         .addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull @NotNull Exception e) {
-                System.out.println(e);
+                failureCallback.onCallback(null);
             }
         });
     }
-    public void updateWallet(Wallet newWallet){
+    public void updateWallet(Wallet newWallet, FirestoreObjectCallback<Void> successCallback, FirestoreObjectCallback<Void> failureCallback){
         DocumentReference walletRef = db.collection("users").document(currentUserId).collection("wallets").document(newWallet.id);
         db.runTransaction(new Transaction.Function<Void>() {
             @Override
@@ -106,23 +106,28 @@ public class WalletRepository {
         }).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void result) {
-                System.out.println("Update wallet success");
+                successCallback.onCallback(null);
             }
         })
         .addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                System.out.println("Update wallet failed");
+                failureCallback.onCallback(null);
             }
         });
     }
-    public void deleteWallet(Wallet wallet){
+    public void deleteWallet(Wallet wallet, FirestoreObjectCallback<Void> successCallback, FirestoreObjectCallback<Void> failureCallback){
         DocumentReference walletRef = db.collection("users").document(currentUserId).collection("wallets").document(wallet.id);
         walletRef.delete()
         .addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                System.out.println("delete wallet success");
+                successCallback.onCallback(null);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                failureCallback.onCallback(null);
             }
         });
     }

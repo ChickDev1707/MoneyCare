@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.moneycare.R;
 import com.example.moneycare.data.model.Group;
@@ -88,6 +89,12 @@ public class UpdateTransactionActivity extends AppCompatActivity {
                 updateTransViewModel.deleteTransaction(data -> {
                     UpdateTransactionActivity.this.setResult(RESULT_OK);
                     UpdateTransactionActivity.this.finish();
+                    Toast toast =  Toast.makeText(UpdateTransactionActivity.this, "Xóa giao dịch thành công", Toast.LENGTH_SHORT);
+                    toast.show();
+                },
+                data->{
+                    Toast toast =  Toast.makeText(UpdateTransactionActivity.this, "Lỗi! Xóa giao dịch thất bại", Toast.LENGTH_SHORT);
+                    toast.show();
                 });
                 return true;
             default:
@@ -113,6 +120,12 @@ public class UpdateTransactionActivity extends AppCompatActivity {
                     updateTransViewModel.updateTransaction(object -> {
                         UpdateTransactionActivity.this.setResult(RESULT_OK);
                         UpdateTransactionActivity.this.finish();
+                        Toast toast =  Toast.makeText(UpdateTransactionActivity.this, "Cập nhật giao dịch thành công", Toast.LENGTH_SHORT);
+                        toast.show();
+                    },
+                    object->{
+                        Toast toast =  Toast.makeText(UpdateTransactionActivity.this, "Lỗi! Cập nhật giao dịch thất bại", Toast.LENGTH_SHORT);
+                        toast.show();
                     });
                 }
             }

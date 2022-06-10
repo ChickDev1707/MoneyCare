@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Toast;
 
 import com.example.moneycare.R;
 import com.example.moneycare.data.model.Group;
@@ -107,6 +108,11 @@ public class NewTransactionActivity extends AppCompatActivity {
                     newTransViewModel.saveNewTransaction(data -> {
                         NewTransactionActivity.this.setResult(RESULT_OK);
                         NewTransactionActivity.this.finish();
+                        Toast toast =  Toast.makeText(NewTransactionActivity.this, "Thêm giao dịch thành công", Toast.LENGTH_SHORT);
+                        toast.show();
+                    }, data->{
+                        Toast toast =  Toast.makeText(NewTransactionActivity.this, "Lỗi! Thêm giao dịch thất bại", Toast.LENGTH_SHORT);
+                        toast.show();
                     });
                 }
             }

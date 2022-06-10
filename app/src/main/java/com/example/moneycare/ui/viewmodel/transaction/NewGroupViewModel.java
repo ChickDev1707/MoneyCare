@@ -40,8 +40,8 @@ public class NewGroupViewModel extends ViewModel {
     public void setGroupType(boolean value){
         type.setValue(value);
     }
-    public void saveNewGroup(){
+    public void saveNewGroup(FirestoreObjectCallback<Void> successCallback, FirestoreObjectCallback<Void> failureCallback){
         String imageBase64 = ImageUtil.toBase64(image.getValue());
-        this.groupRepository.saveNewGroup(name.getValue(), type.getValue(), imageBase64);
+        this.groupRepository.saveNewGroup(name.getValue(), type.getValue(), imageBase64, successCallback, failureCallback);
     }
 }

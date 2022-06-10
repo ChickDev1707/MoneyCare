@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import com.example.moneycare.R;
 import com.example.moneycare.databinding.ActivityNewGroupBinding;
@@ -111,9 +112,17 @@ public class NewGroupActivity extends AppCompatActivity {
             public void onClick(View view) {
                 boolean check = checkAllFields();
                 if(check){
-                    viewModel.saveNewGroup();
-                    NewGroupActivity.this.setResult(RESULT_OK);
-                    NewGroupActivity.this.finish();
+                    viewModel.saveNewGroup(data->{
+                        NewGroupActivity.this.setResult(RESULT_OK);
+                        NewGroupActivity.this.finish();
+                        Toast toast =  Toast.makeText(NewGroupActivity.this, "Thêm nhóm thành công", Toast.LENGTH_SHORT);
+                        toast.show();
+                    },
+                    data->{
+                        Toast toast =  Toast.makeText(NewGroupActivity.this, "Lỗi! Thêm nhóm thất bại", Toast.LENGTH_SHORT);
+                        toast.show();
+                    });
+
                 }
             }
         });

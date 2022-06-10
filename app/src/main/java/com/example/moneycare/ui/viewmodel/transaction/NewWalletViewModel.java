@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModel;
 import com.example.moneycare.data.repository.TransactionRepository;
 import com.example.moneycare.data.repository.WalletRepository;
 import com.example.moneycare.utils.ImageUtil;
+import com.example.moneycare.utils.appinterface.FirestoreObjectCallback;
 
 public class NewWalletViewModel extends ViewModel {
     private WalletRepository walletRepository;
@@ -33,8 +34,8 @@ public class NewWalletViewModel extends ViewModel {
         image.setValue(bitmap);
     }
 
-    public void saveNewWallet(){
+    public void saveNewWallet(FirestoreObjectCallback<Void> successCallback, FirestoreObjectCallback<Void> failureCallback){
         String imageBase64 = ImageUtil.toBase64(image.getValue());
-        this.walletRepository.saveNewWallet(name.getValue(), money.getValue(), imageBase64);
+        this.walletRepository.saveNewWallet(name.getValue(), money.getValue(), imageBase64, successCallback, failureCallback);
     }
 }

@@ -49,13 +49,13 @@ public class UpdateTransactionViewModel extends ViewModel {
     public void switchUpdateMode(){
         updateMode.setValue(!updateMode.getValue());
     }
-    public void updateTransaction(FirestoreObjectCallback callback){
-        this.transactionRepository.updateTransaction(transaction.getValue(), group.getValue(), callback);
+    public void updateTransaction(FirestoreObjectCallback<Void> successCallback, FirestoreObjectCallback<Void> failureCallback){
+        this.transactionRepository.updateTransaction(transaction.getValue(), group.getValue(), successCallback, failureCallback);
     }
     public void setGroup(Group selectedGroup){
         group.setValue(selectedGroup);
     }
-    public void deleteTransaction(FirestoreObjectCallback<Void> callback){
-        this.transactionRepository.deleteTransaction(transaction.getValue(), callback);
+    public void deleteTransaction(FirestoreObjectCallback<Void> successCallback, FirestoreObjectCallback<Void> failureCallback){
+        this.transactionRepository.deleteTransaction(transaction.getValue(), successCallback, failureCallback);
     }
 }

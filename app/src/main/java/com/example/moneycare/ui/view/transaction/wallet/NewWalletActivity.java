@@ -15,9 +15,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.moneycare.R;
 import com.example.moneycare.databinding.ActivityNewWalletBinding;
+import com.example.moneycare.ui.view.transaction.trans.NewTransactionActivity;
 import com.example.moneycare.ui.viewmodel.transaction.NewWalletViewModel;
 import com.example.moneycare.utils.ValidationUtil;
 
@@ -95,9 +97,16 @@ public class NewWalletActivity extends AppCompatActivity {
             public void onClick(View view) {
                 boolean check = checkAllFields();
                 if(check){
-                    viewModel.saveNewWallet();
-                    NewWalletActivity.this.setResult(Activity.RESULT_OK);
-                    NewWalletActivity.this.finish();
+                    viewModel.saveNewWallet(data->{
+                        NewWalletActivity.this.setResult(Activity.RESULT_OK);
+                        NewWalletActivity.this.finish();
+                        Toast toast =  Toast.makeText(NewWalletActivity.this, "Thêm ví thành công", Toast.LENGTH_SHORT);
+                        toast.show();
+                    },
+                    data->{
+                        Toast toast =  Toast.makeText(NewWalletActivity.this, "Lỗi! Thêm ví thất bại", Toast.LENGTH_SHORT);
+                        toast.show();
+                    });
                 }
             }
         });

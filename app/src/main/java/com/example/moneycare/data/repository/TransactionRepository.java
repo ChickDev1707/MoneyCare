@@ -90,7 +90,7 @@ public class TransactionRepository {
         });
     }
 
-    public void saveNewTransaction(long money, Group group, String note, Date date, String walletId, FirestoreObjectCallback<Void> callback){
+    public void saveNewTransaction(long money, Group group, String note, Date date, String walletId, FirestoreObjectCallback<Void> successCallback, FirestoreObjectCallback<Void> failureCallback){
         DocumentReference transactionsRef = db.collection("users").document(currentUserId).collection("transactions").document();
         String groupPath = getGroupPath(group);
         String walletPath = getWalletPath(walletId);
@@ -113,7 +113,12 @@ public class TransactionRepository {
         }).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
-                callback.onCallback(null);
+                successCallback.onCallback(null);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                failureCallback.onCallback(null);
             }
         });
     }
@@ -141,7 +146,7 @@ public class TransactionRepository {
             }
         });
     }
-    public void deleteTransaction(UserTransaction userTransaction, FirestoreObjectCallback<Void> callback){
+    public void deleteTransaction(UserTransaction userTransaction, FirestoreObjectCallback<Void> successCallback, FirestoreObjectCallback<Void> failureCallback){
         DocumentReference docRef = db.collection("users").document(currentUserId).collection("transactions").document(userTransaction.id);
         db.runTransaction(new Transaction.Function<Void>() {
             @Nullable
@@ -162,7 +167,12 @@ public class TransactionRepository {
         }).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
-                callback.onCallback(null);
+                successCallback.onCallback(null);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                failureCallback.onCallback(null);
             }
         });
     }
@@ -209,7 +219,7 @@ public class TransactionRepository {
         }
         return -1;
     }
-    public void updateTransaction(UserTransaction userTransaction, Group group, FirestoreObjectCallback<UserTransaction> callback){
+    public void updateTransaction(UserTransaction userTransaction, Group group, FirestoreObjectCallback<Void> successCallback, FirestoreObjectCallback<Void> failureCallback){
         DocumentReference transactionRef = db.collection("users").document(currentUserId).collection("transactions").document(userTransaction.id);
         DocumentReference walletRef = db.document(userTransaction.wallet);
         DocumentReference groupRef = db.document(userTransaction.group);
@@ -242,14 +252,13 @@ public class TransactionRepository {
         }).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void result) {
-                System.out.println("Update transaction success");
-                callback.onCallback(null);
+                successCallback.onCallback(null);
             }
         })
         .addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                System.out.println("Update transaction failed");
+                failureCallback.onCallback(null);
             }
         });
     }

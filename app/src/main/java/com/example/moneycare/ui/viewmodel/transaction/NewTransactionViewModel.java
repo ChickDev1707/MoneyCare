@@ -42,8 +42,8 @@ public class NewTransactionViewModel extends ViewModel {
     public void setGroup(Group selectedGroup){
         group.setValue(selectedGroup);
     }
-    public void saveNewTransaction(FirestoreObjectCallback<Void> callback){
-        this.transactionRepository.saveNewTransaction(money.getValue(), group.getValue(), note.getValue(), date.getValue(), walletId.getValue(), callback);
+    public void saveNewTransaction(FirestoreObjectCallback<Void> successCallback, FirestoreObjectCallback<Void> failureCallback){
+        this.transactionRepository.saveNewTransaction(money.getValue(), group.getValue(), note.getValue(), date.getValue(), walletId.getValue(), successCallback, failureCallback);
         cleanUpFields();
     }
     public void setWalletId(String id){
