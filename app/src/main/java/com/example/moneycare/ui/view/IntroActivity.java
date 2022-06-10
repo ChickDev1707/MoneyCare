@@ -58,13 +58,7 @@ public class IntroActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityIntroBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-//        mFirebaseAuth = FirebaseAuth.getInstance();
-//        FirebaseUser user = mFirebaseAuth.getCurrentUser();
-//        if(user != null){
-//            Intent intent = new Intent(this, MainActivity.class);
-//            startActivity(intent);
-//
-//        }
+
         mFirebaseAuth = FirebaseAuth.getInstance();
         initSignInStateListener();
         initToLoginScreenBtn();
