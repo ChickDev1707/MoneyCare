@@ -18,6 +18,7 @@ import android.provider.MediaStore;
 import android.view.View;
 
 import com.example.moneycare.R;
+import com.example.moneycare.data.model.User;
 import com.example.moneycare.databinding.ActivityInitWalletBinding;
 import com.example.moneycare.databinding.FragmentTransactionListBinding;
 import com.example.moneycare.ui.view.MainActivity;
@@ -82,15 +83,32 @@ public class InitWalletActivity extends AppCompatActivity {
         binding.createWalletBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FirebaseUser currentUser = mFirebaseAuth.getCurrentUser();
-                if(currentUser != null){
-                    viewModel.createUser(currentUser, walletId-> {
-                        Intent intent = new Intent(InitWalletActivity.this, MainActivity.class);
-                        startActivity(intent);
-                        finish();
-                    });
+
+                Intent intent = getIntent();
+                User user;
+                if(intent.hasExtra("email")){
+                    // sign in by email
+                    user = createUserFromIntent(intent);
+                }else{
+                    // sign in by google
+                    user = createUserFromFirebaseUser();
                 }
+                viewModel.createUser(user, walletId-> {
+                    Intent toMainIntent = new Intent(InitWalletActivity.this, MainActivity.class);
+                    startActivity(toMainIntent);
+                    finish();
+                });
             }
         });
+    }
+    private User createUserFromIntent(Intent intent){
+        String email = intent.getStringExtra("email");
+        String username = intent.getStringExtra("username");
+        String defaultImgUrl = "https://firebasestorage.googleapis.com/v0/b/money-care-df1b9.appspot.com/o/default-avatar.png?alt=media&token=153d36c9-8511-448b-bc68-9cc75879fdda";
+        return new User(username, email, defaultImgUrl);
+    }
+    private User createUserFromFirebaseUser(){
+        FirebaseUser user = mFirebaseAuth.getCurrentUser();
+        return new User(user.getDisplayName(), user.getEmail(), user.getPhotoUrl().toString());
     }
 }

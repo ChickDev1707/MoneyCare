@@ -43,6 +43,9 @@ public class RegisterActivity extends AppCompatActivity {
                         @Override
                         public void onSuccess(AuthResult authResult) {
                             Intent intent = new Intent(RegisterActivity.this, InitWalletActivity.class);
+                            intent.putExtra("email", email);
+                            intent.putExtra("username", binding.userName.getText().toString());
+
                             startActivity(intent);
                         }
                     }).addOnFailureListener(new OnFailureListener() {

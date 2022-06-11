@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
 import com.example.moneycare.R;
+import com.example.moneycare.data.repository.LoginRepository;
 import com.example.moneycare.databinding.FragmentAccountBinding;
 import com.example.moneycare.ui.view.IntroActivity;
 import com.example.moneycare.ui.view.transaction.group.ManageGroupActivity;
@@ -29,6 +30,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class AccountFragment extends Fragment {
     FragmentAccountBinding binding;
+    LoginRepository repository;
     public AccountFragment() {
         // Required empty public constructor
     }
@@ -50,6 +52,8 @@ public class AccountFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = FragmentAccountBinding.inflate(getLayoutInflater());
+        repository = new LoginRepository();
+
         initAccountItemList();
         initUserInfo();
         return binding.getRoot();
@@ -58,9 +62,10 @@ public class AccountFragment extends Fragment {
         binding.accountItemList.setAdapter(new AccountItemRecyclerViewAdapter((Activity) getActivity()));
     }
     private void initUserInfo(){
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        binding.userName.setText(user.getDisplayName());
-        binding.userEmail.setText(user.getEmail());
-        Glide.with(this).load(user.getPhotoUrl()).into(binding.userImage);
+        repository.fetchCurrentUserData(user->{
+            binding.userName.setText(user.name);
+            binding.userEmail.setText(user.email);
+            Glide.with(this).load(user.photoUrl).into(binding.userImage);
+        });
     }
 }
