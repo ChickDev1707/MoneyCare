@@ -20,6 +20,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.anychart.APIlib;
+import com.anychart.AnyChart;
+import com.anychart.AnyChartView;
+import com.anychart.chart.common.dataentry.DataEntry;
+import com.anychart.chart.common.dataentry.ValueDataEntry;
+import com.anychart.charts.Pie;
 import com.example.moneycare.R;
 import com.example.moneycare.data.model.Wallet;
 import com.example.moneycare.databinding.FragmentReportBinding;
@@ -35,8 +41,10 @@ import com.whiteelephant.monthpicker.MonthPickerDialog;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -81,7 +89,7 @@ public class ReportFragment extends Fragment {
                              Bundle savedInstanceState) {
 
 
-//        View view = inflater.inflate(R.layout.fragment_transaction_list, container, false);
+//        View view = inflater.inflate(R.layout.fragment_report, container, false);
         viewModel = new ViewModelProvider(this).get(ReportViewModel.class);
         binding = FragmentReportBinding.inflate(getLayoutInflater());
         binding.setReportListVM(viewModel);
@@ -97,8 +105,59 @@ public class ReportFragment extends Fragment {
         initOpenWalletListBtn();
 //        initWalletFromPreference();
 
+        initNetIncomeColumnChart();
+//        initIncomePieChart();
+//        initExpensePieChart();
         return binding.getRoot();
     }
+    private void initNetIncomeColumnChart(){
+        Pie pie = AnyChart.pie();
+
+        List<DataEntry> data = new ArrayList<>();
+        data.add(new ValueDataEntry("John", 10000));
+        data.add(new ValueDataEntry("Jake", 12000));
+        data.add(new ValueDataEntry("Peter", 18000));
+
+        pie.data(data);
+        pie.animation(true);
+        pie.title("Biểu đồ tài sản ròng");
+        AnyChartView anyChartView = binding.getRoot().findViewById(R.id.charColumnNetIncome);
+
+        //APIlib.getInstance().setActiveAnyChartView(anyChartView);
+        anyChartView.setChart(pie);
+    }
+//    private void initIncomePieChart(){
+//        Pie pie = AnyChart.pie();
+//
+//        List<DataEntry> data = new ArrayList<>();
+//        data.add(new ValueDataEntry("John", 10000));
+//        data.add(new ValueDataEntry("Jake", 12000));
+//        data.add(new ValueDataEntry("Peter", 18000));
+//
+//        pie.data(data);
+//        pie.animation(true);
+//        pie.title("Biểu đồ tài sản ròng");
+//        AnyChartView anyChartView = binding.getRoot().findViewById(R.id.chartPieIncome);
+//
+//        //APIlib.getInstance().setActiveAnyChartView(anyChartView);
+//        anyChartView.setChart(pie);
+//    }
+//    private void initExpensePieChart(){
+//        Pie pie = AnyChart.pie();
+//
+//        List<DataEntry> data = new ArrayList<>();
+//        data.add(new ValueDataEntry("John", 10000));
+//        data.add(new ValueDataEntry("Jake", 12000));
+//        data.add(new ValueDataEntry("Peter", 18000));
+//
+//        pie.data(data);
+//        pie.animation(true);
+//        pie.title("Biểu đồ tài sản ròng");
+//        AnyChartView anyChartView = binding.getRoot().findViewById(R.id.chartPieExpense);
+//
+//        //APIlib.getInstance().setActiveAnyChartView(anyChartView);
+//        anyChartView.setChart(pie);
+//    }
     private void initTransList(){
         selectedDate = new Date();
         showTransList();
@@ -258,4 +317,5 @@ public class ReportFragment extends Fragment {
         editor.putString(getString(R.string.current_wallet_key), wallet.id);
         editor.apply();
     }
+
 }
