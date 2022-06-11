@@ -94,7 +94,9 @@
         <entry key="..\:/Users/ThanhDan/source/repos/MoneyCare/app/src/main/res/layout/dropdown_item.xml" value="0.18802083333333333" />
         <entry key="..\:/Users/ThanhDan/source/repos/MoneyCare/app/src/main/res/layout/main_app_bar.xml" value="0.18802083333333333" />
         <entry key="..\:/Users/ThanhDan/source/repos/MoneyCare/app/src/main/res/layout/update_app_bar.xml" value="0.18802083333333333" />
-        <entry key="..\:/Users/ThanhDan/source/repos/MoneyCare/app/src/main/res/layouts/report/layout/fragment_report.xml" value="0.25" />
+        <entry key="..\:/Users/ThanhDan/source/repos/MoneyCare/app/src/main/res/layouts/account/layout/account_panel_item.xml" value="0.278125" />
+        <entry key="..\:/Users/ThanhDan/source/repos/MoneyCare/app/src/main/res/layouts/account/layout/fragment_account.xml" value="0.278125" />
+        <entry key="..\:/Users/ThanhDan/source/repos/MoneyCare/app/src/main/res/layouts/report/layout/fragment_report.xml" value="0.2391304347826087" />
         <entry key="..\:/Users/ThanhDan/source/repos/MoneyCare/app/src/main/res/layouts/transaction/layout/fragment_transaction_list.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/ThanhDan/source/repos/MoneyCare/app/src/main/res/layouts/transaction/layout/group_item.xml" value="0.18802083333333333" />
         <entry key="..\:/Users/ThanhDan/source/repos/MoneyCare/app/src/main/res/layouts/transaction/layout/group_transaction_item.xml" value="0.18802083333333333" />
