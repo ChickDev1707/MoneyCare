@@ -15,6 +15,7 @@
     <string name="title_new_group">Thêm nhóm</string>
     <string name="title_trans_group">Nhóm giao dịch</string>
     <string name="title_new_wallet">Thêm ví</string>
+    <string name="title_modify_wallet">Điều chỉnh số dư</string>
 
     <!-- bottom nav -->
     <string name="bot_nav_transaction_title">Giao dịch</string>

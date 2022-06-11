@@ -3,6 +3,7 @@ package com.example.moneycare.data.repository;
 import androidx.annotation.NonNull;
 
 import com.example.moneycare.data.model.Group;
+import com.example.moneycare.data.model.UserTransaction;
 import com.example.moneycare.data.model.Wallet;
 import com.example.moneycare.utils.appinterface.FirestoreListCallback;
 import com.example.moneycare.utils.appinterface.FirestoreObjectCallback;
@@ -22,6 +23,7 @@ import com.google.firebase.firestore.Transaction;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class WalletRepository {
@@ -98,9 +100,9 @@ public class WalletRepository {
         db.runTransaction(new Transaction.Function<Void>() {
             @Override
             public Void apply(Transaction transaction) throws FirebaseFirestoreException {
+                updateWalletMoney(transaction, walletRef, newWallet);
                 transaction.update(walletRef, "name", newWallet.name);
                 transaction.update(walletRef, "image", newWallet.image);
-                transaction.update(walletRef, "money", newWallet.money);
                 return null;
             }
         }).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -116,6 +118,23 @@ public class WalletRepository {
             }
         });
     }
+
+    private void updateWalletMoney(Transaction transaction, DocumentReference walletRef, Wallet newWallet) throws FirebaseFirestoreException {
+        DocumentReference transactionsRef = db.collection("users").document(currentUserId).collection("transactions").document();
+        DocumentSnapshot walletSnapshot = transaction.get(walletRef);
+        Long walletMoney = walletSnapshot.getLong("money");
+        UserTransaction newUserTrans = createModifiedTransaction(newWallet, walletMoney);
+
+        transaction.update(walletRef, "money", newWallet.money);
+        transaction.set(transactionsRef, newUserTrans.toMap());
+    }
+    private UserTransaction createModifiedTransaction(Wallet newWallet, Long walletMoney){
+        String groupPath = newWallet.money> walletMoney? "transaction-groups/salary": "transaction-groups/eating";
+        Long money = Math.abs(newWallet.money - walletMoney);
+        String walletPath = getWalletPath(newWallet.id);
+        return new UserTransaction(null, money, groupPath, "Điều chỉnh số dư", new Date(), walletPath);
+    }
+
     public void deleteWallet(Wallet wallet, FirestoreObjectCallback<Void> successCallback, FirestoreObjectCallback<Void> failureCallback){
         DocumentReference walletRef = db.collection("users").document(currentUserId).collection("wallets").document(wallet.id);
         walletRef.delete()
@@ -130,5 +149,8 @@ public class WalletRepository {
                 failureCallback.onCallback(null);
             }
         });
+    }
+    private String getWalletPath(String walletId){
+        return String.format("users/%s/wallets/%s", currentUserId, walletId);
     }
 }

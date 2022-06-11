@@ -1,11 +1,13 @@
 package com.example.moneycare.ui.view.transaction.trans;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -24,6 +26,7 @@ import com.example.moneycare.R;
 import com.example.moneycare.data.model.Wallet;
 import com.example.moneycare.databinding.FragmentTransactionListBinding;
 import com.example.moneycare.ui.view.MainActivity;
+import com.example.moneycare.ui.view.transaction.wallet.ModifyWalletActivity;
 import com.example.moneycare.ui.viewmodel.transaction.TransactionViewModel;
 import com.example.moneycare.utils.Converter;
 import com.example.moneycare.utils.DateUtil;
@@ -132,9 +135,18 @@ public class TransactionFragment extends Fragment {
             case R.id.time_frame_year:
                 handleSelectTimeFrame(TransactionTimeFrame.YEAR);
                 return true;
+            case R.id.modify_wallet:
+                openModifyWallet();
+                return true;
             default:
         }
         return super.onOptionsItemSelected(item);
+    }
+    private void openModifyWallet(){
+        MainActivity activity = (MainActivity) getActivity();
+        Intent intent = new Intent(activity, ModifyWalletActivity.class);
+        ActivityResultLauncher toModifyWalletLauncher = activity.getReloadTransFragmentLauncher();
+        toModifyWalletLauncher.launch(intent);
     }
     private void handleSelectTimeFrame(TransactionTimeFrame timeFrame){
         timeFrameMode = timeFrame;
