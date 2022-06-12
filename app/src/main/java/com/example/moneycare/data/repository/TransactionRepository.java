@@ -297,7 +297,7 @@ public class TransactionRepository {
     }
 
     public void getTotalSpendByGroup(FirestoreObjectCallback callback, Date startDate, String idGroup){
-        Query  query = db.collection("users").document("LE3oa0LyuujvLqmvxoQw")
+        Query  query = db.collection("users").document("WSHF04um7aZW5wgzxn3ZDzI3kry1")
                 .collection("transactions")
                 .whereGreaterThan("date", startDate)
                 .whereLessThanOrEqualTo("date", DateUtil.getLastDateOfMonth());

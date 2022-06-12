@@ -1,4 +1,4 @@
-package com.example.moneycare.ui.viewmodel;
+package com.example.moneycare.ui.viewmodel.plan;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,15 +11,12 @@ import androidx.navigation.Navigation;
 import com.example.moneycare.R;
 import com.example.moneycare.data.model.Budget;
 import com.example.moneycare.data.model.Group;
-import com.example.moneycare.data.model.TransactionGroup;
 import com.example.moneycare.data.repository.BudgetRepository;
 import com.example.moneycare.data.repository.TransactionGroupRepository;
 import com.example.moneycare.data.repository.TransactionRepository;
-import com.example.moneycare.ui.view.plan.AddBudgetActivity;
 import com.example.moneycare.utils.Convert;
 
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -32,7 +29,7 @@ public class BudgetViewModel extends ViewModel {
     private BudgetRepository budgetRepository;
     private TransactionRepository transactionRepository;
 
-    public List<TransactionGroup> activeGroups;
+    public List<Group> activeGroups;
 
     //fragment budget
     public MutableLiveData<String> name = new MutableLiveData<String>();
@@ -44,18 +41,18 @@ public class BudgetViewModel extends ViewModel {
     public MutableLiveData<String> spendableMoney = new MutableLiveData<String>();
     public Long spendableMoneyImpl;
 
-
-    //fragment add budget
-    public MutableLiveData<Group> groupSelected  = new MutableLiveData<Group>();
-    public MutableLiveData<Long> moneyLimit  = new MutableLiveData<Long>();
-    public MutableLiveData<Integer> currMonth  = new MutableLiveData<Integer>();
-
     //fragment detail budget
     public MutableLiveData<String> totalSpentByGroup  = new MutableLiveData<String>(); // Tổng đã chi
     public MutableLiveData<String> limitOfMonth  = new MutableLiveData<String>(); // Giới hạn
     public MutableLiveData<String> spendPerDay  = new MutableLiveData<String>(); // Nên chi hàng ngày
 
-    MutableLiveData<List<TransactionGroup>> liveTransactionGroups;
+
+    public MutableLiveData<Group> groupSelected  = new MutableLiveData<Group>();
+    public MutableLiveData<Long> moneyLimit  = new MutableLiveData<Long>();
+    public MutableLiveData<Integer> currMonth  = new MutableLiveData<Integer>();
+
+
+    MutableLiveData<List<Group>> liveTransactionGroups;
 
     public BudgetViewModel() {
         this.transGroupRepository = new TransactionGroupRepository();
@@ -74,12 +71,15 @@ public class BudgetViewModel extends ViewModel {
         totalSpentImpl = 0L;
         spendableMoneyImpl = 0L;
 
-        moneyLimit.setValue(0L);
-        currMonth.setValue(LocalDate.now().getMonth().getValue());
 
         totalSpentByGroup.setValue("0");
         limitOfMonth.setValue("0");
         spendPerDay.setValue("0");
+
+        moneyLimit.setValue(0L);
+        groupSelected.setValue(null);
+        currMonth.setValue(LocalDate.now().getMonth().getValue());
+
     }
 
     public void calculateSpendPerDay(){
@@ -87,10 +87,8 @@ public class BudgetViewModel extends ViewModel {
         Long remainMoney = Convert.convertToNumber(limitOfMonth.getValue()) - Convert.convertToNumber(totalSpentByGroup.getValue());
 
         daysLeft.setValue(LocalDate.now().lengthOfMonth() - LocalDate.now().getDayOfMonth() + 1);
-        if(remainMoney <= 0){
-            spd = 0L;
-        }
-        else if (daysLeft.getValue() == 1){
+
+        if (daysLeft.getValue() == 1){
             spd = remainMoney;
         }
         else{
@@ -120,10 +118,10 @@ public class BudgetViewModel extends ViewModel {
     public void fetchTransactionGroupsByBudget(BudgetRepository.FirestoreMultiCallback callback){
          transGroupRepository.fetchTransactionGroups(groups -> {
              budgetRepository.fetchBudgetsInMonth(budgets -> {
-                 List<TransactionGroup> groupList = new ArrayList<TransactionGroup>();
+                 List<Group> groupList = new ArrayList<Group>();
                  ((List<Budget>)budgets).forEach(element -> {
-                     TransactionGroup group = ((List<TransactionGroup>)groups).stream()
-                             .filter(x -> x.getId().equals(element.getGroup_id().split("/")[1]))
+                     Group group = ((List<Group>)groups).stream()
+                             .filter(x -> x.id.equals(element.getGroup_id().split("/")[1]))
                              .findFirst()
                              .orElse(null);
                      if(group != null)

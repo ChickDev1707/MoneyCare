@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MoneyCare">
         <activity
+            android:name=".ui.view.plan.SelectBudgetGroupActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.view.plan.UpdateBudgetActivity"
             android:exported="false" />
         <activity

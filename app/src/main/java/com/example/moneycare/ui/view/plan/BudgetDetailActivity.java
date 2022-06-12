@@ -1,6 +1,5 @@
 package com.example.moneycare.ui.view.plan;
 
-import static com.example.moneycare.utils.Convert.convertToMoneyCompact;
 import static com.example.moneycare.utils.Convert.convertToNumber;
 import static com.example.moneycare.utils.Convert.convertToThousandsSeparator;
 
@@ -19,17 +18,14 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.moneycare.R;
 import com.example.moneycare.data.model.Budget;
-import com.example.moneycare.data.model.Group;
 import com.example.moneycare.data.repository.BudgetRepository;
 import com.example.moneycare.data.repository.TransactionRepository;
 import com.example.moneycare.databinding.ActivityBudgetDetailBinding;
-import com.example.moneycare.ui.view.transaction.trans.UpdateTransactionActivity;
-import com.example.moneycare.ui.viewmodel.BudgetViewModel;
+import com.example.moneycare.ui.viewmodel.plan.BudgetViewModel;
 import com.example.moneycare.utils.LoadImage;
 
 
@@ -110,6 +106,7 @@ public class BudgetDetailActivity extends AppCompatActivity {
             //Tổng đã chi
             budgetsVM.fetchTransactionsByGroup(((Budget)budget).getDate(),((Budget)budget).getGroup_id());
         }, idBudget);
+
     }
 
     @Override
@@ -131,6 +128,7 @@ public class BudgetDetailActivity extends AppCompatActivity {
                 return true;
             case R.id.delete_item:
                 budgetRepository.deleteBudget(idBudget);
+                BudgetDetailActivity.this.setResult(Activity.RESULT_OK);
                 BudgetDetailActivity.this.finish();
                 return true;
             default:

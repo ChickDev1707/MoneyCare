@@ -19,9 +19,8 @@ import android.widget.ImageView;
 import com.example.moneycare.R;
 import com.example.moneycare.data.model.Group;
 import com.example.moneycare.data.repository.BudgetRepository;
-import com.example.moneycare.databinding.ActivityAddBudgetBinding;
 import com.example.moneycare.databinding.ActivityUpdateBudgetBinding;
-import com.example.moneycare.ui.viewmodel.BudgetViewModel;
+import com.example.moneycare.ui.viewmodel.plan.BudgetViewModel;
 import com.example.moneycare.utils.LoadImage;
 
 import java.text.DecimalFormat;
@@ -91,12 +90,12 @@ public class UpdateBudgetActivity extends AppCompatActivity {
         binding.updateBudgetGroupName.setEnabled(false);
 
         DecimalFormat decimalFormat = new DecimalFormat("#,###");
-        EditText moneyEditText = findViewById(R.id.money_txt);
+        EditText moneyEditText = findViewById(R.id.update_money_txt);
         moneyEditText.setText(decimalFormat.format(money));
     }
 
     private void handleUpdate(){
-        budgetRepository.updateBudget(idBudget,  budgetsVM.moneyLimit.getValue());
+         budgetRepository.updateBudget(idBudget,  budgetsVM.moneyLimit.getValue());
         Intent intent = new Intent();
         intent.putExtra("money", budgetsVM.moneyLimit.getValue());
         UpdateBudgetActivity.this.setResult(Activity.RESULT_OK, intent);
@@ -104,7 +103,7 @@ public class UpdateBudgetActivity extends AppCompatActivity {
     }
 
     private void initEnterMoney(){
-        EditText moneyEditText= findViewById(R.id.money_txt);
+        EditText moneyEditText= findViewById(R.id.update_money_txt);
         moneyEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {

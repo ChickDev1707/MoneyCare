@@ -5,7 +5,6 @@ import androidx.navigation.Navigation;
 
 import com.example.moneycare.data.model.Budget;
 import com.example.moneycare.data.model.Group;
-import com.example.moneycare.data.model.TransactionGroup;
 import com.example.moneycare.data.model.UserTransaction;
 import com.example.moneycare.utils.DateUtil;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -57,8 +56,7 @@ public class BudgetRepository {
         docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                TransactionGroup group = TransactionGroup.fromMap(documentSnapshot.getData());
-                group.setId(documentSnapshot.getId());
+                Group group = Group.fromMap(documentSnapshot.getId(),documentSnapshot.getData());
                 callback.onCallback(group);
             }
         });

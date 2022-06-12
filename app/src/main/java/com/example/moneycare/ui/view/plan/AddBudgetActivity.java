@@ -9,7 +9,6 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.Navigation;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -17,9 +16,6 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -27,13 +23,10 @@ import android.widget.ImageView;
 import com.example.moneycare.R;
 import com.example.moneycare.data.model.Budget;
 import com.example.moneycare.data.model.Group;
-import com.example.moneycare.data.model.TransactionGroup;
 import com.example.moneycare.data.repository.BudgetRepository;
 import com.example.moneycare.data.repository.TransactionGroupRepository;
 import com.example.moneycare.databinding.ActivityAddBudgetBinding;
-import com.example.moneycare.ui.view.transaction.group.SelectGroupActivity;
-import com.example.moneycare.ui.view.transaction.trans.NewTransactionActivity;
-import com.example.moneycare.ui.viewmodel.BudgetViewModel;
+import com.example.moneycare.ui.viewmodel.plan.NewBudgetViewModel;
 import com.example.moneycare.utils.LoadImage;
 
 import java.text.DecimalFormat;
@@ -46,13 +39,11 @@ import java.util.List;
 
 public class AddBudgetActivity extends AppCompatActivity {
 
-    List<TransactionGroup> items;
     TransactionGroupRepository transactionGroupRepository;
     BudgetRepository budgetRepository;
-    BudgetViewModel budgetsVM;
+    NewBudgetViewModel viewModel;
     ActivityAddBudgetBinding binding;
     List<String> activeGroups = new ArrayList<String>();
-    String idBudget;
 
     ActivityResultLauncher<Intent> toGroupActivityLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
@@ -63,7 +54,7 @@ public class AddBudgetActivity extends AppCompatActivity {
                         // There are no request codes
                         Intent data = result.getData();
                         Group group = data.getParcelableExtra("group");
-                        budgetsVM.groupSelected.setValue(group);
+                        viewModel.groupSelected.setValue(group);
 
                         ImageView imgView = findViewById(R.id.img_item_select_group);
                         LoadImage loadImage = new LoadImage(imgView);
@@ -84,9 +75,9 @@ public class AddBudgetActivity extends AppCompatActivity {
         }
         init();
 
-        budgetsVM = new ViewModelProvider(this).get(BudgetViewModel.class);
+        viewModel = new ViewModelProvider(this).get(NewBudgetViewModel.class);
         binding = ActivityAddBudgetBinding.inflate(getLayoutInflater());
-        binding.setBudgetVM(budgetsVM);
+        binding.setViewmodel(viewModel);
         binding.setLifecycleOwner(this);
         View view = binding.getRoot();
         setContentView(binding.getRoot());
@@ -98,7 +89,7 @@ public class AddBudgetActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+             public void onClick(View v) {
                 AddBudgetActivity.this.finish();
             }
         });
@@ -121,7 +112,8 @@ public class AddBudgetActivity extends AppCompatActivity {
         binding.addBudgetGroupName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(AddBudgetActivity.this, SelectGroupActivity.class);
+                Intent intent = new Intent(AddBudgetActivity.this, SelectBudgetGroupActivity.class);
+                intent.putExtra("activeGroups", activeGroups.toArray());
                 toGroupActivityLauncher.launch(intent);
             }
         });
@@ -153,7 +145,7 @@ public class AddBudgetActivity extends AppCompatActivity {
                         System.out.println(e);
                     }
                     moneyEditText.setText(str);
-                    budgetsVM.moneyLimit.setValue(convertToNumber(view.toString()));
+                    viewModel.moneyLimit.setValue(convertToNumber(view.toString()));
                     moneyEditText.setSelection(moneyEditText.getText().length());
                     moneyEditText.addTextChangedListener(this);
                 }else {
@@ -166,15 +158,17 @@ public class AddBudgetActivity extends AppCompatActivity {
     private void init(){
         transactionGroupRepository = new TransactionGroupRepository();
         budgetRepository = new BudgetRepository();
-        items = new ArrayList<TransactionGroup>();
     }
 
     private void handleAdd(){
-        budgetRepository.insertBudget(new Budget("transaction-groups/" + budgetsVM.groupSelected.getValue().id,Long.parseLong(budgetsVM.moneyLimit.getValue().toString())
-                , Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant())));
+        if(viewModel.groupSelected.getValue() != null){
+            budgetRepository.insertBudget(new Budget("transaction-groups/" + viewModel.groupSelected.getValue().id,
+                    Long.parseLong(viewModel.moneyLimit.getValue().toString())
+                    , Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant())));
+            AddBudgetActivity.this.setResult(Activity.RESULT_OK);
+            AddBudgetActivity.this.finish();
+        }
 
-        AddBudgetActivity.this.finish();
-        onBackPressed();
     }
 
 }

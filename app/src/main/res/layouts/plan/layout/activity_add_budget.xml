@@ -6,8 +6,8 @@
     tools:context=".ui.view.plan.AddBudgetActivity">
     <data>
         <variable
-            name="budgetVM"
-            type="com.example.moneycare.ui.viewmodel.BudgetViewModel" />
+            name="viewmodel"
+            type="com.example.moneycare.ui.viewmodel.plan.NewBudgetViewModel" />
     </data>
     <LinearLayout
         android:orientation="vertical"
@@ -51,12 +51,12 @@
                             android:layout_height="wrap_content"
                             android:inputType="none"
                             android:focusable="false"
-                            android:text="@{budgetVM.groupSelected.name}"
+                            android:text="@{viewmodel.groupSelected.name}"
                             />
                     </com.google.android.material.textfield.TextInputLayout>
                     <TextView
                         android:layout_marginTop="40dp"
-                        android:text='@{"Giới hạn trong tháng " + budgetVM.currMonth.toString()}'
+                        android:text='@{"Giới hạn trong tháng " + viewmodel.currMonth.toString()}'
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
                     <EditText

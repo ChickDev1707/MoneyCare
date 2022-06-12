@@ -7,7 +7,7 @@
     <data>
         <variable
             name="budgetVM"
-            type="com.example.moneycare.ui.viewmodel.BudgetViewModel" />
+            type="com.example.moneycare.ui.viewmodel.plan.BudgetViewModel" />
     </data>
     <RelativeLayout
         android:layout_width="match_parent"
