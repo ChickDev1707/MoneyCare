@@ -41,8 +41,8 @@ public class AccountItemRecyclerViewAdapter extends RecyclerView.Adapter<Account
         this.accountItems = new ArrayList<>();
         accountItems.add(new AccountItem(R.drawable.ic_account_balance_wallet_24, "Quản lý ví"));
         accountItems.add(new AccountItem(R.drawable.ic_group_icon_24, "Quản lý nhóm"));
-        accountItems.add(new AccountItem(R.drawable.ic_help_24, "Hỗ trợ"));
         accountItems.add(new AccountItem(R.drawable.ic_settings_24, "Cài đặt"));
+        accountItems.add(new AccountItem(R.drawable.ic_help_24, "Hỗ trợ"));
         accountItems.add(new AccountItem(R.drawable.ic_info_24, "Giới thiệu"));
         accountItems.add(new AccountItem(R.drawable.ic_logout_24, "Đăng xuất"));
     }
@@ -69,6 +69,8 @@ public class AccountItemRecyclerViewAdapter extends RecyclerView.Adapter<Account
                 return getNavigateToMangeWalletClickListener();
             case 1:
                 return getNavigateToMangeGroupClickListener();
+            case 2:
+                return getNavigateToSettingsClickListener();
             case 5:
                 return getSignOutClickListener();
             default:
@@ -89,6 +91,15 @@ public class AccountItemRecyclerViewAdapter extends RecyclerView.Adapter<Account
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(currentActivity, ManageGroupActivity.class);
+                currentActivity.startActivity(intent);
+            }
+        };
+    }
+    private View.OnClickListener getNavigateToSettingsClickListener(){
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(currentActivity, SettingsActivity.class);
                 currentActivity.startActivity(intent);
             }
         };

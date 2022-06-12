@@ -43,6 +43,7 @@
         <entry key="..\:/Courses/third/HKII/java/project/source/app/src/main/res/layout/fragment_group_main.xml" value="0.11614583333333334" />
         <entry key="..\:/Courses/third/HKII/java/project/source/app/src/main/res/layout/main_app_bar.xml" value="0.14270833333333333" />
         <entry key="..\:/Courses/third/HKII/java/project/source/app/src/main/res/layout/new_trans_action_bar.xml" value="0.1203125" />
+        <entry key="..\:/Courses/third/HKII/java/project/source/app/src/main/res/layout/settings_activity.xml" value="0.1272644927536232" />
         <entry key="..\:/Courses/third/HKII/java/project/source/app/src/main/res/layout/update_app_bar.xml" value="0.11614583333333334" />
         <entry key="..\:/Courses/third/HKII/java/project/source/app/src/main/res/layouts/account/drawable/ic_account_balance_wallet_24.xml" value="0.159" />
         <entry key="..\:/Courses/third/HKII/java/project/source/app/src/main/res/layouts/account/drawable/ic_add_24.xml" value="0.159" />
@@ -60,8 +61,10 @@
         <entry key="..\:/Courses/third/HKII/java/project/source/app/src/main/res/layouts/account/layout/activity_init_wallet.xml" value="0.14270833333333333" />
         <entry key="..\:/Courses/third/HKII/java/project/source/app/src/main/res/layouts/account/layout/activity_login.xml" value="0.25" />
         <entry key="..\:/Courses/third/HKII/java/project/source/app/src/main/res/layouts/account/layout/activity_register.xml" value="0.14583333333333334" />
+        <entry key="..\:/Courses/third/HKII/java/project/source/app/src/main/res/layouts/account/layout/activity_settings.xml" value="0.14583333333333334" />
         <entry key="..\:/Courses/third/HKII/java/project/source/app/src/main/res/layouts/account/layout/fragment_account.xml" value="0.25833333333333336" />
         <entry key="..\:/Courses/third/HKII/java/project/source/app/src/main/res/layouts/account/layout/fragment_plan.xml" value="0.25833333333333336" />
+        <entry key="..\:/Courses/third/HKII/java/project/source/app/src/main/res/layouts/account/layout/settings_activity.xml" value="0.16510416666666666" />
         <entry key="..\:/Courses/third/HKII/java/project/source/app/src/main/res/layouts/report/layout/fragment_report.xml" value="0.25833333333333336" />
         <entry key="..\:/Courses/third/HKII/java/project/source/app/src/main/res/layouts/transaction/drawable/ic_money_24.xml" value="0.127" />
         <entry key="..\:/Courses/third/HKII/java/project/source/app/src/main/res/layouts/transaction/layout/activity_add_wallet.xml" value="0.25833333333333336" />
@@ -93,6 +96,7 @@
         <entry key="..\:/Courses/third/HKII/java/project/source/app/src/main/res/menu/top_app_bar.xml" value="0.264" />
         <entry key="..\:/Courses/third/HKII/java/project/source/app/src/main/res/menu/update_app_bar.xml" value="0.11614583333333334" />
         <entry key="..\:/Courses/third/HKII/java/project/source/app/src/main/res/menu/update_app_bar_menu.xml" value="0.25833333333333336" />
+        <entry key="..\:/Courses/third/HKII/java/project/source/app/src/main/res/xml/root_preferences.xml" value="0.16510416666666666" />
       </map>
     </option>
   </component>
