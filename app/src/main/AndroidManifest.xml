@@ -67,6 +67,9 @@
         <activity
             android:name=".ui.view.MainActivity"
             android:exported="true" />
+        <receiver
+            android:name=".ui.view.account.AlarmReceiver"
+            android:process=":remote" />
     </application>
 
 </manifest>

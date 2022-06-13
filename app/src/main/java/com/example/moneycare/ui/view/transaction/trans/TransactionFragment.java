@@ -220,14 +220,14 @@ public class TransactionFragment extends Fragment {
     }
     // setting
     private void saveTransactionSetting(){
-        SharedPreferences sharedPref = getActivity().getSharedPreferences(getString(R.string.transaction_preference_key), Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = getActivity().getSharedPreferences(getString(R.string.app_preference), Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putInt(getString(R.string.time_frame_key), timeFrameMode.getValue());
+        editor.putInt(getString(R.string.pref_key_time_frame), timeFrameMode.getValue());
         editor.apply();
     }
     private void initTransactionSetting(){
-        SharedPreferences sharedPref = getActivity().getSharedPreferences(getString(R.string.transaction_preference_key), Context.MODE_PRIVATE);
-        int timeFrameValue = sharedPref.getInt(getString(R.string.time_frame_key), 1);
+        SharedPreferences sharedPref = getActivity().getSharedPreferences(getString(R.string.app_preference), Context.MODE_PRIVATE);
+        int timeFrameValue = sharedPref.getInt(getString(R.string.pref_key_time_frame), 1);
         timeFrameMode = TransactionTimeFrame.getTimeFrame(timeFrameValue);
     }
     // wallet
@@ -262,14 +262,14 @@ public class TransactionFragment extends Fragment {
         }
     }
     private String getWalletFromPreference(){
-        SharedPreferences sharedPref = getActivity().getSharedPreferences(getString(R.string.transaction_preference_key), Context.MODE_PRIVATE);
-        String walletId = sharedPref.getString(getString(R.string.current_wallet_key), "");
+        SharedPreferences sharedPref = getActivity().getSharedPreferences(getString(R.string.app_preference), Context.MODE_PRIVATE);
+        String walletId = sharedPref.getString(getString(R.string.pref_key_current_wallet), "");
         return walletId;
     }
     private void setWalletToPreference(String walletId){
-        SharedPreferences sharedPref = getActivity().getSharedPreferences(getString(R.string.transaction_preference_key), Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = getActivity().getSharedPreferences(getString(R.string.app_preference), Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putString(getString(R.string.current_wallet_key), walletId);
+        editor.putString(getString(R.string.pref_key_current_wallet), walletId);
         editor.apply();
     }
     public void handleSelectWallet(String walletId){

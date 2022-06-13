@@ -1,7 +1,14 @@
 package com.example.moneycare.utils;
 
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
 import java.text.SimpleDateFormat;
+import java.time.LocalTime;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -70,4 +77,12 @@ public class DateUtil {
         Date date = calendar.getTime();
         return date;
     }
+    public static String getFullTimeString(int hour, int minute){
+        String hourString = Integer.toString(hour);
+        String minuteString = Integer.toString(minute);
+        hourString = hourString.length() == 1? "0" + hourString: hourString;
+        minuteString = minuteString.length() == 1? "0" + minuteString: minuteString;
+        return hourString + ":" + minuteString;
+    }
+
 }

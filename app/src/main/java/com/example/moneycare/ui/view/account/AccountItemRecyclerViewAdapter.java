@@ -124,7 +124,7 @@ public class AccountItemRecyclerViewAdapter extends RecyclerView.Adapter<Account
         });
     }
     private void clearTransactionSetting(){
-        SharedPreferences sharedPref = currentActivity.getSharedPreferences(currentActivity.getString(R.string.transaction_preference_key), Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = currentActivity.getSharedPreferences(currentActivity.getString(R.string.app_preference), Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.clear();
         editor.apply();

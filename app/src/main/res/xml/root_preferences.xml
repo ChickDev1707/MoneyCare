@@ -19,18 +19,9 @@
             app:title="@string/title_date_format" />
     </PreferenceCategory>
     <PreferenceCategory app:title="@string/header_notification">
-
-        <SwitchPreferenceCompat
-            app:key="notification_sound"
-            app:summary="@string/summary_notification_sound"
-            app:title="@string/title_notification_sound"
-
-            />
-
         <Preference
             app:key="notification_time"
             app:summary="@string/summary_notification_time"
             app:title="@string/title_notification_time" />
-
     </PreferenceCategory>
 </PreferenceScreen>
