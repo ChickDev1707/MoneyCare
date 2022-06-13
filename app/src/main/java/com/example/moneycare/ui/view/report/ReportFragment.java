@@ -3,6 +3,7 @@ package com.example.moneycare.ui.view.report;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 
@@ -11,7 +12,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -19,22 +19,31 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.anychart.APIlib;
 import com.anychart.AnyChart;
 import com.anychart.AnyChartView;
 import com.anychart.chart.common.dataentry.DataEntry;
 import com.anychart.chart.common.dataentry.ValueDataEntry;
+import com.anychart.charts.Cartesian;
 import com.anychart.charts.Pie;
+import com.anychart.core.cartesian.series.Column;
+import com.anychart.enums.Anchor;
+import com.anychart.enums.HoverMode;
+import com.anychart.enums.TooltipPositionMode;
 import com.example.moneycare.R;
+import com.example.moneycare.data.custom.GroupTransaction;
+import com.example.moneycare.data.model.Group;
+import com.example.moneycare.data.model.UserTransaction;
 import com.example.moneycare.data.model.Wallet;
 import com.example.moneycare.databinding.FragmentReportBinding;
 import com.example.moneycare.ui.view.MainActivity;
-import com.example.moneycare.ui.view.report.ReportFragment;
 import com.example.moneycare.ui.viewmodel.report.ReportViewModel;
 import com.example.moneycare.utils.DateUtil;
 import com.example.moneycare.utils.ImageUtil;
 import com.example.moneycare.utils.appenum.TransactionTimeFrame;
+import com.example.moneycare.utils.enums.Position;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 import com.whiteelephant.monthpicker.MonthPickerDialog;
@@ -51,7 +60,7 @@ import java.util.List;
  * Use the {@link ReportFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ReportFragment extends Fragment {
+public class ReportFragment extends Fragment{
 
     // TODO: Customize parameter argument names
     private static final String                         ARG_COLUMN_COUNT = "column-count";
@@ -60,6 +69,11 @@ public class ReportFragment extends Fragment {
     private              FragmentReportBinding binding;
     private              TransactionTimeFrame           timeFrameMode;
     private              Date                           selectedDate;
+    private List<GroupTransaction> groupTransactionList;
+    private Cartesian cartesian;
+    private AnyChartView anyChartView;
+    private Column column;
+
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -94,7 +108,10 @@ public class ReportFragment extends Fragment {
         binding = FragmentReportBinding.inflate(getLayoutInflater());
         binding.setReportListVM(viewModel);
         binding.setLifecycleOwner(this);
+        groupTransactionList = null;
         timeFrameMode = TransactionTimeFrame.DAY;
+        anyChartView = binding.getRoot().findViewById(R.id.charColumnNetIncome);
+        cartesian = AnyChart.column();
 
         Toolbar toolbar = binding.getRoot().findViewById(R.id.top_app_bar);
         toolbar.setTitle("");
@@ -105,68 +122,81 @@ public class ReportFragment extends Fragment {
         initOpenWalletListBtn();
 //        initWalletFromPreference();
 
-        initNetIncomeColumnChart();
+//        initNetIncomeColumnChart();
 //        initIncomePieChart();
 //        initExpensePieChart();
+
         return binding.getRoot();
     }
-    private void initNetIncomeColumnChart(){
-        Pie pie = AnyChart.pie();
-
+    private List<DataEntry> chartNetIncomeDataProcessing(List<GroupTransaction> groupTransactionList){
         List<DataEntry> data = new ArrayList<>();
-        data.add(new ValueDataEntry("John", 10000));
-        data.add(new ValueDataEntry("Jake", 12000));
-        data.add(new ValueDataEntry("Peter", 18000));
 
-        pie.data(data);
-        pie.animation(true);
-        pie.title("Biểu đồ tài sản ròng");
+        long[] dataValues = new long[32];
+        for (int i = 0; i<=31; i++){
+            dataValues[i] = 0;
+        }
+        for (GroupTransaction groupTransaction: groupTransactionList){
+            for (UserTransaction transaction:groupTransaction.transactionList){
+                if (groupTransaction.group.type)
+                    dataValues[DateUtil.getDay(transaction.date)]+=transaction.money/1000;
+                else
+                    dataValues[DateUtil.getDay(transaction.date)]-=transaction.money/1000;
+            }
+        }
+        for (int i=1; i< dataValues.length; i++){
+            data.add(new ValueDataEntry(i, dataValues[i]));
+        }
+//        this.groupTransactionList = groupTransactionList;
+        return  data;
+    }
+    private List<DataEntry> dataChartPieIncomeProcessing(List<GroupTransaction> groupTransactionList){
+        List<DataEntry> data = new ArrayList<>();
+        for (GroupTransaction groupTransaction:groupTransactionList){
+            data.add(new ValueDataEntry(groupTransaction.group.name, groupTransaction.getTotalMoney()));
+        }
+        return data;
+    }
+    private void initIncomePieChart(List<GroupTransaction> groupTransactionList){
         AnyChartView anyChartView = binding.getRoot().findViewById(R.id.charColumnNetIncome);
 
-        //APIlib.getInstance().setActiveAnyChartView(anyChartView);
-        anyChartView.setChart(pie);
     }
-//    private void initIncomePieChart(){
-//        Pie pie = AnyChart.pie();
-//
-//        List<DataEntry> data = new ArrayList<>();
-//        data.add(new ValueDataEntry("John", 10000));
-//        data.add(new ValueDataEntry("Jake", 12000));
-//        data.add(new ValueDataEntry("Peter", 18000));
-//
-//        pie.data(data);
-//        pie.animation(true);
-//        pie.title("Biểu đồ tài sản ròng");
-//        AnyChartView anyChartView = binding.getRoot().findViewById(R.id.chartPieIncome);
-//
-//        //APIlib.getInstance().setActiveAnyChartView(anyChartView);
-//        anyChartView.setChart(pie);
-//    }
-//    private void initExpensePieChart(){
-//        Pie pie = AnyChart.pie();
-//
-//        List<DataEntry> data = new ArrayList<>();
-//        data.add(new ValueDataEntry("John", 10000));
-//        data.add(new ValueDataEntry("Jake", 12000));
-//        data.add(new ValueDataEntry("Peter", 18000));
-//
-//        pie.data(data);
-//        pie.animation(true);
-//        pie.title("Biểu đồ tài sản ròng");
-//        AnyChartView anyChartView = binding.getRoot().findViewById(R.id.chartPieExpense);
-//
-//        //APIlib.getInstance().setActiveAnyChartView(anyChartView);
-//        anyChartView.setChart(pie);
-//    }
+
+    private void initNetIncomeColumnChart(List<GroupTransaction> groupTransactionList){
+        List<DataEntry> data = chartNetIncomeDataProcessing(groupTransactionList);
+
+        cartesian.data(data);
+
+        cartesian.animation(true);
+        cartesian.title("Biểu đồ Thu chi hằng ngày");
+
+        cartesian.tooltip().positionMode(TooltipPositionMode.POINT);
+        cartesian.interactivity().hoverMode(HoverMode.BY_X);
+
+        cartesian.yAxis(0).title("Nghìn VNĐ");
+        cartesian.xAxis(0).title("Tháng");
+        cartesian.labels(true);
+        anyChartView.setChart(cartesian);
+    }
+    public void getDataChart(){
+//        RecyclerView transList = binding.groupTransactionListTemplate;
+        viewModel.getListTransReport(selectedDate , transactionList -> {
+//            transList.setAdapter(new GroupTransactionRecyclerViewAdapter(groupTransactionList));
+            for (int i=0; i<transactionList.size(); i++){
+
+            }
+        });
+    }
     private void initTransList(){
         selectedDate = new Date();
         showTransList();
     }
     public void showTransList(){
 //        RecyclerView transList = binding.groupTransactionListTemplate;
-        viewModel.setTransactionUI(timeFrameMode, selectedDate , groupTransactionList -> {
+        viewModel.setUI(timeFrameMode, selectedDate , groupTransactionList -> {
 //            transList.setAdapter(new GroupTransactionRecyclerViewAdapter(groupTransactionList));
             viewModel.initMoneyInAndOut(groupTransactionList);
+//            chartDataProcessing(groupTransactionList);
+            initNetIncomeColumnChart(groupTransactionList);
         });
     }
 
@@ -203,7 +233,7 @@ public class ReportFragment extends Fragment {
     private void openPickDateDialog(){
         switch (timeFrameMode){
             case DAY:
-                showDatePicker();
+                showMonthPicker();
                 break;
             case MONTH:
                 showMonthPicker();

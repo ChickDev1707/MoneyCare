@@ -31,9 +31,26 @@ import java.util.List;
 public class ReportRepository {
     FirebaseFirestore db;
     String                currentUserId;
+    GroupTransaction listTransactionsInMounth;
     public ReportRepository(){
         db = FirebaseFirestore.getInstance();
         currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+    }
+    public void getMonthTransactions(Date monthDate, FirestoreListCallback<UserTransaction> callback){
+        CollectionReference colRef =  db.collection("users").document(currentUserId).collection("transactions");
+        colRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
+                List<UserTransaction> transactions = new ArrayList<UserTransaction>();
+                if(task.isSuccessful()){
+                    for(DocumentSnapshot snapshot:task.getResult()){
+                        UserTransaction trans = UserTransaction.fromMap(snapshot.getId(), snapshot.getData());
+                        if(DateUtil.compareMonth(monthDate, trans.date)) transactions.add(trans);
+                    }
+                    callback.onCallback(transactions);
+                }
+            }
+        });
     }
     // transactions actions
     public void fetchYearTransactions(Date yearDate, FirestoreListCallback<GroupTransaction> callback){

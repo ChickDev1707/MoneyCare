@@ -21,6 +21,7 @@ public class ReportViewModel extends ViewModel {
     public  MutableLiveData<Long>   moneyIn;
     public  MutableLiveData<Long>   moneyOut;
     public  MutableLiveData<Long>   moneyTotal;
+    public GroupTransaction listTransInMonth;
 
     public ReportViewModel() {
         this.reportRepository = new ReportRepository();
@@ -30,13 +31,18 @@ public class ReportViewModel extends ViewModel {
         this.moneyOut = new MutableLiveData<>(0L);
         this.moneyTotal = new MutableLiveData<>(0L);
 
+
     }
-    public void setTransactionUI(TransactionTimeFrame timeFrame, Date date, FirestoreListCallback firestoreCallback){
+
+    public void getListTransReport(Date date, FirestoreListCallback firestoreListCallback){
+        this.reportRepository.getMonthTransactions(date, firestoreListCallback);
+    }
+    public void setUI(TransactionTimeFrame timeFrame, Date date, FirestoreListCallback firestoreCallback){
         String title = "";
         switch (timeFrame){
             case DAY:
-                this.reportRepository.fetchDayTransactions(date, firestoreCallback);
-                title = DateUtil.getDateString(date);
+                this.reportRepository.fetchMonthTransactions(date, firestoreCallback);
+                title = DateUtil.getMonthString(date);
                 break;
             case MONTH:
                 this.reportRepository.fetchMonthTransactions(date, firestoreCallback);
