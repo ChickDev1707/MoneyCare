@@ -1,4 +1,4 @@
-package com.example.moneycare.ui.view.plan;
+package com.example.moneycare.ui.view.plan.budget;
 
 import static com.example.moneycare.utils.Convert.convertToMoneyCompact;
 
@@ -81,7 +81,7 @@ public class BudgetActivity extends AppCompatActivity {
         binding.setLifecycleOwner(this);
         setContentView(binding.getRoot());
 
-        Toolbar toolbar = findViewById(R.id.budget_tool_bar);
+        Toolbar toolbar = findViewById(R.id.add_tool_bar);
         this.setSupportActionBar(toolbar);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,7 +89,8 @@ public class BudgetActivity extends AppCompatActivity {
                 BudgetActivity.this.finish();
             }
         });
-        TextView txtAdd = findViewById(R.id.add_budget);
+
+        TextView txtAdd = findViewById(R.id.btn_add);
         txtAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v)
@@ -105,7 +106,6 @@ public class BudgetActivity extends AppCompatActivity {
                 toAddBudgetActivity.launch(intent);
             }
         });
-
 
         budgetGroupList = findViewById(R.id.budget_gr_list);
 

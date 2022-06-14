@@ -85,4 +85,9 @@ public class DateUtil {
         Date date = calendar.getTime();
         return date;
     }
+
+    public static Long daysLeft(Date endDate){
+        long diffInMillies = endDate.getTime() - new Date().getTime();
+        return diffInMillies / (3600 * 1000 * 24) + 1;
+    }
 }

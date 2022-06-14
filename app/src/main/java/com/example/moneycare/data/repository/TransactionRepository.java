@@ -357,7 +357,7 @@ public class TransactionRepository {
     }
     // wallet
     public void fetchWallets(FirestoreListCallback<Wallet> callback){
-        CollectionReference walletsRef = db.collection("users").document("LE3oa0LyuujvLqmvxoQw").collection("wallets");
+        CollectionReference walletsRef = db.collection("users").document("WSHF04um7aZW5wgzxn3ZDzI3kry1").collection("wallets");
         walletsRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {

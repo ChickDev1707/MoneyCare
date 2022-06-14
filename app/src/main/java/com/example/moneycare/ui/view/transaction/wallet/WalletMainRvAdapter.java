@@ -17,6 +17,7 @@ import com.example.moneycare.data.model.Group;
 import com.example.moneycare.data.model.Wallet;
 import com.example.moneycare.databinding.GroupItemBinding;
 import com.example.moneycare.databinding.WalletItemBinding;
+import com.example.moneycare.utils.Convert;
 import com.example.moneycare.utils.ImageUtil;
 
 import java.util.List;
@@ -41,7 +42,7 @@ public class WalletMainRvAdapter extends RecyclerView.Adapter<WalletMainRvAdapte
         Wallet wallet = wallets.get(position);
 
         holder.walletName.setText(wallet.name);
-        holder.walletMoney.setText(Long.toString(wallet.money));
+        holder.walletMoney.setText(Convert.convertToThousandsSeparator(wallet.money));
 
         Bitmap bitmap = ImageUtil.toBitmap(wallet.image);
         holder.walletIcon.setImageBitmap(bitmap);

@@ -1,11 +1,8 @@
-package com.example.moneycare.ui.view.plan;
+package com.example.moneycare.ui.view.plan.budget;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,17 +10,10 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.example.moneycare.R;
-import com.example.moneycare.data.model.Budget;
 import com.example.moneycare.data.model.Group;
 import com.example.moneycare.data.repository.TransactionGroupRepository;
-import com.example.moneycare.data.repository.TransactionRepository;
 import com.example.moneycare.databinding.ActivitySelectBudgetGroupBinding;
-import com.example.moneycare.ui.view.transaction.group.GroupListFragment;
-import com.example.moneycare.ui.view.transaction.group.GroupMainFragment;
-import com.example.moneycare.utils.Convert;
-import com.google.android.material.tabs.TabLayoutMediator;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;

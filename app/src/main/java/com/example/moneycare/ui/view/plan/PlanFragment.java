@@ -4,16 +4,14 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
-import com.example.moneycare.R;
-import com.example.moneycare.databinding.FragmentAccountBinding;
 import com.example.moneycare.databinding.FragmentPlanBinding;
+import com.example.moneycare.ui.view.plan.budget.BudgetActivity;
+import com.example.moneycare.ui.view.plan.event.EventActivity;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -74,6 +72,13 @@ public class PlanFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), BudgetActivity.class);
+                startActivity(intent);
+            }
+        });
+        binding.btnEvent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), EventActivity.class);
                 startActivity(intent);
             }
         });

@@ -1,4 +1,4 @@
-package com.example.moneycare.ui.view.plan;
+package com.example.moneycare.ui.view.plan.budget;
 
 import static com.example.moneycare.utils.Convert.convertToNumber;
 
