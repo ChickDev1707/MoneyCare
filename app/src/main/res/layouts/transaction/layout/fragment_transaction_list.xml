@@ -73,7 +73,7 @@
                             android:textSize="@dimen/font_size_normal"
                             android:layout_weight="1"
                             android:textColor="@color/green_main"
-                            android:text="@{Converter.toCurrency(transactionListVM.moneyIn)}"/>
+                            android:text="@{Converter.toFormattedMoney(context, transactionListVM.moneyIn)}"/>
                     </LinearLayout>
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -92,7 +92,7 @@
                             android:textSize="@dimen/font_size_normal"
                             android:textColor="@color/red_main"
                             android:layout_weight="1"
-                            android:text="@{Converter.toCurrency(transactionListVM.moneyOut)}"/>
+                            android:text="@{Converter.toFormattedMoney(context, transactionListVM.moneyOut)}"/>
                     </LinearLayout>
                     <View
                         android:layout_width="wrap_content"
@@ -111,7 +111,7 @@
                         android:textStyle="bold"
                         android:textColor="@color/blue_grey_main"
                         android:layout_marginBottom="10dp"
-                        android:text="@{Converter.toCurrency(transactionListVM.moneyTotal)}"/>
+                        android:text="@{Converter.toFormattedMoney(context, transactionListVM.moneyTotal)}"/>
                     <com.google.android.material.button.MaterialButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

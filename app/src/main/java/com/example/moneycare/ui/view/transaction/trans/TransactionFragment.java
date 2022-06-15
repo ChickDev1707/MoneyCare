@@ -104,7 +104,7 @@ public class TransactionFragment extends Fragment {
     }
     private void showTransList(){
         RecyclerView transList = binding.groupTransactionListTemplate;
-        viewModel.setTransactionUI(timeFrameMode, selectedDate , groupTransactionList -> {
+        viewModel.setTransactionUI(getContext(), timeFrameMode, selectedDate , groupTransactionList -> {
             transList.setAdapter(new GroupTransactionRecyclerViewAdapter(groupTransactionList));
             viewModel.initMoneyInAndOut(groupTransactionList);
         });
@@ -253,7 +253,7 @@ public class TransactionFragment extends Fragment {
     }
     private void updateWalletUI(Wallet wallet){
         binding.mainAppBar.walletName.setText(wallet.name);
-        binding.mainAppBar.walletMoney.setText(Converter.toCurrency(wallet.money));
+        binding.mainAppBar.walletMoney.setText(Converter.toFormattedMoney(getContext(), wallet.money));
 
         if(!wallet.image.equals("")){
             Bitmap walletBimapImg = ImageUtil.toBitmap(wallet.image);

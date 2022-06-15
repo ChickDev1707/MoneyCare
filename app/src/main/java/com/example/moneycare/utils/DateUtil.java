@@ -3,9 +3,12 @@ package com.example.moneycare.utils;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Build;
 
 import androidx.annotation.RequiresApi;
+import androidx.preference.PreferenceManager;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalTime;
@@ -13,9 +16,13 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class DateUtil {
+
     private static Calendar calendar = Calendar.getInstance();
-    public static String getDateString(Date date){
-        SimpleDateFormat formatter = new SimpleDateFormat("EE, dd/MM/yyyy");
+    public static String getDateString(Context context, Date date){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        String value = sharedPreferences.getString("date_formats", "dd/MM/yyyy");
+
+        SimpleDateFormat formatter = new SimpleDateFormat(String.format("EE, %s", value));
         String sDate = formatter.format(date);
         return sDate;
     }

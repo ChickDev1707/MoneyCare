@@ -13,9 +13,9 @@
 
         <ListPreference
             app:key="date_formats"
+            app:defaultValue="dd/MM/yyyy"
             app:entries="@array/date_formats"
             app:entryValues="@array/date_format_values"
-            app:summary="@string/summary_date_format"
             app:title="@string/title_date_format" />
     </PreferenceCategory>
     <PreferenceCategory app:title="@string/header_notification">

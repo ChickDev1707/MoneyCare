@@ -119,7 +119,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:enabled="@{updateTransVM.updateMode ? true : false}"
-                        android:text="@{DateUtil.getDateString(updateTransVM.transaction.date)}"
+                        android:text="@{DateUtil.getDateString(context, updateTransVM.transaction.date)}"
                         android:inputType="date"
                         />
 

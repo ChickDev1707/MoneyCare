@@ -44,7 +44,9 @@ public class TransactionRecyclerViewAdapter extends RecyclerView.Adapter<Transac
         UserTransaction transaction = transactions.get(position);
         initTransactionMoney(holder.transactionMoney, transaction);
 
-        holder.transactionDate.setText(DateUtil.getDateString(transaction.date));
+        Context context = holder.itemView.getContext();
+
+        holder.transactionDate.setText(DateUtil.getDateString(context, transaction.date));
         holder.transactionDay.setText(Integer.toString(DateUtil.getDay(transaction.date)));
         holder.transactionNote.setText(transaction.note);
         holder.transactionItem.setOnClickListener(new View.OnClickListener() {
@@ -60,8 +62,8 @@ public class TransactionRecyclerViewAdapter extends RecyclerView.Adapter<Transac
         });
     }
     private void initTransactionMoney(TextView transactionMoney, UserTransaction transaction){
-        transactionMoney.setText(Converter.toCurrency(transaction.money));
         Context context = transactionMoney.getContext();
+        transactionMoney.setText(Converter.toFormattedMoney(context, transaction.money));
         int color = group.type? ContextCompat.getColor(context, R.color.green_main) : ContextCompat.getColor(context, R.color.red_main);
         transactionMoney.setTextColor(color);
     }

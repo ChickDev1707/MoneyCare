@@ -1,6 +1,7 @@
 package com.example.moneycare.ui.view.account;
 
 import android.app.AlarmManager;
+import android.app.Dialog;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -11,13 +12,16 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 import androidx.preference.SwitchPreference;
 
+import com.example.moneycare.MoneyFormatDialogFragment;
 import com.example.moneycare.R;
 import com.example.moneycare.databinding.ActivitySettingsBinding;
 import com.example.moneycare.utils.DateUtil;
@@ -61,6 +65,8 @@ public class SettingsActivity extends AppCompatActivity {
         AlarmManager alarmManager;
         SharedPreferences sharedPreferences;
         Preference notificationTimePref;
+        ListPreference dateFormatPref;
+        Preference moneyFormatPref;
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             setPreferencesFromResource(R.xml.root_preferences, rootKey);
@@ -71,7 +77,10 @@ public class SettingsActivity extends AppCompatActivity {
         private void initPref(){
             sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
             initNotificationTimePref();
+            initDateFormatPref();
+            initMoneyFormatPref();
         }
+        // notification
         private void createNotificationChanel(){
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
                 NotificationChannel channel = new NotificationChannel("TransactionReminder", "TransactionReminderChanel", NotificationManager.IMPORTANCE_HIGH);
@@ -80,8 +89,8 @@ public class SettingsActivity extends AppCompatActivity {
                 NotificationManager notificationManager = getActivity().getSystemService(NotificationManager.class);
                 notificationManager.createNotificationChannel(channel);
             }
-        }
         // notification time
+        }
         private void initNotificationTimePref(){
             String value = sharedPreferences.getString("notification_time", "");
             notificationTimePref = findPreference("notification_time");
@@ -129,7 +138,6 @@ public class SettingsActivity extends AppCompatActivity {
             editor.apply();
             notificationTimePref.setSummary(timeString);
         }
-
         private void setNotificationTimeAlarmFromPref(){
             PendingIntent pendingIntent = createPendingIntent();
             Calendar calendar = createCalendar();
@@ -153,6 +161,36 @@ public class SettingsActivity extends AppCompatActivity {
             calendar.set(Calendar.SECOND, 0);
             calendar.set(Calendar.MILLISECOND, 0);
             return calendar;
+        }
+
+        // date format
+        private void initDateFormatPref() {
+            dateFormatPref = findPreference("date_formats");
+            dateFormatPref.setSummary(dateFormatPref.getValue());
+            initDateFormatPrefClickEvent();
+        }
+        private void initDateFormatPrefClickEvent() {
+            dateFormatPref.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    dateFormatPref.setSummary(newValue.toString());
+                    return true;
+                }
+            });
+        }
+
+        // money format
+        private void initMoneyFormatPref(){
+            moneyFormatPref = findPreference("money_format");
+            moneyFormatPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    MoneyFormatDialogFragment fragment = new MoneyFormatDialogFragment(getActivity());
+                    fragment.showDialog();
+                    return true;
+                }
+            });
+
         }
     }
 }

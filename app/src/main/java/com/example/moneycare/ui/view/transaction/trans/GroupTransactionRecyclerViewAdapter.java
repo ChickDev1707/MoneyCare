@@ -1,5 +1,6 @@
 package com.example.moneycare.ui.view.transaction.trans;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -33,12 +34,13 @@ public class GroupTransactionRecyclerViewAdapter extends RecyclerView.Adapter<Gr
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
+        Context context = holder.groupNameView.getContext();
         GroupTransaction groupTransaction = groupTransactions.get(position);
         holder.groupNameView.setText(groupTransaction.group.name);
 
         String totalTransFullText = Integer.toString(groupTransaction.transactionList.size()) + " giao dịch";
         holder.totalTransaction.setText(totalTransFullText);
-        holder.totalMoney.setText(Converter.toCurrency(groupTransaction.getTotalMoney()));
+        holder.totalMoney.setText(Converter.toFormattedMoney(context, groupTransaction.getTotalMoney()));
 
         Bitmap bitmapIcon = ImageUtil.toBitmap(groupTransaction.group.image);
         holder.groupIcon.setImageBitmap(bitmapIcon);

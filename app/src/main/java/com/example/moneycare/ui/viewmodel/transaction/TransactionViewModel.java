@@ -1,5 +1,7 @@
 package com.example.moneycare.ui.viewmodel.transaction;
 
+import android.content.Context;
+
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -34,12 +36,12 @@ public class TransactionViewModel extends ViewModel {
         this.moneyTotal = new MutableLiveData<>(0L);
 
     }
-    public void setTransactionUI(TransactionTimeFrame timeFrame, Date date, FirestoreListCallback firestoreCallback){
+    public void setTransactionUI(Context context, TransactionTimeFrame timeFrame, Date date, FirestoreListCallback firestoreCallback){
         String title = "";
         switch (timeFrame){
             case DAY:
                 this.transactionRepository.fetchDayTransactions(date, firestoreCallback);
-                title = DateUtil.getDateString(date);
+                title = DateUtil.getDateString(context, date);
                 break;
             case MONTH:
                 this.transactionRepository.fetchMonthTransactions(date, firestoreCallback);
