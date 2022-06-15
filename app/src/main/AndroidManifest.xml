@@ -12,6 +12,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MoneyCare">
         <activity
+            android:name=".ui.view.plan.event.EventTransactionActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.view.plan.event.UpdateEventActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.view.plan.event.EventDetailActivity"
             android:exported="false" />
         <activity

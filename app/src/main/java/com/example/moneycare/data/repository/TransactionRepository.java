@@ -385,4 +385,26 @@ public class TransactionRepository {
             }
         });
     }
+
+
+    // get transaction by event
+    public void getTransactionsByEvent(String idEvent, FirestoreListCallback<GroupTransaction> callback){
+        CollectionReference colRef =  db.collection("users").document("WSHF04um7aZW5wgzxn3ZDzI3kry1").collection("transactions");
+        colRef
+//                .whereEqualTo("event", idEvent)
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
+                List<UserTransaction> transactions = new ArrayList<UserTransaction>();
+                if(task.isSuccessful()){
+                    for(DocumentSnapshot snapshot:task.getResult()){
+                        UserTransaction trans = UserTransaction.fromMap(snapshot.getId(), snapshot.getData());
+                        transactions.add(trans);
+                    }
+                    getGroupTransactionList(transactions, callback);
+                }
+            }
+
+        });
+    }
 }

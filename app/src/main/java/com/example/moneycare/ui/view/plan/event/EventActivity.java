@@ -19,8 +19,10 @@ import com.example.moneycare.R;
 import com.example.moneycare.data.model.Event;
 import com.example.moneycare.data.repository.EventRepository;
 import com.example.moneycare.ui.view.plan.budget.BudgetActivity;
+import com.example.moneycare.utils.DateUtil;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class EventActivity extends AppCompatActivity {
@@ -36,6 +38,22 @@ public class EventActivity extends AppCompatActivity {
                     }
                 }
             });
+    public ActivityResultLauncher<Intent> toDetailEventActivity = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+        @Override
+        public void onActivityResult(ActivityResult result) {
+            if(result.getResultCode() == Activity.RESULT_OK){
+                Intent data = result.getData();
+                Boolean isUpdated = data.getBooleanExtra("isUpdated", false);
+                if(isUpdated){
+                    finish();
+                    startActivity(getIntent());
+                }
+            }
+        }
+    }
+        );
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,18 +72,23 @@ public class EventActivity extends AppCompatActivity {
     private void  loadListEvent(){
         RecyclerView listEventOngoingRv = findViewById(R.id.event_list_ongoing);
         RecyclerView listEventEndRv = findViewById(R.id.event_list_end);
+        LinearLayout layoutOngoing = findViewById(R.id.event_ongoing);
+        LinearLayout layoutEnd = findViewById(R.id.event_end);
         LinearLayout layoutContainer = findViewById(R.id.event_container);
         LinearLayout layoutEmpty = findViewById(R.id.event_empty);
         LinearLayout layoutLoading = findViewById(R.id.loading);
         repository.fetchEvents(events ->  {
-            layoutLoading.setVisibility(View.INVISIBLE);
+            layoutLoading.setVisibility(View.GONE);
+            layoutContainer.setVisibility(View.VISIBLE);
             if(events.size() > 0){
-                layoutContainer.setVisibility(View.VISIBLE);
                 layoutEmpty.setVisibility(View.INVISIBLE);
-
                 List<Event> eventsEnd = new ArrayList<Event>();
                 List<Event> eventsOngoing = new ArrayList<Event>();
                 for(Event event : (List<Event>)events){
+                   if(DateUtil.daysLeft(event.endDate) <= 0 && event.status.equals("ongoing")){
+                       repository.changeStatus(event.id, "end");
+                       event.status = "end";
+                   }
                     if(event.status.equals("end")){
                         eventsEnd.add(event);
                     }
@@ -73,8 +96,11 @@ public class EventActivity extends AppCompatActivity {
                         eventsOngoing.add(event);
                     }
                 }
-                listEventEndRv.setAdapter(new MyEventRvAdapter(eventsEnd, EventActivity.this));
-                listEventOngoingRv.setAdapter(new MyEventRvAdapter(eventsOngoing, EventActivity.this));
+                layoutOngoing.setVisibility(eventsOngoing.size() > 0 ?View.VISIBLE : View.INVISIBLE );
+                layoutEnd.setVisibility(eventsEnd.size() > 0 ?View.VISIBLE : View.INVISIBLE );
+
+                listEventEndRv.setAdapter(new MyEventRvAdapter(eventsEnd, EventActivity.this, toDetailEventActivity));
+                listEventOngoingRv.setAdapter(new MyEventRvAdapter(eventsOngoing, EventActivity.this, toDetailEventActivity));
             }
             else {
                 layoutContainer.setVisibility(View.INVISIBLE);

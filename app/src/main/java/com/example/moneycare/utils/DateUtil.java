@@ -18,6 +18,11 @@ public class DateUtil {
         String sDate = formatter.format(date);
         return sDate;
     }
+    public static String getDateStringDMY(Date date){
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        String sDate = formatter.format(date);
+        return sDate;
+    }
     //first date of current month
     public static Date getFirstDateOfMonth(){
         LocalDate localDate =  LocalDate.now().withDayOfMonth(1);
@@ -88,6 +93,7 @@ public class DateUtil {
 
     public static Long daysLeft(Date endDate){
         long diffInMillies = endDate.getTime() - new Date().getTime();
-        return diffInMillies / (3600 * 1000 * 24) + 1;
+        Long res = diffInMillies / (3600 * 1000 * 24) + 1;
+        return res < 0 ? 0L : res;
     }
 }

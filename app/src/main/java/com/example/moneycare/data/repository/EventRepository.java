@@ -5,6 +5,7 @@ import androidx.annotation.NonNull;
 import com.example.moneycare.data.model.Budget;
 import com.example.moneycare.data.model.Event;
 import com.example.moneycare.data.model.Group;
+import com.example.moneycare.data.model.UserTransaction;
 import com.example.moneycare.utils.DateUtil;
 import com.example.moneycare.utils.appinterface.FirestoreListCallback;
 import com.example.moneycare.utils.appinterface.FirestoreObjectCallback;
@@ -12,12 +13,14 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.Transaction;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,7 +78,7 @@ public class EventRepository {
     }
 
     public void updateEvent(Event event){
-        db.collection("budgets").document(event.id)
+        db.collection("events").document(event.id)
             .update(event.toMap())
             .addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
@@ -90,8 +93,24 @@ public class EventRepository {
                 }
             });
     }
+    public void changeStatus(String id, String status){
+        db.collection("events").document(id)
+                .update("status", status)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        System.out.println("DocumentSnapshot successfully updated!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        System.out.println("Error updating document" +  e);
+                    }
+                });
+    }
 
-    public void deleteBudget(String idEvent){
+    public void deleteEvent(String idEvent){
 //        DocumentReference docRef = db.collection("users").document("LE3oa0LyuujvLqmvxoQw").collection("budgets").document(idBudget);
         DocumentReference docRef = db.collection("events").document(idEvent);
         docRef.delete()
