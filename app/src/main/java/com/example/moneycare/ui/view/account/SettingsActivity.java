@@ -1,7 +1,6 @@
 package com.example.moneycare.ui.view.account;
 
 import android.app.AlarmManager;
-import android.app.Dialog;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -12,19 +11,17 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
-import androidx.preference.SwitchPreference;
 
 import com.example.moneycare.MoneyFormatDialogFragment;
 import com.example.moneycare.R;
 import com.example.moneycare.databinding.ActivitySettingsBinding;
-import com.example.moneycare.utils.DateUtil;
+import com.example.moneycare.utils.DateTimeUtil;
 import com.google.android.material.timepicker.MaterialTimePicker;
 import com.google.android.material.timepicker.TimeFormat;
 
@@ -133,7 +130,7 @@ public class SettingsActivity extends AppCompatActivity {
         }
         private void saveNotificationTimePref(int hour, int minute){
             SharedPreferences.Editor editor = sharedPreferences.edit();
-            String timeString = DateUtil.getFullTimeString(hour, minute);
+            String timeString = DateTimeUtil.getFullTimeString(hour, minute);
             editor.putString("notification_time", timeString);
             editor.apply();
             notificationTimePref.setSummary(timeString);

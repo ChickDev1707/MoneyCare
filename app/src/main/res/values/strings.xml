@@ -24,7 +24,7 @@
     <string name="bot_nav_plan_title">Kế hoạch</string>
     <string name="bot_nav_account_title">Tài khoản</string>
 
-    <string name="app_preference">app_settings</string>
+    <string name="transaction_preference">transaction_settings</string>
     <string name="pref_key_time_frame">time_frame</string>
     <string name="pref_key_current_wallet">current_wallet</string>
 

@@ -154,7 +154,7 @@ public class NewTransactionActivity extends AppCompatActivity {
         return null;
     }
     private String getWalletFromPreference(){
-        SharedPreferences sharedPref = getSharedPreferences(getString(R.string.app_preference), Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = getSharedPreferences(getString(R.string.transaction_preference), Context.MODE_PRIVATE);
         String walletId = sharedPref.getString(getString(R.string.pref_key_current_wallet), "");
         return walletId;
     }

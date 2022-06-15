@@ -6,7 +6,7 @@ import androidx.annotation.Nullable;
 import com.example.moneycare.data.custom.GroupTransaction;
 import com.example.moneycare.data.model.Group;
 import com.example.moneycare.data.model.UserTransaction;
-import com.example.moneycare.utils.DateUtil;
+import com.example.moneycare.utils.DateTimeUtil;
 import com.example.moneycare.utils.FirestoreUtil;
 import com.example.moneycare.utils.appinterface.FirestoreListCallback;
 import com.example.moneycare.utils.appinterface.FirestoreObjectCallback;
@@ -15,7 +15,6 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -48,7 +47,7 @@ public class TransactionRepository {
                 if(task.isSuccessful()){
                     for(DocumentSnapshot snapshot:task.getResult()){
                         UserTransaction trans = UserTransaction.fromMap(snapshot.getId(), snapshot.getData());
-                        if(DateUtil.compareYear(yearDate, trans.date)) transactions.add(trans);
+                        if(DateTimeUtil.compareYear(yearDate, trans.date)) transactions.add(trans);
                     }
                     getGroupTransactionList(transactions, callback);
                 }
@@ -65,7 +64,7 @@ public class TransactionRepository {
                 if(task.isSuccessful()){
                     for(DocumentSnapshot snapshot:task.getResult()){
                         UserTransaction trans = UserTransaction.fromMap(snapshot.getId(), snapshot.getData());
-                        if(DateUtil.compareMonth(monthDate, trans.date)) transactions.add(trans);
+                        if(DateTimeUtil.compareMonth(monthDate, trans.date)) transactions.add(trans);
                     }
                     getGroupTransactionList(transactions, callback);
                 }
@@ -81,7 +80,7 @@ public class TransactionRepository {
                 if(task.isSuccessful()){
                     for(DocumentSnapshot snapshot:task.getResult()){
                         UserTransaction trans = UserTransaction.fromMap(snapshot.getId(), snapshot.getData());
-                        if(DateUtil.compareDate(dayDate, trans.date)) transactions.add(trans);
+                        if(DateTimeUtil.compareDate(dayDate, trans.date)) transactions.add(trans);
                     }
                     getGroupTransactionList(transactions, callback);
                 }

@@ -18,7 +18,7 @@ import com.example.moneycare.data.model.UserTransaction;
 import com.example.moneycare.databinding.TransactionItemBinding;
 import com.example.moneycare.ui.view.MainActivity;
 import com.example.moneycare.utils.Converter;
-import com.example.moneycare.utils.DateUtil;
+import com.example.moneycare.utils.DateTimeUtil;
 import java.util.List;
 
 /**
@@ -46,8 +46,8 @@ public class TransactionRecyclerViewAdapter extends RecyclerView.Adapter<Transac
 
         Context context = holder.itemView.getContext();
 
-        holder.transactionDate.setText(DateUtil.getDateString(context, transaction.date));
-        holder.transactionDay.setText(Integer.toString(DateUtil.getDay(transaction.date)));
+        holder.transactionDate.setText(DateTimeUtil.getDateString(context, transaction.date));
+        holder.transactionDay.setText(Integer.toString(DateTimeUtil.getDay(transaction.date)));
         holder.transactionNote.setText(transaction.note);
         holder.transactionItem.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -9,7 +9,7 @@ import com.example.moneycare.data.custom.GroupTransaction;
 import com.example.moneycare.data.model.Wallet;
 import com.example.moneycare.data.repository.TransactionRepository;
 import com.example.moneycare.data.repository.WalletRepository;
-import com.example.moneycare.utils.DateUtil;
+import com.example.moneycare.utils.DateTimeUtil;
 import com.example.moneycare.utils.appenum.TransactionTimeFrame;
 import com.example.moneycare.utils.appinterface.FirestoreListCallback;
 import com.example.moneycare.utils.appinterface.FirestoreObjectCallback;
@@ -41,15 +41,15 @@ public class TransactionViewModel extends ViewModel {
         switch (timeFrame){
             case DAY:
                 this.transactionRepository.fetchDayTransactions(date, firestoreCallback);
-                title = DateUtil.getDateString(context, date);
+                title = DateTimeUtil.getDateString(context, date);
                 break;
             case MONTH:
                 this.transactionRepository.fetchMonthTransactions(date, firestoreCallback);
-                title = DateUtil.getMonthString(date);
+                title = DateTimeUtil.getMonthString(date);
                 break;
             case YEAR:
                 this.transactionRepository.fetchYearTransactions(date, firestoreCallback);
-                title = DateUtil.getYearString(date);
+                title = DateTimeUtil.getYearString(date);
                 break;
         }
         timeTitle.setValue(title);

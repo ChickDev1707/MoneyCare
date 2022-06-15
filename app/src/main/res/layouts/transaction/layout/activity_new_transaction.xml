@@ -4,7 +4,7 @@
         <variable
             name="newTransVM"
             type="com.example.moneycare.ui.viewmodel.transaction.NewTransactionViewModel" />
-        <import type="com.example.moneycare.utils.DateUtil"/>
+        <import type="com.example.moneycare.utils.DateTimeUtil"/>
         <import type="com.example.moneycare.utils.Converter"/>
     </data>
     <LinearLayout
@@ -116,7 +116,7 @@
                         android:layout_height="wrap_content"
                         android:focusable="false"
                         android:inputType="date"
-                        android:text="@{DateUtil.getDateString(context, newTransVM.date)}"
+                        android:text="@{DateTimeUtil.getDateString(context, newTransVM.date)}"
                         />
 
                 </com.google.android.material.textfield.TextInputLayout>

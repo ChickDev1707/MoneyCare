@@ -15,7 +15,7 @@ import java.time.LocalTime;
 import java.util.Calendar;
 import java.util.Date;
 
-public class DateUtil {
+public class DateTimeUtil {
 
     private static Calendar calendar = Calendar.getInstance();
     public static String getDateString(Context context, Date date){

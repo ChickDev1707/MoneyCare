@@ -29,7 +29,7 @@ import com.example.moneycare.ui.view.MainActivity;
 import com.example.moneycare.ui.view.transaction.wallet.ModifyWalletActivity;
 import com.example.moneycare.ui.viewmodel.transaction.TransactionViewModel;
 import com.example.moneycare.utils.Converter;
-import com.example.moneycare.utils.DateUtil;
+import com.example.moneycare.utils.DateTimeUtil;
 import com.example.moneycare.utils.ImageUtil;
 import com.example.moneycare.utils.appenum.TransactionTimeFrame;
 import com.google.android.material.datepicker.MaterialDatePicker;
@@ -110,13 +110,13 @@ public class TransactionFragment extends Fragment {
         });
     }
     private void initToolbar(){
-        Toolbar toolbar = binding.getRoot().findViewById(R.id.top_app_bar);
+        Toolbar toolbar = binding.getRoot().findViewById(R.id.main_app_bar);
         toolbar.setTitle("");
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
     }
     @Override
     public void onCreateOptionsMenu(@NonNull @NotNull Menu menu, @NonNull @NotNull MenuInflater inflater) {
-        inflater.inflate(R.menu.top_app_bar, menu);
+        inflater.inflate(R.menu.main_app_bar, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -188,7 +188,7 @@ public class TransactionFragment extends Fragment {
         MonthPickerDialog.Builder builder = new MonthPickerDialog.Builder(getContext(), new MonthPickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(int selectedMonth, int selectedYear) {
-                selectedDate = DateUtil.createDate(1, selectedMonth, selectedYear);
+                selectedDate = DateTimeUtil.createDate(1, selectedMonth, selectedYear);
                 showTransList();
             }
         }, today.get(Calendar.YEAR), today.get(Calendar.MONTH));
@@ -205,7 +205,7 @@ public class TransactionFragment extends Fragment {
         MonthPickerDialog.Builder builder = new MonthPickerDialog.Builder(getContext(), new MonthPickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(int selectedMonth, int selectedYear) {
-                selectedDate = DateUtil.createDate(1, selectedMonth, selectedYear);
+                selectedDate = DateTimeUtil.createDate(1, selectedMonth, selectedYear);
                 showTransList();
             }
         }, today.get(Calendar.YEAR), today.get(Calendar.MONTH));
@@ -220,19 +220,19 @@ public class TransactionFragment extends Fragment {
     }
     // setting
     private void saveTransactionSetting(){
-        SharedPreferences sharedPref = getActivity().getSharedPreferences(getString(R.string.app_preference), Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = getActivity().getSharedPreferences(getString(R.string.transaction_preference), Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putInt(getString(R.string.pref_key_time_frame), timeFrameMode.getValue());
         editor.apply();
     }
     private void initTransactionSetting(){
-        SharedPreferences sharedPref = getActivity().getSharedPreferences(getString(R.string.app_preference), Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = getActivity().getSharedPreferences(getString(R.string.transaction_preference), Context.MODE_PRIVATE);
         int timeFrameValue = sharedPref.getInt(getString(R.string.pref_key_time_frame), 1);
         timeFrameMode = TransactionTimeFrame.getTimeFrame(timeFrameValue);
     }
     // wallet
     private void initOpenWalletListBtn(){
-        binding.mainAppBar.walletIconBtn.setOnClickListener(new View.OnClickListener() {
+        binding.appBarLayout.walletIconBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 ((MainActivity) getActivity()).launchReloadWallet();
@@ -252,22 +252,22 @@ public class TransactionFragment extends Fragment {
         }
     }
     private void updateWalletUI(Wallet wallet){
-        binding.mainAppBar.walletName.setText(wallet.name);
-        binding.mainAppBar.walletMoney.setText(Converter.toFormattedMoney(getContext(), wallet.money));
+        binding.appBarLayout.walletName.setText(wallet.name);
+        binding.appBarLayout.walletMoney.setText(Converter.toFormattedMoney(getContext(), wallet.money));
 
         if(!wallet.image.equals("")){
             Bitmap walletBimapImg = ImageUtil.toBitmap(wallet.image);
             BitmapDrawable walletBitmapDrawable = new BitmapDrawable(getResources(), walletBimapImg);
-            binding.mainAppBar.walletIconBtn.setBackground(walletBitmapDrawable);
+            binding.appBarLayout.walletIconBtn.setBackground(walletBitmapDrawable);
         }
     }
     private String getWalletFromPreference(){
-        SharedPreferences sharedPref = getActivity().getSharedPreferences(getString(R.string.app_preference), Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = getActivity().getSharedPreferences(getString(R.string.transaction_preference), Context.MODE_PRIVATE);
         String walletId = sharedPref.getString(getString(R.string.pref_key_current_wallet), "");
         return walletId;
     }
     private void setWalletToPreference(String walletId){
-        SharedPreferences sharedPref = getActivity().getSharedPreferences(getString(R.string.app_preference), Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = getActivity().getSharedPreferences(getString(R.string.transaction_preference), Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString(getString(R.string.pref_key_current_wallet), walletId);
         editor.apply();
