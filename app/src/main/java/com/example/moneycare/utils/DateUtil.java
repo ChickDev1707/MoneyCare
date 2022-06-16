@@ -42,6 +42,11 @@ public class DateUtil {
         String sDate = formatter.format(date);
         return sDate;
     }
+    public static int getHour(Date date){
+        calendar.setTime(date);
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        return hour;
+    }
     public static int getDay(Date date){
         calendar.setTime(date);
         int day = calendar.get(Calendar.DATE);

@@ -63,6 +63,7 @@ import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.github.mikephil.charting.utils.Utils;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 import com.google.protobuf.Any;
@@ -97,7 +98,6 @@ public class ReportFragment extends Fragment{
     private List<PieEntry>    dataChartIncome;
     private List<PieEntry> dataChartExpense;
 
-    Button btn;
     TextView textViewIncome;
     TextView textViewExpense;
 
@@ -143,7 +143,6 @@ public class ReportFragment extends Fragment{
         dataChartIncome = new ArrayList<PieEntry>();
         dataChartExpense = new ArrayList<PieEntry>();
 
-        btn = binding.getRoot().findViewById(R.id.materialButton);
         textViewIncome = binding.getRoot().findViewById(R.id.textViewIncome);
         textViewExpense = binding.getRoot().findViewById(R.id.textViewExpense);
 
@@ -166,22 +165,65 @@ public class ReportFragment extends Fragment{
         for (int i = 0; i<=31; i++){
             dataValues[i] = 0;
         }
-        for (GroupTransaction groupTransaction: groupTransactionList){
-            for (UserTransaction transaction:groupTransaction.transactionList){
-                if (groupTransaction.group.type)
-                    dataValues[DateUtil.getDay(transaction.date)]+=transaction.money/1000;
-                else
-                    dataValues[DateUtil.getDay(transaction.date)]-=transaction.money/1000;
+        if (timeFrameMode == TransactionTimeFrame.MONTH)
+        {
+            for (GroupTransaction groupTransaction: groupTransactionList){
+                for (UserTransaction transaction:groupTransaction.transactionList){
+                    if (groupTransaction.group.type)
+                        dataValues[DateUtil.getDay(transaction.date)]+=transaction.money/1000;
+                    else
+                        dataValues[DateUtil.getDay(transaction.date)]-=transaction.money/1000;
+                }
+                if(groupTransaction.group.type){
+                    dataChartIncome.add(new PieEntry(groupTransaction.getTotalMoney(), groupTransaction.group.name));
+                }
+                else{
+                    dataChartExpense.add(new PieEntry(groupTransaction.getTotalMoney(), groupTransaction.group.name));
+                }
             }
-            if(groupTransaction.group.type){
-                dataChartIncome.add(new PieEntry(groupTransaction.getTotalMoney(), groupTransaction.group.name));
+            for (int i=1; i<= 31; i++){
+                dataChartNetIncome.add(new BarEntry(i, dataValues[i]));
             }
-            else{
-                dataChartExpense.add(new PieEntry(groupTransaction.getTotalMoney(), groupTransaction.group.name));
+        } else {
+            if (timeFrameMode == TransactionTimeFrame.DAY){
+                for (GroupTransaction groupTransaction: groupTransactionList){
+                    if(groupTransaction.group.type){
+                        dataChartIncome.add(new PieEntry(groupTransaction.getTotalMoney(), groupTransaction.group.name));
+                    }
+                    else{
+                        dataChartExpense.add(new PieEntry(groupTransaction.getTotalMoney(), groupTransaction.group.name));
+                    }
+                    for (UserTransaction transaction:groupTransaction.transactionList){
+                        if (groupTransaction.group.type)
+                            dataValues[DateUtil.getHour(transaction.date)]+=transaction.money/1000;
+                        else
+                            dataValues[DateUtil.getHour(transaction.date)]-=transaction.money/1000;
+                    }
+                }
+                for (int i=0; i<= 23; i++){
+                    dataChartNetIncome.add(new BarEntry(i, dataValues[i]));
+                }
+            } else {
+                if (timeFrameMode == TransactionTimeFrame.YEAR){
+                    for (GroupTransaction groupTransaction: groupTransactionList){
+                        for (UserTransaction transaction:groupTransaction.transactionList){
+                            if (groupTransaction.group.type)
+                                dataValues[DateUtil.getMonth(transaction.date)]+=transaction.money/1000;
+                            else
+                                dataValues[DateUtil.getMonth(transaction.date)]-=transaction.money/1000;
+                        }
+                        if(groupTransaction.group.type){
+                            dataChartIncome.add(new PieEntry(groupTransaction.getTotalMoney(), groupTransaction.group.name));
+                        }
+                        else{
+                            dataChartExpense.add(new PieEntry(groupTransaction.getTotalMoney(), groupTransaction.group.name));
+                        }
+                    }
+                    for (int i=1; i<= 12; i++){
+                        dataChartNetIncome.add(new BarEntry(i, dataValues[i]));
+                    }
+                }
             }
-        }
-        for (int i=1; i<= 31; i++){
-            dataChartNetIncome.add(new BarEntry(i, dataValues[i]));
         }
     }
 
@@ -268,7 +310,7 @@ public class ReportFragment extends Fragment{
     }
 
     private void initBarChartNetIncome(){
-        BarDataSet barDataSet = new BarDataSet(dataChartNetIncome,"Biểu đồ thu nhập ròng");
+        BarDataSet barDataSet = new BarDataSet(dataChartNetIncome,"");
         barDataSet.setDrawIcons(false);
 
         barChartNetIncome.setDrawBarShadow(false);
@@ -277,7 +319,6 @@ public class ReportFragment extends Fragment{
         barChartNetIncome.getDescription().setEnabled(false);
         barChartNetIncome.setPinchZoom(false);
         barChartNetIncome.setDrawGridBackground(false);
-        barChartNetIncome.animateY(1000);
 
         XAxis xAxis = barChartNetIncome.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
@@ -286,6 +327,7 @@ public class ReportFragment extends Fragment{
         BarData barData = new BarData();
         barData.addDataSet(barDataSet);
         barChartNetIncome.setData(barData);
+        barChartNetIncome.animateY(1400);
         barChartNetIncome.invalidate();
     }
     private void initCharts(List<GroupTransaction> groupTransactionList){
@@ -341,7 +383,7 @@ public class ReportFragment extends Fragment{
     private void openPickDateDialog(){
         switch (timeFrameMode){
             case DAY:
-                showMonthPicker();
+                showDatePicker();
                 break;
             case MONTH:
                 showMonthPicker();
@@ -377,7 +419,7 @@ public class ReportFragment extends Fragment{
                 showTransList();
             }
         }, today.get(Calendar.YEAR), today.get(Calendar.MONTH));
-        builder.setActivatedMonth(Calendar.JULY)
+        builder.setActivatedMonth(Calendar.JUNE)
                 .setMinYear(1990)
                 .setActivatedYear(2022)
                 .setMaxYear(2030)
@@ -394,7 +436,7 @@ public class ReportFragment extends Fragment{
                 showTransList();
             }
         }, today.get(Calendar.YEAR), today.get(Calendar.MONTH));
-        builder.setActivatedMonth(Calendar.JULY)
+        builder.setActivatedMonth(Calendar.JUNE)
                 .setMinYear(1990)
                 .setActivatedYear(2022)
                 .setMaxYear(2030)
