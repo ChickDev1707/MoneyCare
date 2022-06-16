@@ -23,7 +23,7 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="540dp">
+            android:layout_height="610dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -147,17 +147,30 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
-
-                    <com.anychart.AnyChartView
-                        android:id="@+id/charColumnNetIncome"
+                    <RelativeLayout
+                        android:id="@+id/chart"
                         android:layout_width="match_parent"
-                        android:layout_height="500dp"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginTop="32dp"
-                        android:layout_marginEnd="8dp"
+                        android:layout_height="wrap_content"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textViewNetIncome" />
+                        app:layout_constraintTop_toBottomOf="@+id/textViewNetIncome">
+
+                        <LinearLayout
+                            android:id="@+id/columnChart"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <com.github.mikephil.charting.charts.BarChart
+                                android:id="@+id/barChartNetIncome"
+                                android:layout_width="match_parent"
+                                android:layout_height="443dp"
+                                android:layout_marginStart="8dp"
+                                android:layout_marginTop="8dp"
+                                android:layout_marginEnd="8dp" />
+                        </LinearLayout>
+
+                    </RelativeLayout>
+
 
                     <View
                         android:id="@+id/view"
@@ -170,7 +183,7 @@
                         android:gravity="end"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/charColumnNetIncome" />
+                        app:layout_constraintTop_toBottomOf="@id/chart" />
 
                     <LinearLayout
                         android:id="@+id/linearLayout3"
@@ -185,7 +198,7 @@
                         app:layout_constraintTop_toBottomOf="@+id/view">
 
                         <TextView
-                            android:id="@+id/textView7"
+                            android:id="@+id/textViewIncome"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -196,7 +209,7 @@
                             android:textStyle="bold" />
 
                         <TextView
-                            android:id="@+id/textView8"
+                            android:id="@+id/textViewExpense"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -242,6 +255,31 @@
                             android:textSize="@dimen/font_size_normal"
                             android:textStyle="bold" />
 
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/linearLayout7"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:orientation="horizontal"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/linearLayout4">
+
+                        <com.github.mikephil.charting.charts.PieChart
+                            android:id="@+id/pieChartIncome"
+                            android:layout_width="193dp"
+                            android:layout_height="200dp">
+
+                        </com.github.mikephil.charting.charts.PieChart>
+
+                        <com.github.mikephil.charting.charts.PieChart
+                            android:id="@+id/pieChartExpense"
+                            android:layout_width="202dp"
+                            android:layout_height="200dp" />
                     </LinearLayout>
 
                     <com.google.android.material.button.MaterialButton
