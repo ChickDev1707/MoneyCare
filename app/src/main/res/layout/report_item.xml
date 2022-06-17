@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:id="@+id/report_item"
+    android:paddingTop="@dimen/layout_padding"
+    android:paddingLeft="5dp">
+    <TextView
+        android:id="@+id/transaction_hourDayMonthYear"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:textSize="36sp"
+        android:text="24"
+        android:textAlignment="center"
+        android:textColor="@color/blue_grey_main"
+        android:layout_marginEnd="10dp"
+        />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/transaction_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/font_size_extra_small"
+            android:text="Hello"
+            android:layout_marginTop="3dp"
+            android:textAppearance="?attr/textAppearanceListItem" />
+        <TextView
+            android:id="@+id/transaction_note"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/font_size_extra_small"
+            android:text="56 trans"
+            android:textColor="@color/gray_700"
+            android:layout_marginTop="3dp"
+            android:textAppearance="?attr/textAppearanceListItem" />
+
+    </LinearLayout>
+    <TextView
+        android:id="@+id/transaction_money"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:textSize="@dimen/font_size_small"
+        android:layout_weight="1"
+        android:gravity="end"
+        android:text="100000"
+        android:textAppearance="?attr/textAppearanceListItem" />
+</LinearLayout>
