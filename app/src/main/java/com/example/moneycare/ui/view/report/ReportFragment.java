@@ -142,16 +142,16 @@ public class ReportFragment extends Fragment{
         binding.setReportListVM(viewModel);
         binding.setLifecycleOwner(this);
         timeFrameMode = TransactionTimeFrame.DAY;
-        barChartNetIncome = binding.getRoot().findViewById(R.id.barChartNetIncome);
-        pieChartIncome = binding.getRoot().findViewById(R.id.pieChartIncome);
-        pieChartExpense = binding.getRoot().findViewById(R.id.pieChartExpense);
+//        barChartNetIncome = binding.getRoot().findViewById(R.id.barChartNetIncome);
+//        pieChartIncome = binding.getRoot().findViewById(R.id.pieChartIncome);
+//        pieChartExpense = binding.getRoot().findViewById(R.id.pieChartExpense);
 
         dataChartNetIncome = new ArrayList<>();
         dataChartIncome = new ArrayList<>();
         dataChartExpense = new ArrayList<>();
 
-        textViewIncome = binding.getRoot().findViewById(R.id.textViewIncome);
-        textViewExpense = binding.getRoot().findViewById(R.id.textViewExpense);
+//        textViewIncome = binding.getRoot().findViewById(R.id.textViewIncome);
+//        textViewExpense = binding.getRoot().findViewById(R.id.textViewExpense);
 
 
         Toolbar toolbar = binding.getRoot().findViewById(R.id.top_app_bar);
