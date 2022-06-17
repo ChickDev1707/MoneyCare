@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    tools:context=".ui.view.account.LoginActivity">
+    tools:context=".ui.view.account.RegisterActivity">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -46,6 +46,23 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
             app:boxBackgroundColor="@android:color/transparent"
             app:startIconDrawable="@drawable/ic_person_24"
+            android:hint="Tên người dùng"
+            android:layout_marginBottom="@dimen/text_field_bottom_margin"
+            >
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/user_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/font_size_normal"
+
+                />
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+            app:boxBackgroundColor="@android:color/transparent"
+            app:startIconDrawable="@drawable/ic_email_24"
             android:hint="Email"
             android:layout_marginBottom="@dimen/text_field_bottom_margin"
             >
@@ -75,25 +92,8 @@
                 android:inputType="textPassword"
                 />
         </com.google.android.material.textfield.TextInputLayout>
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
-            app:boxBackgroundColor="@android:color/transparent"
-            app:startIconDrawable="@drawable/ic_lock"
-            android:hint="Xác nhận mật khẩu"
-            android:layout_marginBottom="@dimen/text_field_bottom_margin"
-            >
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/confirm_password"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/font_size_normal"
-                android:inputType="textPassword"
-                />
-        </com.google.android.material.textfield.TextInputLayout>
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/to_login_btn"
+            android:id="@+id/register_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="1dp"
