@@ -12,6 +12,13 @@ import androidx.preference.PreferenceManager;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalTime;
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -26,6 +33,20 @@ public class DateTimeUtil {
         String sDate = formatter.format(date);
         return sDate;
     }
+    public static String getDateStringDMY(Date date){
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        String sDate = formatter.format(date);
+        return sDate;
+    }
+    //first date of current month
+    public static Date getFirstDateOfMonth(){
+        LocalDate localDate =  LocalDate.now().withDayOfMonth(1);
+        return Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+    }
+    public static Date getLastDateOfMonth() {
+        LocalDate localDate = LocalDate.now().withDayOfMonth(LocalDate.now().lengthOfMonth());
+        return Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+    }
     public static String getMonthString(Date date){
         SimpleDateFormat formatter = new SimpleDateFormat("MMM, yyyy");
         String sDate = formatter.format(date);
@@ -35,6 +56,11 @@ public class DateTimeUtil {
         SimpleDateFormat formatter = new SimpleDateFormat("YYYY");
         String sDate = formatter.format(date);
         return sDate;
+    }
+    public static int getHour(Date date){
+        calendar.setTime(date);
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        return hour;
     }
     public static int getDay(Date date){
         calendar.setTime(date);
@@ -92,4 +118,10 @@ public class DateTimeUtil {
         return hourString + ":" + minuteString;
     }
 
+
+    public static Long daysLeft(Date endDate){
+        long diffInMillies = endDate.getTime() - new Date().getTime();
+        Long res = diffInMillies / (3600 * 1000 * 24) + 1;
+        return res < 0 ? 0L : res;
+    }
 }

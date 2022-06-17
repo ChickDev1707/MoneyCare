@@ -3,18 +3,25 @@ package com.example.moneycare.data.repository;
 import androidx.annotation.NonNull;
 
 import com.example.moneycare.data.model.Event;
+import com.example.moneycare.data.model.Budget;
+import com.example.moneycare.data.model.Event;
+import com.example.moneycare.data.model.Group;
+import com.example.moneycare.data.model.UserTransaction;
+import com.example.moneycare.utils.DateUtil;
 import com.example.moneycare.utils.appinterface.FirestoreListCallback;
 import com.example.moneycare.utils.appinterface.FirestoreObjectCallback;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.Transaction;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +34,7 @@ public class EventRepository {
     }
 
     public void fetchEvents(FirestoreListCallback callback){
-        Query query =  db.collection("users").document("0Y8OyI6kIocUEgdsc5fEctGzQDN2").collection("events");
+        Query query =  db.collection("events");
         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull  Task<QuerySnapshot> task) {
@@ -73,19 +80,19 @@ public class EventRepository {
 
     public void updateEvent(Event event){
         db.collection("events").document(event.id)
-                .update(event.toMap())
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        System.out.println("DocumentSnapshot successfully updated!");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        System.out.println("Error updating document" +  e);
-                    }
-                });
+            .update(event.toMap())
+            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    System.out.println("DocumentSnapshot successfully updated!");
+                }
+            })
+            .addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    System.out.println("Error updating document" +  e);
+                }
+            });
     }
     public void changeStatus(String id, String status){
         db.collection("events").document(id)

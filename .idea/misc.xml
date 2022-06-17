@@ -3,6 +3,25 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/MoneyCare/app/src/main/res/drawable/ic_vietnamese_dong.xml" value="0.15989583333333332" />
+        <entry key="..\:/MoneyCare/app/src/main/res/layout/activity_main.xml" value="0.11639492753623189" />
+        <entry key="..\:/MoneyCare/app/src/main/res/layout/budget_fragment.xml" value="0.264" />
+        <entry key="..\:/MoneyCare/app/src/main/res/layout/fragment_add_budget.xml" value="0.2" />
+        <entry key="..\:/MoneyCare/app/src/main/res/layout/fragment_autocomplete_group_item.xml" value="0.14375" />
+        <entry key="..\:/MoneyCare/app/src/main/res/layout/fragment_budget.xml" value="0.264" />
+        <entry key="..\:/MoneyCare/app/src/main/res/layout/fragment_budget_detail.xml" value="0.176" />
+        <entry key="..\:/MoneyCare/app/src/main/res/layout/fragment_budgets_group_item.xml" value="0.17798913043478262" />
+        <entry key="..\:/MoneyCare/app/src/main/res/layout/fragment_group_item.xml" value="0.17552083333333332" />
+        <entry key="..\:/MoneyCare/app/src/main/res/layout/fragment_login.xml" value="0.11639492753623189" />
+        <entry key="..\:/MoneyCare/app/src/main/res/layout/fragment_new_transaction.xml" value="0.14375" />
+        <entry key="..\:/MoneyCare/app/src/main/res/layout/fragment_transaction.xml" value="0.11639492753623189" />
+        <entry key="..\:/MoneyCare/app/src/main/res/layout/fragment_transaction_group_item.xml" value="0.1337386018237082" />
+        <entry key="..\:/MoneyCare/app/src/main/res/layout/fragment_transaction_list.xml" value="0.1337386018237082" />
+        <entry key="..\:/MoneyCare/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.15989583333333332" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
         <entry key="..\:/Courses/third/HKII/java/project/source/app/src/main/res/drawable/circle.xml" value="0.131" />
         <entry key="..\:/Courses/third/HKII/java/project/source/app/src/main/res/drawable/ic_account_balance_wallet_24.xml" value="0.159" />
         <entry key="..\:/Courses/third/HKII/java/project/source/app/src/main/res/drawable/ic_add_24.xml" value="0.159" />
@@ -102,6 +121,22 @@
         <entry key="..\:/Courses/third/HKII/java/project/source/app/src/main/res/menu/update_app_bar.xml" value="0.11614583333333334" />
         <entry key="..\:/Courses/third/HKII/java/project/source/app/src/main/res/menu/update_app_bar_menu.xml" value="0.25833333333333336" />
         <entry key="..\:/Courses/third/HKII/java/project/source/app/src/main/res/xml/root_preferences.xml" value="0.16510416666666666" />
+        <entry key="..\:/Users/ThanhDan/source/repos/MoneyCare/app/src/main/res/layout/basic_app_bar.xml" value="0.18802083333333333" />
+        <entry key="..\:/Users/ThanhDan/source/repos/MoneyCare/app/src/main/res/layout/dropdown_item.xml" value="0.18802083333333333" />
+        <entry key="..\:/Users/ThanhDan/source/repos/MoneyCare/app/src/main/res/layout/main_app_bar.xml" value="0.18802083333333333" />
+        <entry key="..\:/Users/ThanhDan/source/repos/MoneyCare/app/src/main/res/layout/update_app_bar.xml" value="0.18802083333333333" />
+        <entry key="..\:/Users/ThanhDan/source/repos/MoneyCare/app/src/main/res/layouts/account/layout/account_panel_item.xml" value="0.278125" />
+        <entry key="..\:/Users/ThanhDan/source/repos/MoneyCare/app/src/main/res/layouts/account/layout/fragment_account.xml" value="0.278125" />
+        <entry key="..\:/Users/ThanhDan/source/repos/MoneyCare/app/src/main/res/layouts/report/layout/fragment_report.xml" value="0.22" />
+        <entry key="..\:/Users/ThanhDan/source/repos/MoneyCare/app/src/main/res/layouts/transaction/layout/fragment_group_list.xml" value="0.278125" />
+        <entry key="..\:/Users/ThanhDan/source/repos/MoneyCare/app/src/main/res/layouts/transaction/layout/fragment_transaction_list.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/ThanhDan/source/repos/MoneyCare/app/src/main/res/layouts/transaction/layout/group_item.xml" value="0.18802083333333333" />
+        <entry key="..\:/Users/ThanhDan/source/repos/MoneyCare/app/src/main/res/layouts/transaction/layout/group_transaction_item.xml" value="0.18802083333333333" />
+        <entry key="..\:/Users/ThanhDan/source/repos/MoneyCare/app/src/main/res/layouts/transaction/layout/transaction_item.xml" value="0.18802083333333333" />
+        <entry key="..\:/Users/ThanhDan/source/repos/MoneyCare/app/src/main/res/layouts/transaction/layout/wallet_item.xml" value="0.18802083333333333" />
+        <entry key="..\:/Users/ThanhDan/source/repos/MoneyCare/app/src/main/res/menu/bottom_nav_menu.xml" value="0.18802083333333333" />
+        <entry key="..\:/Users/ThanhDan/source/repos/MoneyCare/app/src/main/res/menu/top_app_bar.xml" value="0.18802083333333333" />
+        <entry key="..\:/Users/ThanhDan/source/repos/MoneyCare/app/src/main/res/menu/update_app_bar_menu.xml" value="0.18802083333333333" />
       </map>
     </option>
   </component>
@@ -110,5 +145,12 @@
   </component>
   <component name="ProjectType">
     <option name="id" value="Android" />
+  </component>
+  <component name="VisualizationToolProject">
+    <option name="state">
+      <ProjectState>
+        <option name="scale" value="0.264" />
+      </ProjectState>
+    </option>
   </component>
 </project>

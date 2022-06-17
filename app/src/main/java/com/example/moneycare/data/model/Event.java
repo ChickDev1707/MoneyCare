@@ -64,7 +64,7 @@ public class Event implements Parcelable {
         result.put("image", image);
         result.put("endDate", new Timestamp(endDate));
         if(wallet != ""){
-            result.put("wallet", FirestoreUtil.getReferenceFromPath(wallet));
+            result.put("wallet", FirestoreUtil.getReferenceFromString(wallet));
         }
         result.put("status", status);
         return result;
