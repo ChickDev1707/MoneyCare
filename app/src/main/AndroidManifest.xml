@@ -13,6 +13,34 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MoneyCare">
         <activity
+            android:name=".ui.view.plan.event.EventTransactionActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.view.plan.event.UpdateEventActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.view.plan.event.EventDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.view.plan.event.AddEventActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.view.plan.event.EventActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.view.plan.budget.SelectBudgetGroupActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.view.plan.budget.UpdateBudgetActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.view.plan.budget.BudgetDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.view.plan.budget.AddBudgetActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.view.plan.budget.BudgetActivity"
             android:name=".ui.view.transaction.wallet.UpdateWalletActivity"
             android:exported="false" />
         <activity

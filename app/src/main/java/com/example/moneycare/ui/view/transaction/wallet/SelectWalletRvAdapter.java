@@ -37,12 +37,15 @@ public class SelectWalletRvAdapter extends WalletMainRvAdapter {
             @Override
             public void onClick(View view) {
                 saveWalletPreference(wallet.id);
-                finishActivity();
+                finishActivity(wallet);
             }
         });
     }
-    private void finishActivity(){
-        activity.setResult(Activity.RESULT_OK);
+    private void finishActivity(Wallet wallet){
+        Intent intent = new Intent();
+        intent.putExtra("wallet", wallet);
+        activity.setResult(Activity.RESULT_OK, intent);
+
         activity.finish();
     }
     private void saveWalletPreference(String walletId){
