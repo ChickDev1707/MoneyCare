@@ -48,9 +48,9 @@ public class SelectWalletRvAdapter extends WalletMainRvAdapter {
         activity.finish();
     }
     private void saveWalletPreference(String walletId){
-        SharedPreferences sharedPref = activity.getSharedPreferences(activity.getString(R.string.transaction_preference_key), Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = activity.getSharedPreferences(activity.getString(R.string.transaction_preference), Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putString(activity.getString(R.string.current_wallet_key), walletId);
+        editor.putString(activity.getString(R.string.pref_key_current_wallet), walletId);
         editor.apply();
     }
     @Override

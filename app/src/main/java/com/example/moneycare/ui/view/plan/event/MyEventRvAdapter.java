@@ -23,7 +23,7 @@ import com.example.moneycare.databinding.FragmentEventItemBinding;
 import com.example.moneycare.ui.view.plan.budget.BudgetDetailActivity;
 import com.example.moneycare.ui.viewmodel.plan.BudgetViewModel;
 import com.example.moneycare.utils.Convert;
-import com.example.moneycare.utils.DateUtil;
+import com.example.moneycare.utils.DateTimeUtil;
 import com.example.moneycare.utils.LoadImage;
 
 import java.text.SimpleDateFormat;
@@ -54,7 +54,7 @@ public class MyEventRvAdapter extends RecyclerView.Adapter<MyEventRvAdapter.View
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.eventName.setText(events.get(position).name);
-        holder.daysLeft.setText("Còn " + DateUtil.daysLeft(events.get(position).endDate) + " ngày");
+        holder.daysLeft.setText("Còn " + DateTimeUtil.daysLeft(events.get(position).endDate) + " ngày");
 //        holder.spent.setText(Convert.convertToThousandsSeparator());
         if(events.get(position).image != ""){
             LoadImage loadImage = new LoadImage(holder.imgView);

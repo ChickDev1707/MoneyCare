@@ -27,7 +27,7 @@ import com.example.moneycare.ui.view.plan.budget.AddBudgetActivity;
 import com.example.moneycare.ui.view.transaction.wallet.SelectWalletActivity;
 import com.example.moneycare.ui.viewmodel.plan.EventViewModel;
 import com.example.moneycare.ui.viewmodel.transaction.NewGroupViewModel;
-import com.example.moneycare.utils.DateUtil;
+import com.example.moneycare.utils.DateTimeUtil;
 import com.example.moneycare.utils.ImageUtil;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;

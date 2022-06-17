@@ -8,7 +8,7 @@
         <variable
             name="eventVM"
             type="com.example.moneycare.ui.viewmodel.plan.EventViewModel" />
-        <import type="com.example.moneycare.utils.DateUtil"/>
+        <import type="com.example.moneycare.utils.DateTimeUtil"/>
     </data>
     <LinearLayout
         android:orientation="vertical"
@@ -78,7 +78,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_toRightOf="@id/icon_calendar"
-                            android:text="@{DateUtil.getDateStringDMY(eventVM.endDate)}"
+                            android:text="@{DateTimeUtil.getDateStringDMY(eventVM.endDate)}"
                             android:textSize="18sp" />
 
                         <TextView

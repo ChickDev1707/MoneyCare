@@ -6,7 +6,7 @@ import androidx.navigation.Navigation;
 import com.example.moneycare.data.model.Budget;
 import com.example.moneycare.data.model.Group;
 import com.example.moneycare.data.model.UserTransaction;
-import com.example.moneycare.utils.DateUtil;
+import com.example.moneycare.utils.DateTimeUtil;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -33,8 +33,8 @@ public class BudgetRepository {
 
     public void fetchBudgetsInMonth(BudgetRepository.FirestoreCallback callback){
         Query query =  db.collection("budgets")
-                .whereGreaterThanOrEqualTo("date", DateUtil.getFirstDateOfMonth())
-                .whereLessThanOrEqualTo("date", DateUtil.getLastDateOfMonth());
+                .whereGreaterThanOrEqualTo("date", DateTimeUtil.getFirstDateOfMonth())
+                .whereLessThanOrEqualTo("date", DateTimeUtil.getLastDateOfMonth());
         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull  Task<QuerySnapshot> task) {

@@ -19,7 +19,7 @@ import com.example.moneycare.R;
 import com.example.moneycare.data.model.Event;
 import com.example.moneycare.data.repository.EventRepository;
 import com.example.moneycare.ui.view.plan.budget.BudgetActivity;
-import com.example.moneycare.utils.DateUtil;
+import com.example.moneycare.utils.DateTimeUtil;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -85,7 +85,7 @@ public class EventActivity extends AppCompatActivity {
                 List<Event> eventsEnd = new ArrayList<Event>();
                 List<Event> eventsOngoing = new ArrayList<Event>();
                 for(Event event : (List<Event>)events){
-                   if(DateUtil.daysLeft(event.endDate) <= 0 && event.status.equals("ongoing")){
+                   if(DateTimeUtil.daysLeft(event.endDate) <= 0 && event.status.equals("ongoing")){
                        repository.changeStatus(event.id, "end");
                        event.status = "end";
                    }

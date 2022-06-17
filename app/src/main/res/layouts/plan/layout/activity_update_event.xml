@@ -8,7 +8,7 @@
         <variable
             name="eventVM"
             type="com.example.moneycare.ui.viewmodel.plan.EventViewModel" />
-        <import type="com.example.moneycare.utils.DateUtil"/>
+        <import type="com.example.moneycare.utils.DateTimeUtil"/>
     </data>
     <LinearLayout
         android:orientation="vertical"
@@ -100,7 +100,7 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/update_event_end_date"
                         android:layout_width="match_parent"
-                        android:text="@{DateUtil.getDateStringDMY(eventVM.endDate)}"
+                        android:text="@{DateTimeUtil.getDateStringDMY(eventVM.endDate)}"
                         android:layout_height="70dp"
                         android:focusable="false"
                         android:inputType="none"/>

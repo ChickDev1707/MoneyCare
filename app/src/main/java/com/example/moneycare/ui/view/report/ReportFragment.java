@@ -10,8 +10,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.compose.ui.graphics.drawscope.Fill;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -21,20 +19,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
-import com.anychart.APIlib;
-import com.anychart.AnyChart;
-import com.anychart.AnyChartView;
-import com.anychart.chart.common.dataentry.DataEntry;
-import com.anychart.chart.common.dataentry.ValueDataEntry;
-import com.anychart.charts.Cartesian;
-import com.anychart.charts.Pie;
-import com.anychart.core.cartesian.series.Column;
-import com.anychart.enums.Anchor;
-import com.anychart.enums.HoverMode;
-import com.anychart.enums.TooltipPositionMode;
 import com.example.moneycare.R;
 import com.example.moneycare.data.custom.GroupTransaction;
 import com.example.moneycare.data.model.Group;
@@ -43,30 +29,25 @@ import com.example.moneycare.data.model.Wallet;
 import com.example.moneycare.databinding.FragmentReportBinding;
 import com.example.moneycare.ui.view.MainActivity;
 import com.example.moneycare.ui.viewmodel.report.ReportViewModel;
-import com.example.moneycare.utils.DateUtil;
+import com.example.moneycare.utils.Converter;
+import com.example.moneycare.utils.DateTimeUtil;
 import com.example.moneycare.utils.ImageUtil;
 import com.example.moneycare.utils.appenum.TransactionTimeFrame;
-import com.example.moneycare.utils.enums.Position;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
-import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
-import com.github.mikephil.charting.utils.Utils;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
-import com.google.protobuf.Any;
 import com.whiteelephant.monthpicker.MonthPickerDialog;
 
 import org.jetbrains.annotations.NotNull;
@@ -75,7 +56,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -147,13 +127,14 @@ public class ReportFragment extends Fragment{
         textViewExpense = binding.getRoot().findViewById(R.id.textViewExpense);
 
 
-        Toolbar toolbar = binding.getRoot().findViewById(R.id.top_app_bar);
+        Toolbar toolbar = binding.getRoot().findViewById(R.id.main_app_bar);
         toolbar.setTitle("");
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
 
         initTransactionSetting();
         initTransList();
         initOpenWalletListBtn();
+        initWalletFromPreference();
 
         return binding.getRoot();
     }
@@ -170,9 +151,9 @@ public class ReportFragment extends Fragment{
             for (GroupTransaction groupTransaction: groupTransactionList){
                 for (UserTransaction transaction:groupTransaction.transactionList){
                     if (groupTransaction.group.type)
-                        dataValues[DateUtil.getDay(transaction.date)]+=transaction.money/1000;
+                        dataValues[DateTimeUtil.getDay(transaction.date)]+=transaction.money/1000;
                     else
-                        dataValues[DateUtil.getDay(transaction.date)]-=transaction.money/1000;
+                        dataValues[DateTimeUtil.getDay(transaction.date)]-=transaction.money/1000;
                 }
                 if(groupTransaction.group.type){
                     dataChartIncome.add(new PieEntry(groupTransaction.getTotalMoney(), groupTransaction.group.name));
@@ -195,9 +176,9 @@ public class ReportFragment extends Fragment{
                     }
                     for (UserTransaction transaction:groupTransaction.transactionList){
                         if (groupTransaction.group.type)
-                            dataValues[DateUtil.getHour(transaction.date)]+=transaction.money/1000;
+                            dataValues[DateTimeUtil.getHour(transaction.date)]+=transaction.money/1000;
                         else
-                            dataValues[DateUtil.getHour(transaction.date)]-=transaction.money/1000;
+                            dataValues[DateTimeUtil.getHour(transaction.date)]-=transaction.money/1000;
                     }
                 }
                 for (int i=0; i<= 23; i++){
@@ -208,9 +189,9 @@ public class ReportFragment extends Fragment{
                     for (GroupTransaction groupTransaction: groupTransactionList){
                         for (UserTransaction transaction:groupTransaction.transactionList){
                             if (groupTransaction.group.type)
-                                dataValues[DateUtil.getMonth(transaction.date)]+=transaction.money/1000;
+                                dataValues[DateTimeUtil.getMonth(transaction.date)]+=transaction.money/1000;
                             else
-                                dataValues[DateUtil.getMonth(transaction.date)]-=transaction.money/1000;
+                                dataValues[DateTimeUtil.getMonth(transaction.date)]-=transaction.money/1000;
                         }
                         if(groupTransaction.group.type){
                             dataChartIncome.add(new PieEntry(groupTransaction.getTotalMoney(), groupTransaction.group.name));
@@ -343,7 +324,7 @@ public class ReportFragment extends Fragment{
     }
     public void showTransList(){
 //        RecyclerView transList = binding.groupTransactionListTemplate;
-        viewModel.setUI(timeFrameMode, selectedDate , groupTransactionList -> {
+        viewModel.setUI(getContext(), timeFrameMode, selectedDate , groupTransactionList -> {
 //            transList.setAdapter(new GroupTransactionRecyclerViewAdapter(groupTransactionList));
             viewModel.initMoneyInAndOut(groupTransactionList);
             initCharts(groupTransactionList);
@@ -352,7 +333,7 @@ public class ReportFragment extends Fragment{
 
     @Override
     public void onCreateOptionsMenu(@NonNull @NotNull Menu menu, @NonNull @NotNull MenuInflater inflater) {
-        inflater.inflate(R.menu.top_app_bar, menu);
+        inflater.inflate(R.menu.main_app_bar, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -415,7 +396,7 @@ public class ReportFragment extends Fragment{
         MonthPickerDialog.Builder builder = new MonthPickerDialog.Builder(getContext(), new MonthPickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(int selectedMonth, int selectedYear) {
-                selectedDate = DateUtil.createDate(1, selectedMonth, selectedYear);
+                selectedDate = DateTimeUtil.createDate(1, selectedMonth, selectedYear);
                 showTransList();
             }
         }, today.get(Calendar.YEAR), today.get(Calendar.MONTH));
@@ -432,7 +413,7 @@ public class ReportFragment extends Fragment{
         MonthPickerDialog.Builder builder = new MonthPickerDialog.Builder(getContext(), new MonthPickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(int selectedMonth, int selectedYear) {
-                selectedDate = DateUtil.createDate(1, selectedMonth, selectedYear);
+                selectedDate = DateTimeUtil.createDate(1, selectedMonth, selectedYear);
                 showTransList();
             }
         }, today.get(Calendar.YEAR), today.get(Calendar.MONTH));
@@ -447,18 +428,18 @@ public class ReportFragment extends Fragment{
     }
 
     private void saveTransactionSetting(){
-        SharedPreferences sharedPref = getActivity().getSharedPreferences(getString(R.string.transaction_preference_key), Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = getActivity().getSharedPreferences(getString(R.string.transaction_preference), Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putInt(getString(R.string.time_frame_key), timeFrameMode.getValue());
+        editor.putInt(getString(R.string.pref_key_time_frame), timeFrameMode.getValue());
         editor.apply();
     }
     public void initTransactionSetting(){
-        SharedPreferences sharedPref = getActivity().getSharedPreferences(getString(R.string.transaction_preference_key), Context.MODE_PRIVATE);
-        int timeFrameValue = sharedPref.getInt(getString(R.string.time_frame_key), 1);
+        SharedPreferences sharedPref = getActivity().getSharedPreferences(getString(R.string.transaction_preference), Context.MODE_PRIVATE);
+        int timeFrameValue = sharedPref.getInt(getString(R.string.pref_key_time_frame), 1);
         timeFrameMode = TransactionTimeFrame.getTimeFrame(timeFrameValue);
     }
     private void initOpenWalletListBtn(){
-        binding.mainAppBar.walletIconBtn.setOnClickListener(new View.OnClickListener() {
+        binding.appBarLayout.walletIconBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 //                Intent toSelectWalletIntent = new Intent(getActivity(), SelectWalletActivity.class);
@@ -467,34 +448,37 @@ public class ReportFragment extends Fragment{
             }
         });
     }
-//    public void initWalletFromPreference(){
-//        SharedPreferences sharedPref = getActivity().getSharedPreferences(getString(R.string.transaction_preference_key), Context.MODE_PRIVATE);
-//        String walletId = sharedPref.getString(getString(R.string.current_wallet_key), "");
-//
-//        if(walletId == ""){
-//            // no pref
-//            viewModel.fetchFirstWallet(wallet->{
-//                initWallet(wallet);
-//                saveWalletPreference(wallet);
-//            });
-//        }else{
-//            viewModel.fetchWallet(walletId, this::initWallet);
-//        }
-//    }
-    private void initWallet(Wallet wallet){
-        binding.mainAppBar.walletName.setText(wallet.name);
-        binding.mainAppBar.walletMoney.setText(Long.toString(wallet.money));
-
-        if(wallet.image!= ""){
-            Bitmap walletBimapImg = ImageUtil.toBitmap(wallet.image);
-            BitmapDrawable walletBitmapDrawable = new BitmapDrawable(getResources(), walletBimapImg);
-            binding.mainAppBar.walletIconBtn.setBackground(walletBitmapDrawable);
+    private void initWalletFromPreference(){
+        String walletId = getWalletFromPreference();
+        if(walletId.equals("")){
+            // no pref
+            viewModel.fetchFirstWallet(wallet->{
+                updateWalletUI(wallet);
+                setWalletToPreference(wallet.id);
+            });
+        }else{
+            viewModel.fetchWallet(walletId, this::updateWalletUI);
         }
     }
-    private void saveWalletPreference(Wallet wallet){
-        SharedPreferences sharedPref = getActivity().getSharedPreferences(getString(R.string.transaction_preference_key), Context.MODE_PRIVATE);
+    private String getWalletFromPreference(){
+        SharedPreferences sharedPref = getActivity().getSharedPreferences(getString(R.string.transaction_preference), Context.MODE_PRIVATE);
+        String walletId = sharedPref.getString(getString(R.string.pref_key_current_wallet), "");
+        return walletId;
+    }
+    private void updateWalletUI(Wallet wallet){
+        binding.appBarLayout.walletName.setText(wallet.name);
+        binding.appBarLayout.walletMoney.setText(Converter.toFormattedMoney(getContext(), wallet.money));
+
+        if(!wallet.image.equals("")){
+            Bitmap walletBimapImg = ImageUtil.toBitmap(wallet.image);
+            BitmapDrawable walletBitmapDrawable = new BitmapDrawable(getResources(), walletBimapImg);
+            binding.appBarLayout.walletIconBtn.setBackground(walletBitmapDrawable);
+        }
+    }
+    private void setWalletToPreference(String walletId){
+        SharedPreferences sharedPref = getActivity().getSharedPreferences(getString(R.string.transaction_preference), Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putString(getString(R.string.current_wallet_key), wallet.id);
+        editor.putString(getString(R.string.pref_key_current_wallet), walletId);
         editor.apply();
     }
 

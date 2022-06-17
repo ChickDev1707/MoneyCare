@@ -1,19 +1,11 @@
 package com.example.moneycare.utils;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 
 import androidx.databinding.InverseMethod;
-import androidx.preference.PreferenceManager;
 
 import com.example.moneycare.data.custom.AppMoney;
 import com.example.moneycare.data.custom.MoneyFormatter;
-import com.google.gson.Gson;
-
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-import java.text.NumberFormat;
-import java.util.Locale;
 
 public class Converter {
 

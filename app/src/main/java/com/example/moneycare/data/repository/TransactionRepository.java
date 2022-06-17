@@ -3,7 +3,7 @@ package com.example.moneycare.data.repository;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.example.moneycare.utils.DateUtil;
+import com.example.moneycare.utils.DateTimeUtil;
 import com.example.moneycare.data.custom.GroupTransaction;
 import com.example.moneycare.data.model.Event;
 import com.example.moneycare.data.model.Group;
@@ -258,7 +258,7 @@ public class TransactionRepository {
         Query  query = db.collection("users").document(currentUserId)
                 .collection("transactions")
                 .whereGreaterThan("date", startDate)
-                .whereLessThanOrEqualTo("date", DateUtil.getLastDateOfMonth());
+                .whereLessThanOrEqualTo("date", DateTimeUtil.getLastDateOfMonth());
 
         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override

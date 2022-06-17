@@ -31,7 +31,7 @@ import com.example.moneycare.databinding.ActivityEventDetailBinding;
 import com.example.moneycare.ui.view.plan.budget.BudgetDetailActivity;
 import com.example.moneycare.ui.view.plan.budget.UpdateBudgetActivity;
 import com.example.moneycare.ui.viewmodel.plan.EventViewModel;
-import com.example.moneycare.utils.DateUtil;
+import com.example.moneycare.utils.DateTimeUtil;
 import com.example.moneycare.utils.LoadImage;
 
 import java.text.SimpleDateFormat;
@@ -84,7 +84,7 @@ public class EventDetailActivity extends AppCompatActivity {
     private void loadData(){
         eventVM.eventName.setValue(eventSelected.name);
         eventVM.endDate.setValue(eventSelected.endDate);
-        binding.daysLeftEventDetail.setText("Còn " + DateUtil.daysLeft(eventSelected.endDate) + " ngày");
+        binding.daysLeftEventDetail.setText("Còn " + DateTimeUtil.daysLeft(eventSelected.endDate) + " ngày");
 
         if(!eventSelected.wallet.isEmpty()){
             TransactionRepository transactionRepository = new TransactionRepository();
@@ -120,7 +120,7 @@ public class EventDetailActivity extends AppCompatActivity {
     private void initButtonChangeStatus(){
         String str = eventSelected.status.equals("end") ? "Đánh dấu chưa hoàn tất" : "Đánh dấu hoàn tất";
         binding.btnSwitchStatus.setText(str);
-        if(DateUtil.daysLeft(eventSelected.endDate) == 0){
+        if(DateTimeUtil.daysLeft(eventSelected.endDate) == 0){
             binding.btnSwitchStatus.setBackgroundColor(Color.parseColor("#DABEBE"));
         }
         else {
