@@ -1,11 +1,14 @@
 package com.example.moneycare.data.repository;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
+import com.example.moneycare.utils.DateUtil;
 import com.example.moneycare.data.custom.GroupTransaction;
+import com.example.moneycare.data.model.Event;
 import com.example.moneycare.data.model.Group;
 import com.example.moneycare.data.model.UserTransaction;
-import com.example.moneycare.utils.DateUtil;
+import com.example.moneycare.utils.DateTimeUtil;
 import com.example.moneycare.utils.FirestoreUtil;
 import com.example.moneycare.utils.appinterface.FirestoreListCallback;
 import com.example.moneycare.utils.appinterface.FirestoreObjectCallback;
@@ -14,11 +17,12 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.Transaction;
@@ -47,7 +51,7 @@ public class TransactionRepository {
                 if(task.isSuccessful()){
                     for(DocumentSnapshot snapshot:task.getResult()){
                         UserTransaction trans = UserTransaction.fromMap(snapshot.getId(), snapshot.getData());
-                        if(DateUtil.compareYear(yearDate, trans.date)) transactions.add(trans);
+                        if(DateTimeUtil.compareYear(yearDate, trans.date)) transactions.add(trans);
                     }
                     getGroupTransactionList(transactions, callback);
                 }
@@ -64,7 +68,7 @@ public class TransactionRepository {
                 if(task.isSuccessful()){
                     for(DocumentSnapshot snapshot:task.getResult()){
                         UserTransaction trans = UserTransaction.fromMap(snapshot.getId(), snapshot.getData());
-                        if(DateUtil.compareMonth(monthDate, trans.date)) transactions.add(trans);
+                        if(DateTimeUtil.compareMonth(monthDate, trans.date)) transactions.add(trans);
                     }
                     getGroupTransactionList(transactions, callback);
                 }
@@ -80,7 +84,7 @@ public class TransactionRepository {
                 if(task.isSuccessful()){
                     for(DocumentSnapshot snapshot:task.getResult()){
                         UserTransaction trans = UserTransaction.fromMap(snapshot.getId(), snapshot.getData());
-                        if(DateUtil.compareDate(dayDate, trans.date)) transactions.add(trans);
+                        if(DateTimeUtil.compareDate(dayDate, trans.date)) transactions.add(trans);
                     }
                     getGroupTransactionList(transactions, callback);
                 }
@@ -89,56 +93,65 @@ public class TransactionRepository {
         });
     }
 
-    public void saveNewTransaction(long money, Group group, String note, Date date){
-        CollectionReference transactionsRef = db.collection("users").document(currentUserId).collection("transactions");
-        String groupPath = "transaction-groups/" + group.id;
-        UserTransaction newTrans = new UserTransaction(null, money, groupPath, note, date, "wallets/wall-1");
-        transactionsRef.add(newTrans.toMap())
-        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+    public void saveNewTransaction(long money, Group group, String note, Date date, String walletId, String eventId, FirestoreObjectCallback<Void> successCallback, FirestoreObjectCallback<Void> failureCallback){
+        DocumentReference transactionsRef = db.collection("users").document(currentUserId).collection("transactions").document();
+        String groupPath = getGroupPath(group);
+        String walletPath = getWalletPath(walletId);
+        UserTransaction newTrans = new UserTransaction(null, money, groupPath, note, date, walletPath, eventId);
+
+        db.runTransaction(new Transaction.Function<Void>() {
+            @Nullable
             @Override
-            public void onSuccess(DocumentReference documentReference) {
-                System.out.println("add trans success");
-                updateWallet("wall-1", money, group);
+            public Void apply(@NonNull Transaction transaction) throws FirebaseFirestoreException {
+                DocumentReference walletRef = FirestoreUtil.getReferenceFromPath(walletPath);
+                DocumentSnapshot walletSnapshot = transaction.get(walletRef);
+
+                Long walletMoney = walletSnapshot.getLong("money");
+                walletMoney = group.type? walletMoney + money: walletMoney - money;
+
+                transaction.update(walletRef, "money", walletMoney);
+                transaction.set(transactionsRef, newTrans.toMap());
+                return null;
             }
-        })
-        .addOnFailureListener(new OnFailureListener() {
+        }).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
-            public void onFailure(@NonNull @NotNull Exception e) {
-                System.out.println(e);
+            public void onSuccess(Void unused) {
+                successCallback.onCallback(null);
             }
-        });
-    }
-    public void updateWallet(String walletPath, long money, Group group){
-        DocumentReference walletRef = db.collection("users").document(currentUserId).collection("wallets").document(walletPath);
-        db.runTransaction(new Transaction.Function<Long>() {
-            @Override
-            public Long apply(Transaction transaction) throws FirebaseFirestoreException {
-                DocumentSnapshot snapshot = transaction.get(walletRef);
-                Long newMoney = group.type == true? snapshot.getLong("money") + money: snapshot.getLong("money") - money;
-                transaction.update(walletRef, "money", newMoney);
-                return newMoney;
-            }
-        }).addOnSuccessListener(new OnSuccessListener<Long>() {
-            @Override
-            public void onSuccess(Long result) {
-                System.out.println("Update wallet success");
-            }
-        })
-        .addOnFailureListener(new OnFailureListener() {
+        }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                System.out.println("Update wallet failed");
+                failureCallback.onCallback(null);
             }
         });
     }
-    public void deleteTransaction(UserTransaction transaction, Group group){
-        DocumentReference docRef = db.collection("users").document(currentUserId).collection("transactions").document(transaction.id);
-        docRef.delete()
-        .addOnSuccessListener(new OnSuccessListener<Void>() {
+    public void deleteTransaction(UserTransaction userTransaction, FirestoreObjectCallback<Void> successCallback, FirestoreObjectCallback<Void> failureCallback){
+        DocumentReference docRef = db.collection("users").document(currentUserId).collection("transactions").document(userTransaction.id);
+        db.runTransaction(new Transaction.Function<Void>() {
+            @Nullable
             @Override
-            public void onSuccess(Void aVoid) {
-                System.out.println("delete trans success");
-                updateWallet("wall-1", transaction.money, group);
+            public Void apply(@NonNull Transaction transaction) throws FirebaseFirestoreException {
+                DocumentReference walletRef = FirestoreUtil.getReferenceFromPath(userTransaction.wallet);
+                DocumentSnapshot walletSnapshot = transaction.get(walletRef);
+                DocumentSnapshot groupSnapshot = transaction.get(FirestoreUtil.getReferenceFromPath(userTransaction.group));
+
+                Long walletMoney = walletSnapshot.getLong("money");
+                boolean groupType = groupSnapshot.getBoolean("type");
+                walletMoney = groupType? walletMoney - userTransaction.money: walletMoney + userTransaction.money;
+
+                transaction.update(walletRef, "money", walletMoney);
+                transaction.delete(docRef);
+                return null;
+            }
+        }).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                successCallback.onCallback(null);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                failureCallback.onCallback(null);
             }
         });
     }
@@ -148,7 +161,6 @@ public class TransactionRepository {
         groupRepository.fetchGroups(groups->{
             List<GroupTransaction> groupTransactionList = new ArrayList<>();
             for(UserTransaction transaction:transactions){
-                System.out.println(transaction.group);
                 int pos = getGroupTransactionByGroupPath(groupTransactionList, transaction.group);
                 if(pos == -1){
                     // not found
@@ -172,7 +184,7 @@ public class TransactionRepository {
     }
     public Group getGroup(List<Group> groups, String groupPath){
         for(Group group:groups){
-            String path= "transaction-groups/"+ group.id;
+            String path= getGroupPath(group);
             if(path.equals(groupPath)) return group;
         }
         return null;
@@ -180,56 +192,112 @@ public class TransactionRepository {
     private int getGroupTransactionByGroupPath(List<GroupTransaction> list, String groupPath){
         int i = 0;
         for(GroupTransaction groupTransaction:list){
-            String path= "transaction-groups/"+ groupTransaction.group.id;
+            String path= getGroupPath(groupTransaction.group);
             if(path.equals(groupPath)) return i;
             i++;
         }
         return -1;
     }
-    public void updateTransaction(UserTransaction userTransaction, Group group, FirestoreObjectCallback<UserTransaction> callback){
+    public void updateTransaction(UserTransaction userTransaction, Group group, FirestoreObjectCallback<Void> successCallback, FirestoreObjectCallback<Void> failureCallback){
         DocumentReference transactionRef = db.collection("users").document(currentUserId).collection("transactions").document(userTransaction.id);
-        String walletString = "users/LE3oa0LyuujvLqmvxoQw/" + userTransaction.wallet;
-        DocumentReference walletRef = db.document(walletString);
+        DocumentReference walletRef = db.document(userTransaction.wallet);
+        DocumentReference groupRef = db.document(userTransaction.group);
 
         db.runTransaction(new Transaction.Function<Void>() {
             @Override
             public Void apply(Transaction transaction) throws FirebaseFirestoreException {
                 DocumentSnapshot transactionSnapshot = transaction.get(transactionRef);
                 DocumentSnapshot walletSnapshot = transaction.get(walletRef);
+                DocumentSnapshot groupSnapshot = transaction.get(groupRef);
 
-                Long oldMoney = transactionSnapshot.getLong("money");
-                Long walletTotalMoney = walletSnapshot.getLong("money");
-                Long newUpdatedMoney = getNewUpdatedMoney(walletTotalMoney, oldMoney, userTransaction.money, group.type);
+                Long oldTransMoney = transactionSnapshot.getLong("money");
+                boolean oldGroupType = groupSnapshot.getBoolean("type");
+                Long walletMoney = walletSnapshot.getLong("money");
+
+                // compensate money
+                walletMoney = oldGroupType? walletMoney - oldTransMoney: walletMoney + oldTransMoney;
+                // update with new value
+                walletMoney = group.type? walletMoney + userTransaction.money: walletMoney - userTransaction.money;
 
                 // update wallet
-                transaction.update(walletRef, "money", newUpdatedMoney);
+                transaction.update(walletRef, "money", walletMoney);
 
                 transaction.update(transactionRef, "money", userTransaction.money);
-                transaction.update(transactionRef, "group", FirestoreUtil.getReferenceFromString(userTransaction.group));
+                transaction.update(transactionRef, "group", FirestoreUtil.getReferenceFromPath(getGroupPath(group)));
                 transaction.update(transactionRef, "note", userTransaction.note);
                 transaction.update(transactionRef, "date", userTransaction.date);
-
                 return null;
             }
         }).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void result) {
-                System.out.println("Update transaction success");
-                callback.onCallback(null);
+                successCallback.onCallback(null);
             }
         })
         .addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                System.out.println("Update transaction failed");
+                failureCallback.onCallback(null);
             }
         });
     }
-    private Long getNewUpdatedMoney(Long oldTotal, Long oldValue, Long newValue, boolean type){
-        Long absDiff = Math.abs(oldValue - newValue);
-        Long newMoney = type == true? oldTotal - absDiff: oldTotal+ absDiff;
-        return newMoney;
+    private String getWalletPath(String walletId){
+        return String.format("users/%s/wallets/%s", currentUserId, walletId);
+    }
+    private String getGroupPath(Group group){
+        if(group.isDefault){
+            return String.format("transaction-groups/" + group.id);
+        }else return String.format("users/%s/transaction-groups/%s", currentUserId, group.id);
+    }
+    private String getEventPath(Event event){
+        return String.format("users/%s/events/%s", currentUserId, event.id);
     }
 
+    // for budgets
+    public void getTotalSpendByGroup(FirestoreObjectCallback callback, Date startDate, String idGroup){
+        Query  query = db.collection("users").document(currentUserId)
+                .collection("transactions")
+                .whereGreaterThan("date", startDate)
+                .whereLessThanOrEqualTo("date", DateUtil.getLastDateOfMonth());
 
+        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull  Task<QuerySnapshot> task) {
+                if(task.isSuccessful()){
+                    Long total = 0L;
+                    for(QueryDocumentSnapshot snapshot:task.getResult()){
+                        UserTransaction trans = UserTransaction.fromMap(snapshot.getId(),snapshot.getData());
+                        if(trans.group.equals(idGroup)){
+                            Long itemMoney = trans.money;
+                            total += itemMoney;
+                        }
+                    }
+                    callback.onCallback(total);
+                }
+                else {
+                    System.out.println("error" + task.getException());
+                }
+            }
+        });
+    }
+    public void getTransactionsByEvent(String idEvent, FirestoreListCallback<GroupTransaction> callback){
+        CollectionReference colRef =  db.collection("users")
+                .document(currentUserId).collection("transactions");
+        colRef
+//                .whereEqualTo("event", idEvent)
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
+                List<UserTransaction> transactions = new ArrayList<UserTransaction>();
+                if(task.isSuccessful()){
+                    for(DocumentSnapshot snapshot:task.getResult()){
+                        UserTransaction trans = UserTransaction.fromMap(snapshot.getId(), snapshot.getData());
+                        transactions.add(trans);
+                    }
+                    getGroupTransactionList(transactions, callback);
+                }
+            }
+
+        });
+    }
 }

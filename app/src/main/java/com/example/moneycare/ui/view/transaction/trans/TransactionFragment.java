@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -25,9 +26,10 @@ import com.example.moneycare.R;
 import com.example.moneycare.data.model.Wallet;
 import com.example.moneycare.databinding.FragmentTransactionListBinding;
 import com.example.moneycare.ui.view.MainActivity;
-import com.example.moneycare.ui.view.transaction.wallet.SelectWalletActivity;
+import com.example.moneycare.ui.view.transaction.wallet.ModifyWalletActivity;
 import com.example.moneycare.ui.viewmodel.transaction.TransactionViewModel;
-import com.example.moneycare.utils.DateUtil;
+import com.example.moneycare.utils.Converter;
+import com.example.moneycare.utils.DateTimeUtil;
 import com.example.moneycare.utils.ImageUtil;
 import com.example.moneycare.utils.appenum.TransactionTimeFrame;
 import com.google.android.material.datepicker.MaterialDatePicker;
@@ -80,19 +82,8 @@ public class TransactionFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-
-//        View view = inflater.inflate(R.layout.fragment_transaction_list, container, false);
-        viewModel = new ViewModelProvider(this).get(TransactionViewModel.class);
-        binding = FragmentTransactionListBinding.inflate(getLayoutInflater());
-        binding.setTransactionListVM(viewModel);
-        binding.setLifecycleOwner(this);
-        timeFrameMode = TransactionTimeFrame.DAY;
-
-        Toolbar toolbar = binding.getRoot().findViewById(R.id.top_app_bar);
-        toolbar.setTitle("");
-        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
-
+        initLayout();
+        initToolbar();
         initTransactionSetting();
         initTransList();
         initOpenWalletListBtn();
@@ -100,21 +91,32 @@ public class TransactionFragment extends Fragment {
 
         return binding.getRoot();
     }
+    private void initLayout(){
+        viewModel = new ViewModelProvider(this).get(TransactionViewModel.class);
+        binding = FragmentTransactionListBinding.inflate(getLayoutInflater());
+        binding.setTransactionListVM(viewModel);
+        binding.setLifecycleOwner(this);
+        timeFrameMode = TransactionTimeFrame.DAY;
+    }
     private void initTransList(){
         selectedDate = new Date();
         showTransList();
     }
-    public void showTransList(){
+    private void showTransList(){
         RecyclerView transList = binding.groupTransactionListTemplate;
-        viewModel.setTransactionUI(timeFrameMode, selectedDate , groupTransactionList -> {
+        viewModel.setTransactionUI(getContext(), timeFrameMode, selectedDate , groupTransactionList -> {
             transList.setAdapter(new GroupTransactionRecyclerViewAdapter(groupTransactionList));
             viewModel.initMoneyInAndOut(groupTransactionList);
         });
     }
-
+    private void initToolbar(){
+        Toolbar toolbar = binding.getRoot().findViewById(R.id.main_app_bar);
+        toolbar.setTitle("");
+        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+    }
     @Override
     public void onCreateOptionsMenu(@NonNull @NotNull Menu menu, @NonNull @NotNull MenuInflater inflater) {
-        inflater.inflate(R.menu.top_app_bar, menu);
+        inflater.inflate(R.menu.main_app_bar, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -133,9 +135,18 @@ public class TransactionFragment extends Fragment {
             case R.id.time_frame_year:
                 handleSelectTimeFrame(TransactionTimeFrame.YEAR);
                 return true;
+            case R.id.modify_wallet:
+                openModifyWallet();
+                return true;
             default:
         }
         return super.onOptionsItemSelected(item);
+    }
+    private void openModifyWallet(){
+        MainActivity activity = (MainActivity) getActivity();
+        Intent intent = new Intent(activity, ModifyWalletActivity.class);
+        ActivityResultLauncher toModifyWalletLauncher = activity.getReloadTransFragmentLauncher();
+        toModifyWalletLauncher.launch(intent);
     }
     private void handleSelectTimeFrame(TransactionTimeFrame timeFrame){
         timeFrameMode = timeFrame;
@@ -177,7 +188,7 @@ public class TransactionFragment extends Fragment {
         MonthPickerDialog.Builder builder = new MonthPickerDialog.Builder(getContext(), new MonthPickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(int selectedMonth, int selectedYear) {
-                selectedDate = DateUtil.createDate(1, selectedMonth, selectedYear);
+                selectedDate = DateTimeUtil.createDate(1, selectedMonth, selectedYear);
                 showTransList();
             }
         }, today.get(Calendar.YEAR), today.get(Calendar.MONTH));
@@ -194,7 +205,7 @@ public class TransactionFragment extends Fragment {
         MonthPickerDialog.Builder builder = new MonthPickerDialog.Builder(getContext(), new MonthPickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(int selectedMonth, int selectedYear) {
-                selectedDate = DateUtil.createDate(1, selectedMonth, selectedYear);
+                selectedDate = DateTimeUtil.createDate(1, selectedMonth, selectedYear);
                 showTransList();
             }
         }, today.get(Calendar.YEAR), today.get(Calendar.MONTH));
@@ -207,56 +218,66 @@ public class TransactionFragment extends Fragment {
                 .build()
                 .show();
     }
-
+    // setting
     private void saveTransactionSetting(){
-        SharedPreferences sharedPref = getActivity().getSharedPreferences(getString(R.string.transaction_preference_key), Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = getActivity().getSharedPreferences(getString(R.string.transaction_preference), Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putInt(getString(R.string.time_frame_key), timeFrameMode.getValue());
+        editor.putInt(getString(R.string.pref_key_time_frame), timeFrameMode.getValue());
         editor.apply();
     }
-    public void initTransactionSetting(){
-        SharedPreferences sharedPref = getActivity().getSharedPreferences(getString(R.string.transaction_preference_key), Context.MODE_PRIVATE);
-        int timeFrameValue = sharedPref.getInt(getString(R.string.time_frame_key), 1);
+    private void initTransactionSetting(){
+        SharedPreferences sharedPref = getActivity().getSharedPreferences(getString(R.string.transaction_preference), Context.MODE_PRIVATE);
+        int timeFrameValue = sharedPref.getInt(getString(R.string.pref_key_time_frame), 1);
         timeFrameMode = TransactionTimeFrame.getTimeFrame(timeFrameValue);
     }
+    // wallet
     private void initOpenWalletListBtn(){
-        binding.mainAppBar.walletIconBtn.setOnClickListener(new View.OnClickListener() {
+        binding.appBarLayout.walletIconBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent toSelectWalletIntent = new Intent(getActivity(), SelectWalletActivity.class);
-//                startActivity(toSelectWalletIntent);
                 ((MainActivity) getActivity()).launchReloadWallet();
             }
         });
     }
-    public void initWalletFromPreference(){
-        SharedPreferences sharedPref = getActivity().getSharedPreferences(getString(R.string.transaction_preference_key), Context.MODE_PRIVATE);
-        String walletId = sharedPref.getString(getString(R.string.current_wallet_key), "");
-
-        if(walletId == ""){
+    private void initWalletFromPreference(){
+        String walletId = getWalletFromPreference();
+        if(walletId.equals("")){
             // no pref
             viewModel.fetchFirstWallet(wallet->{
-                initWallet(wallet);
-                saveWalletPreference(wallet);
+                updateWalletUI(wallet);
+                setWalletToPreference(wallet.id);
             });
         }else{
-            viewModel.fetchWallet(walletId, this::initWallet);
+            viewModel.fetchWallet(walletId, this::updateWalletUI);
         }
     }
-    private void initWallet(Wallet wallet){
-        binding.mainAppBar.walletName.setText(wallet.name);
-        binding.mainAppBar.walletMoney.setText(Long.toString(wallet.money));
+    private void updateWalletUI(Wallet wallet){
+        binding.appBarLayout.walletName.setText(wallet.name);
+        binding.appBarLayout.walletMoney.setText(Converter.toFormattedMoney(getContext(), wallet.money));
 
-        if(wallet.image!= ""){
+        if(!wallet.image.equals("")){
             Bitmap walletBimapImg = ImageUtil.toBitmap(wallet.image);
             BitmapDrawable walletBitmapDrawable = new BitmapDrawable(getResources(), walletBimapImg);
-            binding.mainAppBar.walletIconBtn.setBackground(walletBitmapDrawable);
+            binding.appBarLayout.walletIconBtn.setBackground(walletBitmapDrawable);
         }
     }
-    private void saveWalletPreference(Wallet wallet){
-        SharedPreferences sharedPref = getActivity().getSharedPreferences(getString(R.string.transaction_preference_key), Context.MODE_PRIVATE);
+    private String getWalletFromPreference(){
+        SharedPreferences sharedPref = getActivity().getSharedPreferences(getString(R.string.transaction_preference), Context.MODE_PRIVATE);
+        String walletId = sharedPref.getString(getString(R.string.pref_key_current_wallet), "");
+        return walletId;
+    }
+    private void setWalletToPreference(String walletId){
+        SharedPreferences sharedPref = getActivity().getSharedPreferences(getString(R.string.transaction_preference), Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putString(getString(R.string.current_wallet_key), wallet.id);
+        editor.putString(getString(R.string.pref_key_current_wallet), walletId);
         editor.apply();
+    }
+    public void handleSelectWallet(String walletId){
+        setWalletToPreference(walletId);
+        viewModel.fetchWallet(walletId, this::updateWalletUI);
+    }
+    public void initElements(){
+        showTransList();
+        initWalletFromPreference();
     }
 }

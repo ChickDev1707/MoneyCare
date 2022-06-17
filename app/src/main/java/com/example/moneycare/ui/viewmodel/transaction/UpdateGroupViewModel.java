@@ -41,14 +41,14 @@ public class UpdateGroupViewModel extends ViewModel {
     public void switchUpdateMode(){
         updateMode.setValue(!updateMode.getValue());
     }
-    public void updateGroup(){
+    public void updateGroup(FirestoreObjectCallback<Void> successCallback, FirestoreObjectCallback<Void> failureCallback){
         String imageBase64 = ImageUtil.toBase64(image.getValue());
         Group newGroup = group.getValue();
         newGroup.image = imageBase64;
 
-        this.groupRepository.updateGroup(newGroup);
+        this.groupRepository.updateGroup(newGroup, successCallback, failureCallback);
     }
-    public void deleteGroup(){
-        this.groupRepository.deleteGroup(group.getValue());
+    public void deleteGroup(FirestoreObjectCallback<Void> successCallback, FirestoreObjectCallback<Void> failureCallback){
+        this.groupRepository.deleteGroup(group.getValue(), successCallback, failureCallback);
     }
 }

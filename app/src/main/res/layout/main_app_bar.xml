@@ -7,12 +7,12 @@
     android:layout_height="wrap_content">
 
     <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/top_app_bar"
+        android:id="@+id/main_app_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         style="@style/Theme.AppCompat.DayNight.DarkActionBar"
         android:padding="3dp"
-        app:menu="@menu/top_app_bar">
+        app:menu="@menu/main_app_bar">
         <LinearLayout
             android:paddingBottom="5dp"
             android:paddingTop="5dp"
@@ -49,7 +49,7 @@
                     android:id="@+id/wallet_money"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="800.000"
+                    android:text="0"
                     android:textSize="@dimen/font_size_normal"
                     android:textStyle="bold"
                     android:textColor="@color/black"

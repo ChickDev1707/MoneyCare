@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModel;
 import com.example.moneycare.data.model.Wallet;
 import com.example.moneycare.data.repository.WalletRepository;
 import com.example.moneycare.utils.ImageUtil;
+import com.example.moneycare.utils.appinterface.FirestoreObjectCallback;
 
 public class UpdateWalletViewModel extends ViewModel {
     private final WalletRepository walletRepository;
@@ -39,14 +40,14 @@ public class UpdateWalletViewModel extends ViewModel {
     public void switchUpdateMode(){
         updateMode.setValue(!updateMode.getValue());
     }
-    public void updateWallet(){
+    public void updateWallet(FirestoreObjectCallback<Void> successCallback, FirestoreObjectCallback<Void> failureCallback){
         String imageBase64 = ImageUtil.toBase64(image.getValue());
         Wallet newWallet = wallet.getValue();
         newWallet.image = imageBase64;
 
-        this.walletRepository.updateWallet(newWallet);
+        this.walletRepository.updateWallet(newWallet, successCallback, failureCallback);
     }
-    public void deleteWallet(){
-        this.walletRepository.deleteWallet(wallet.getValue());
+    public void deleteWallet(FirestoreObjectCallback<Void> successCallback, FirestoreObjectCallback<Void> failureCallback){
+        this.walletRepository.deleteWallet(wallet.getValue(), successCallback, failureCallback);
     }
 }

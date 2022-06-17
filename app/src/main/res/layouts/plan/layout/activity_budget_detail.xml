@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.view.plan.BudgetDetailFragment">
+    <data>
+        <variable
+            name="budgetVM"
+            type="com.example.moneycare.ui.viewmodel.plan.BudgetViewModel" />
+    </data>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <include layout="@layout/update_app_bar"/>
+        <LinearLayout
+            android:orientation="vertical"
+            android:paddingHorizontal="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/img_item_detail"
+                    android:layout_width="40dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_height="40dp"/>
+                <TextView
+                    android:id="@+id/item_group_name_detail"
+                    android:text="Ăn uống"
+                    android:textSize="24dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_marginTop="40dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp">
+                    <TextView
+                        android:text="Giới hạn"
+                        android:textSize="22dp"
+                        android:layout_centerVertical="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:id="@+id/tv_limit_of_month"
+                        android:text="@{budgetVM.limitOfMonth.toString()}"
+                        android:textSize="22dp" />
+                    <com.google.android.material.divider.MaterialDivider
+                        android:layout_alignParentBottom="true"
+                        style="@style/Widget.MaterialComponents.MaterialDivider"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+                </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp">
+                    <TextView
+                        android:text="Tổng đã chi"
+                        android:textSize="22dp"
+                        android:layout_centerVertical="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                    <TextView
+                        android:id="@+id/tv_total_spend"
+                        android:text="@{budgetVM.totalSpentByGroup.toString()}"
+                        android:textSize="22dp"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                    <com.google.android.material.divider.MaterialDivider
+                        android:layout_alignParentBottom="true"
+                        style="@style/Widget.MaterialComponents.MaterialDivider"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+                </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="Nên chi hàng ngày"
+                        android:textSize="22dp" />
+
+                    <TextView
+                        android:id="@+id/tv_spend_per_day"
+                        android:text="@{budgetVM.spendPerDay.toString()}"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:textSize="22dp" />
+                    <com.google.android.material.divider.MaterialDivider
+                        android:layout_alignParentBottom="true"
+                        style="@style/Widget.MaterialComponents.MaterialDivider"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+                </RelativeLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</layout>

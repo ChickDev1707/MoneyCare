@@ -19,14 +19,16 @@ public class UserTransaction implements Parcelable {
     public String group;
     public String note;
     public String wallet;
+    public String eventId;
     public String id;
-    public UserTransaction(String id, long money, String group, String note, Date date, String wallet){
+    public UserTransaction(String id, long money, String group, String note, Date date, String wallet, String eventId){
         this.id = id;
         this.money = money;
         this.date = date;
         this.group = group;
         this.note = note;
         this.wallet = wallet;
+        this.eventId = eventId;
     }
 
     protected UserTransaction(Parcel in) {
@@ -35,6 +37,7 @@ public class UserTransaction implements Parcelable {
         group = in.readString();
         note = in.readString();
         wallet = in.readString();
+        eventId = in.readString();
         date = (java.util.Date) in.readSerializable();
     }
 
@@ -55,9 +58,10 @@ public class UserTransaction implements Parcelable {
         HashMap<String, Object> result = new HashMap<>();
         result.put("money", money);
         result.put("date", new Timestamp(date));
-        result.put("group", FirestoreUtil.getReferenceFromString(group));
+        result.put("group", FirestoreUtil.getReferenceFromPath(group));
         result.put("note", note);
-        result.put("wallet", FirestoreUtil.getReferenceFromString(wallet));
+        result.put("wallet", FirestoreUtil.getReferenceFromPath(wallet));
+        result.put("eventId", eventId);
         return result;
     }
     public static UserTransaction fromMap(String id, Map<String, Object> map){
@@ -68,7 +72,8 @@ public class UserTransaction implements Parcelable {
             ((DocumentReference) map.get("group")).getPath(),
             ((String) map.get("note")),
             ts.toDate(),
-            ((DocumentReference) map.get("wallet")).getPath()
+            ((DocumentReference) map.get("wallet")).getPath(),
+            ((String) map.get("eventId"))
         );
     }
 
@@ -84,6 +89,7 @@ public class UserTransaction implements Parcelable {
         parcel.writeString(group);
         parcel.writeString(note);
         parcel.writeString(wallet);
+        parcel.writeString(eventId);
         parcel.writeSerializable(date);
     }
 }
