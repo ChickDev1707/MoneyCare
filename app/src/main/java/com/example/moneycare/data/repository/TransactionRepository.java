@@ -6,7 +6,6 @@ import com.example.moneycare.utils.DateUtil;
 import com.example.moneycare.data.custom.GroupTransaction;
 import com.example.moneycare.data.model.Group;
 import com.example.moneycare.data.model.UserTransaction;
-import com.example.moneycare.data.model.Wallet;
 import com.example.moneycare.utils.DateUtil;
 import com.example.moneycare.utils.FirestoreUtil;
 import com.example.moneycare.utils.appinterface.FirestoreListCallback;

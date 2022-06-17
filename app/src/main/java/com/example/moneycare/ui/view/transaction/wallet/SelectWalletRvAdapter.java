@@ -45,6 +45,7 @@ public class SelectWalletRvAdapter extends WalletMainRvAdapter {
         Intent intent = new Intent();
         intent.putExtra("wallet", wallet);
         activity.setResult(Activity.RESULT_OK, intent);
+
         activity.finish();
     }
     private void saveWalletPreference(String walletId){
