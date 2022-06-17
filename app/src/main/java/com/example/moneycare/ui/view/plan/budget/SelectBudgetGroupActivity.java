@@ -11,7 +11,7 @@ import android.widget.LinearLayout;
 
 import com.example.moneycare.R;
 import com.example.moneycare.data.model.Group;
-import com.example.moneycare.data.repository.TransactionGroupRepository;
+import com.example.moneycare.data.repository.GroupRepository;
 import com.example.moneycare.databinding.ActivitySelectBudgetGroupBinding;
 
 import java.util.ArrayList;
@@ -21,7 +21,7 @@ import java.util.List;
 public class SelectBudgetGroupActivity extends AppCompatActivity {
 
     private ActivitySelectBudgetGroupBinding binding;
-    private TransactionGroupRepository repository;
+    private GroupRepository repository;
     private List<String> activeGroups = new ArrayList<String>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +34,7 @@ public class SelectBudgetGroupActivity extends AppCompatActivity {
         if(tmp != null){
             activeGroups = Arrays.asList(tmp);
         }
-        repository = new TransactionGroupRepository();
+        repository = new GroupRepository();
 
         Toolbar toolbar = binding.basicAppBar;
         toolbar.setTitle("Nhóm giao dịch");
@@ -49,7 +49,7 @@ public class SelectBudgetGroupActivity extends AppCompatActivity {
         });
 
         RecyclerView groupList = findViewById(R.id.select_group_budget_list);
-         repository.fetchTransactionGroups((groups) ->{
+         repository.fetchGroups((groups) ->{
              LinearLayout layoutContainer = findViewById(R.id.select_group_budget_list_layout);
              LinearLayout layoutEmpty = findViewById(R.id.select_group_budget_list_empty_layout);
              List<Group> availableGroups = new ArrayList<Group>();

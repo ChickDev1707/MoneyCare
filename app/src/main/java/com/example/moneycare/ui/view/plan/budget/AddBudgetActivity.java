@@ -24,7 +24,7 @@ import com.example.moneycare.R;
 import com.example.moneycare.data.model.Budget;
 import com.example.moneycare.data.model.Group;
 import com.example.moneycare.data.repository.BudgetRepository;
-import com.example.moneycare.data.repository.TransactionGroupRepository;
+import com.example.moneycare.data.repository.GroupRepository;
 import com.example.moneycare.databinding.ActivityAddBudgetBinding;
 import com.example.moneycare.ui.viewmodel.plan.NewBudgetViewModel;
 import com.example.moneycare.utils.LoadImage;
@@ -39,7 +39,6 @@ import java.util.List;
 
 public class AddBudgetActivity extends AppCompatActivity {
 
-    TransactionGroupRepository transactionGroupRepository;
     BudgetRepository budgetRepository;
     NewBudgetViewModel viewModel;
     ActivityAddBudgetBinding binding;
@@ -156,7 +155,6 @@ public class AddBudgetActivity extends AppCompatActivity {
     }
 
     private void init(){
-        transactionGroupRepository = new TransactionGroupRepository();
         budgetRepository = new BudgetRepository();
     }
 

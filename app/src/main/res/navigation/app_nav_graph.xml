@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/app_nav_graph"
-    app:startDestination="@id/planFragment">
+    app:startDestination="@id/transactionFragment">
 
     <fragment
         android:id="@+id/transactionFragment"
@@ -14,6 +14,7 @@
             android:name="transactionArg"
             app:argType="com.example.moneycare.data.model.UserTransaction" />
     </fragment>
+    <fragment
         android:id="@+id/reportFragment"
         android:name="com.example.moneycare.ui.view.report.ReportFragment"
         android:label="fragment_report"

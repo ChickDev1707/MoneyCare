@@ -25,6 +25,7 @@ import com.example.moneycare.data.model.Event;
 import com.example.moneycare.data.model.Wallet;
 import com.example.moneycare.data.repository.EventRepository;
 import com.example.moneycare.data.repository.TransactionRepository;
+import com.example.moneycare.data.repository.WalletRepository;
 import com.example.moneycare.databinding.ActivityAddEventBinding;
 import com.example.moneycare.databinding.ActivityEventDetailBinding;
 import com.example.moneycare.ui.view.plan.budget.BudgetDetailActivity;
@@ -40,6 +41,7 @@ public class EventDetailActivity extends AppCompatActivity {
     ActivityEventDetailBinding binding;
     EventViewModel eventVM;
     EventRepository repository;
+    WalletRepository walletRepository;
     Event eventSelected;
     Boolean isUpdated = false;
 
@@ -86,7 +88,7 @@ public class EventDetailActivity extends AppCompatActivity {
 
         if(!eventSelected.wallet.isEmpty()){
             TransactionRepository transactionRepository = new TransactionRepository();
-            transactionRepository.fetchWallet(eventSelected.wallet,wallet -> {
+            walletRepository.fetchWallet(eventSelected.wallet,wallet -> {
                 eventVM.wallet.setValue(wallet);
             });
         }

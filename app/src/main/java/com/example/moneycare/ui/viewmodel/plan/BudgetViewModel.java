@@ -1,18 +1,15 @@
 package com.example.moneycare.ui.viewmodel.plan;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.View;
+import android.os.Build;
 
+import androidx.annotation.RequiresApi;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import androidx.navigation.Navigation;
 
-import com.example.moneycare.R;
 import com.example.moneycare.data.model.Budget;
 import com.example.moneycare.data.model.Group;
 import com.example.moneycare.data.repository.BudgetRepository;
-import com.example.moneycare.data.repository.TransactionGroupRepository;
+import com.example.moneycare.data.repository.GroupRepository;
 import com.example.moneycare.data.repository.TransactionRepository;
 import com.example.moneycare.utils.Convert;
 
@@ -25,7 +22,7 @@ public class BudgetViewModel extends ViewModel {
 
     // TODO: Implement the ViewModel
 
-    private TransactionGroupRepository transGroupRepository;
+    private GroupRepository groupRepository;
     private BudgetRepository budgetRepository;
     private TransactionRepository transactionRepository;
 
@@ -55,7 +52,7 @@ public class BudgetViewModel extends ViewModel {
     MutableLiveData<List<Group>> liveTransactionGroups;
 
     public BudgetViewModel() {
-        this.transGroupRepository = new TransactionGroupRepository();
+        this.groupRepository = new GroupRepository();
         this.budgetRepository = new BudgetRepository();
         this.transactionRepository = new TransactionRepository();
         init();
@@ -82,6 +79,7 @@ public class BudgetViewModel extends ViewModel {
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public void calculateSpendPerDay(){
         Long spd = 0L;
         Long remainMoney = Convert.convertToNumber(limitOfMonth.getValue()) - Convert.convertToNumber(totalSpentByGroup.getValue());
@@ -116,7 +114,7 @@ public class BudgetViewModel extends ViewModel {
         }, startDate, idGroup);
     }
     public void fetchTransactionGroupsByBudget(BudgetRepository.FirestoreMultiCallback callback){
-         transGroupRepository.fetchTransactionGroups(groups -> {
+         groupRepository.fetchGroups(groups -> {
              budgetRepository.fetchBudgetsInMonth(budgets -> {
                  List<Group> groupList = new ArrayList<Group>();
                  ((List<Budget>)budgets).forEach(element -> {
@@ -125,7 +123,7 @@ public class BudgetViewModel extends ViewModel {
                              .findFirst()
                              .orElse(null);
                      if(group != null)
-                        groupList.add(group);
+                         groupList.add(group);
                  });
                  callback.onCallback(groupList, budgets);
              });

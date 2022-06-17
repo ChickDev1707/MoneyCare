@@ -233,5 +233,51 @@ public class TransactionRepository {
         return newMoney;
     }
 
+    // for budgets
+    public void getTotalSpendByGroup(FirestoreObjectCallback callback, Date startDate, String idGroup){
+        Query  query = db.collection("users").document(currentUserId)
+                .collection("transactions")
+                .whereGreaterThan("date", startDate)
+                .whereLessThanOrEqualTo("date", DateUtil.getLastDateOfMonth());
 
+        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull  Task<QuerySnapshot> task) {
+                if(task.isSuccessful()){
+                    Long total = 0L;
+                    for(QueryDocumentSnapshot snapshot:task.getResult()){
+                        UserTransaction trans = UserTransaction.fromMap(snapshot.getId(),snapshot.getData());
+                        if(trans.group.equals(idGroup)){
+                            Long itemMoney = trans.money;
+                            total += itemMoney;
+                        }
+                    }
+                    callback.onCallback(total);
+                }
+                else {
+                    System.out.println("error" + task.getException());
+                }
+            }
+        });
+    }
+    public void getTransactionsByEvent(String idEvent, FirestoreListCallback<GroupTransaction> callback){
+        CollectionReference colRef =  db.collection("users")
+                .document(currentUserId).collection("transactions");
+        colRef
+//                .whereEqualTo("event", idEvent)
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
+                List<UserTransaction> transactions = new ArrayList<UserTransaction>();
+                if(task.isSuccessful()){
+                    for(DocumentSnapshot snapshot:task.getResult()){
+                        UserTransaction trans = UserTransaction.fromMap(snapshot.getId(), snapshot.getData());
+                        transactions.add(trans);
+                    }
+                    getGroupTransactionList(transactions, callback);
+                }
+            }
+
+        });
+    }
 }

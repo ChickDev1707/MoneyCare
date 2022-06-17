@@ -41,6 +41,9 @@
             android:exported="false" />
         <activity
             android:name=".ui.view.plan.budget.BudgetActivity"
+            android:exported="false"
+            />
+        <activity
             android:name=".ui.view.transaction.wallet.UpdateWalletActivity"
             android:exported="false" />
         <activity
