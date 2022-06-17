@@ -6,32 +6,30 @@ import android.net.Uri;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.moneycare.data.model.Group;
-import com.example.moneycare.data.repository.GroupRepository;
-import com.example.moneycare.data.repository.TransactionRepository;
+import com.example.moneycare.data.model.Wallet;
+import com.example.moneycare.data.repository.WalletRepository;
 import com.example.moneycare.utils.ImageUtil;
-import com.example.moneycare.utils.appinterface.FirestoreObjectCallback;
 
-public class UpdateGroupViewModel extends ViewModel {
-    private final GroupRepository groupRepository;
+public class UpdateWalletViewModel extends ViewModel {
+    private final WalletRepository walletRepository;
 
-    public MutableLiveData<Group> group;
+    public MutableLiveData<Wallet> wallet;
     public MutableLiveData<String> imgUrl;
     public MutableLiveData<Bitmap> image;
     public MutableLiveData<Boolean> updateMode;
 
-    public UpdateGroupViewModel() {
-        this.groupRepository = new GroupRepository();
+    public UpdateWalletViewModel() {
+        this.walletRepository = new WalletRepository();
         init();
     }
     public void init(){
-        group = new MutableLiveData<>();
+        wallet = new MutableLiveData<>();
         imgUrl = new MutableLiveData<>();
         updateMode = new MutableLiveData<>(false);
         image = new MutableLiveData<>();
     }
-    public void initGroup(Group group){
-        this.group.setValue(group);
+    public void initWallet(Wallet wallet){
+        this.wallet.setValue(wallet);
     }
 
     public void setImage(Uri imagePath, Bitmap bitmap){
@@ -41,14 +39,14 @@ public class UpdateGroupViewModel extends ViewModel {
     public void switchUpdateMode(){
         updateMode.setValue(!updateMode.getValue());
     }
-    public void updateGroup(){
+    public void updateWallet(){
         String imageBase64 = ImageUtil.toBase64(image.getValue());
-        Group newGroup = group.getValue();
-        newGroup.image = imageBase64;
+        Wallet newWallet = wallet.getValue();
+        newWallet.image = imageBase64;
 
-        this.groupRepository.updateGroup(newGroup);
+        this.walletRepository.updateWallet(newWallet);
     }
-    public void deleteGroup(){
-        this.groupRepository.deleteGroup(group.getValue());
+    public void deleteWallet(){
+        this.walletRepository.deleteWallet(wallet.getValue());
     }
 }

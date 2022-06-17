@@ -1,4 +1,4 @@
-package com.example.moneycare.ui.view.transaction.group;
+package com.example.moneycare.ui.view.transaction.wallet;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
@@ -18,59 +18,54 @@ import android.provider.MediaStore;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.RadioButton;
 
 import com.example.moneycare.R;
-import com.example.moneycare.data.model.Group;
-import com.example.moneycare.data.model.UserTransaction;
-import com.example.moneycare.databinding.ActivityUpdateGroupBinding;
-import com.example.moneycare.databinding.ActivityUpdateTransactionBinding;
-import com.example.moneycare.ui.view.transaction.trans.UpdateTransactionActivity;
-import com.example.moneycare.ui.viewmodel.transaction.UpdateGroupViewModel;
-import com.example.moneycare.ui.viewmodel.transaction.UpdateTransactionViewModel;
+import com.example.moneycare.data.model.Wallet;
+import com.example.moneycare.databinding.ActivityUpdateWalletBinding;
+import com.example.moneycare.ui.viewmodel.transaction.UpdateWalletViewModel;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 
-public class UpdateGroupActivity extends AppCompatActivity {
-    private UpdateGroupViewModel viewModel;
-    private ActivityUpdateGroupBinding binding;
+public class UpdateWalletActivity extends AppCompatActivity {
+    private UpdateWalletViewModel viewModel;
+    private ActivityUpdateWalletBinding binding;
     ActivityResultLauncher<Intent> launcher = registerForActivityResult(
-        new ActivityResultContracts.StartActivityForResult(),
-        new ActivityResultCallback<ActivityResult>() {
-            @Override
-            public void onActivityResult(ActivityResult result) {
-                if (result.getResultCode() == Activity.RESULT_OK) {
-                    Intent intent = result.getData();
-                    Uri selectedImage = intent.getData();
-                    handleSelectImage(selectedImage);
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        Intent intent = result.getData();
+                        Uri selectedImage = intent.getData();
+                        handleSelectImage(selectedImage);
+                    }
                 }
-            }
-    });
+            });
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        viewModel =  new ViewModelProvider(this).get(UpdateGroupViewModel.class);
-        binding = ActivityUpdateGroupBinding.inflate(getLayoutInflater());
-        binding.setUpdateGroupVM(viewModel);
+        viewModel =  new ViewModelProvider(this).get(UpdateWalletViewModel.class);
+        binding = ActivityUpdateWalletBinding.inflate(getLayoutInflater());
+        binding.setUpdateWalletVM(viewModel);
         binding.setLifecycleOwner(this);
         setContentView(binding.getRoot());
 
         initToolbar();
-        initUpdateGroupBtn();
+        initUpdateWalletBtn();
         initImagePicker();
-        initGroupData();
+        initWalletData();
     }
     private void initToolbar(){
         Toolbar toolbar = findViewById(R.id.update_app_bar);
-        toolbar.setTitle("Sửa nhóm");
+        toolbar.setTitle("Sửa ví");
         setSupportActionBar(toolbar);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // back button pressed
-                UpdateGroupActivity.this.finish();
+                UpdateWalletActivity.this.finish();
                 onBackPressed();
             }
         });
@@ -88,16 +83,16 @@ public class UpdateGroupActivity extends AppCompatActivity {
                 viewModel.switchUpdateMode();
                 return true;
             case R.id.delete_item:
-                viewModel.deleteGroup();
-                UpdateGroupActivity.this.setResult(RESULT_OK);
-                UpdateGroupActivity.this.finish();
+                viewModel.deleteWallet();
+                UpdateWalletActivity.this.setResult(Activity.RESULT_OK);
+                UpdateWalletActivity.this.finish();
                 return true;
             default:
         }
         return super.onOptionsItemSelected(item);
     }
     private void initImagePicker(){
-        binding.groupImgPicker.setOnClickListener(new View.OnClickListener() {
+        binding.walletImgPicker.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v)
             {
@@ -114,30 +109,23 @@ public class UpdateGroupActivity extends AppCompatActivity {
     private void handleSelectImage(Uri selectedImage){
         try {
             Bitmap bitmapImg = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
-            binding.groupImageView.setImageBitmap(bitmapImg);
+            binding.walletImageView.setImageBitmap(bitmapImg);
             viewModel.setImage(selectedImage, bitmapImg);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-    private int getRadioId(boolean radioValue){
-        if(radioValue) return R.id.radio_earning;
-        else return R.id.radio_spending;
+    private void initWalletData(){
+        Wallet wallet = (Wallet) getIntent().getParcelableExtra("wallet");
+        viewModel.initWallet(wallet);
     }
-    private void initGroupData(){
-        Group group = (Group) getIntent().getParcelableExtra("group");
-        viewModel.initGroup(group);
-
-        RadioButton radBtn = findViewById(getRadioId(group.type));
-        radBtn.setChecked(true);
-    }
-    private void initUpdateGroupBtn(){
-        binding.updateGroupBtn.setOnClickListener(new View.OnClickListener() {
+    private void initUpdateWalletBtn(){
+        binding.updateWalletBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                viewModel.updateGroup();
-                UpdateGroupActivity.this.setResult(RESULT_OK);
-                UpdateGroupActivity.this.finish();
+                viewModel.updateWallet();
+                UpdateWalletActivity.this.setResult(Activity.RESULT_OK);
+                UpdateWalletActivity.this.finish();
             }
         });
     }

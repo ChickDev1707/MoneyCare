@@ -1,5 +1,6 @@
 package com.example.moneycare.data.model;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -8,17 +9,26 @@ import java.util.Map;
 public class User {
 
     public String name;
-    public int age;
+    public String email;
+    public String photoUrl;
 
-    public User(String name, int age) {
+    public User(String name, String email, String photoUrl) {
         this.name = name;
-        this.age = age;
+        this.email = email;
+        this.photoUrl = photoUrl;
     }
-
+    public Map<String, Object> toMap() {
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("name", name);
+        result.put("email", email);
+        result.put("photoUrl", photoUrl);
+        return result;
+    }
     public static User fromMap(Map<String, Object> map){
         return new User(
             (String) map.get("name"),
-            (Integer) map.get("age")
+            (String) map.get("email"),
+            (String) map.get("photoUrl")
         );
     }
 }

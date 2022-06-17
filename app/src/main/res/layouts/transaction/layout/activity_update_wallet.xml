@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+        <variable
+            name="updateWalletVM"
+            type="com.example.moneycare.ui.viewmodel.transaction.UpdateWalletViewModel" />
+        <import type="android.view.View"/>
+    </data>
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:background="@color/gray_100"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.view.transaction.wallet.NewWalletActivity"
+        >
+        <!-- TODO: Update blank fragment layout -->
+        <include
+            layout="@layout/update_app_bar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:contentPadding="@dimen/layout_padding"
+            app:cardElevation="@dimen/card_elevation"
+            >
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+                    app:boxBackgroundColor="@android:color/transparent"
+                    app:startIconDrawable="@drawable/ic_account_balance_wallet_24"
+                    android:hint="Tên ví"
+                    android:layout_marginBottom="@dimen/layout_padding"
+                    >
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/new_wallet_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/font_size_extra_large"
+                        android:enabled="@{updateWalletVM.updateMode ? true : false}"
+                        android:text="@={updateWalletVM.wallet.name}"
+                        />
+
+                </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+                    app:boxBackgroundColor="@android:color/transparent"
+                    app:startIconDrawable="@drawable/ic_money_24"
+                    android:hint="Số tiền"
+                    android:layout_marginBottom="@dimen/layout_padding"
+                    >
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/new_wallet_money"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/font_size_normal"
+                        android:enabled="@{updateWalletVM.updateMode ? true : false}"
+                        android:text="@={`` + updateWalletVM.wallet.money}"
+                        />
+
+                </com.google.android.material.textfield.TextInputLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="@dimen/layout_padding"
+                    >
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        app:cardCornerRadius="25dp"
+                        android:layout_marginEnd="10dp"
+                        app:cardElevation="1dp"
+                        >
+                        <ImageView
+                            android:id="@+id/wallet_image_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleType="centerCrop"
+                            />
+                    </com.google.android.material.card.MaterialCardView>
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_height="match_parent"
+                        android:layout_width="match_parent"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+                        app:boxBackgroundColor="@android:color/transparent"
+                        android:hint="Chọn ảnh"
+                        >
+
+                        <AutoCompleteTextView
+                            android:clickable="true"
+                            android:id="@+id/wallet_img_picker"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="none"
+                            android:focusable="false"
+                            android:enabled="@{updateWalletVM.updateMode ? true : false}"
+                            android:text="@={updateWalletVM.imgUrl}"
+                            android:singleLine="true"
+                            android:scrollHorizontally="false"
+                            />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+                <Button
+                    android:id="@+id/update_wallet_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="@{updateWalletVM.updateMode ? View.VISIBLE : View.GONE}"
+                    android:layout_gravity="right"
+                    android:text="Sửa"/>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+    </LinearLayout>
+</layout>

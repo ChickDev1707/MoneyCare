@@ -21,12 +21,14 @@ public class Wallet implements Parcelable {
         this.money = money;
         this.image = image;
     }
+
     protected Wallet(Parcel in) {
         id = in.readString();
         name = in.readString();
-        image = in.readString();
         money = in.readLong();
+        image = in.readString();
     }
+
     public static final Creator<Wallet> CREATOR = new Creator<Wallet>() {
         @Override
         public Wallet createFromParcel(Parcel in) {
@@ -67,5 +69,4 @@ public class Wallet implements Parcelable {
         parcel.writeLong(money);
         parcel.writeString(image);
     }
-
 }
