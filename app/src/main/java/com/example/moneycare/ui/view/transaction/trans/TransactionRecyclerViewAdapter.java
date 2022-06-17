@@ -17,7 +17,8 @@ import com.example.moneycare.data.model.Group;
 import com.example.moneycare.data.model.UserTransaction;
 import com.example.moneycare.databinding.TransactionItemBinding;
 import com.example.moneycare.ui.view.MainActivity;
-import com.example.moneycare.utils.DateUtil;
+import com.example.moneycare.utils.Converter;
+import com.example.moneycare.utils.DateTimeUtil;
 import java.util.List;
 
 /**
@@ -43,14 +44,16 @@ public class TransactionRecyclerViewAdapter extends RecyclerView.Adapter<Transac
         UserTransaction transaction = transactions.get(position);
         initTransactionMoney(holder.transactionMoney, transaction);
 
-        holder.transactionDate.setText(DateUtil.getDateString(transaction.date));
-        holder.transactionDay.setText(Integer.toString(DateUtil.getDay(transaction.date)));
+        Context context = holder.itemView.getContext();
+
+        holder.transactionDate.setText(DateTimeUtil.getDateString(context, transaction.date));
+        holder.transactionDay.setText(Integer.toString(DateTimeUtil.getDay(transaction.date)));
         holder.transactionNote.setText(transaction.note);
         holder.transactionItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 MainActivity context = (MainActivity) holder.transactionDate.getContext();
-                ActivityResultLauncher<Intent> launcher = context.getReloadTransListLauncher();
+                ActivityResultLauncher<Intent> launcher = context.getReloadTransFragmentLauncher();
 
                 Intent intent = new Intent(context, UpdateTransactionActivity.class);
                 intent.putExtra("transaction", transaction);
@@ -59,8 +62,8 @@ public class TransactionRecyclerViewAdapter extends RecyclerView.Adapter<Transac
         });
     }
     private void initTransactionMoney(TextView transactionMoney, UserTransaction transaction){
-        transactionMoney.setText(Long.toString(transaction.money));
         Context context = transactionMoney.getContext();
+        transactionMoney.setText(Converter.toFormattedMoney(context, transaction.money));
         int color = group.type? ContextCompat.getColor(context, R.color.green_main) : ContextCompat.getColor(context, R.color.red_main);
         transactionMoney.setTextColor(color);
     }

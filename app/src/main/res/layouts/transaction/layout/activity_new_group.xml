@@ -44,7 +44,7 @@
                     >
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/new_trans_money"
+                        android:id="@+id/new_group_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textSize="@dimen/font_size_extra_large"

@@ -5,8 +5,8 @@
             name="updateTransVM"
             type="com.example.moneycare.ui.viewmodel.transaction.UpdateTransactionViewModel" />
         <import type="android.view.View"/>
-        <import type="com.example.moneycare.utils.BindingConverter"/>
-        <import type="com.example.moneycare.utils.DateUtil"/>
+        <import type="com.example.moneycare.utils.Converter"/>
+        <import type="com.example.moneycare.utils.DateTimeUtil"/>
     </data>
     <LinearLayout
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -56,7 +56,7 @@
                         android:inputType="number"
                         android:textSize="@dimen/font_size_extra_large"
                         android:enabled="@{updateTransVM.updateMode ? true : false}"
-                        android:text="@={BindingConverter.longToString(updateTransVM.transaction.money)}"
+                        android:text="@={Converter.longToString(updateTransVM.transaction.money)}"
                         />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -119,7 +119,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:enabled="@{updateTransVM.updateMode ? true : false}"
-                        android:text="@{DateUtil.getDateString(updateTransVM.transaction.date)}"
+                        android:text="@{DateTimeUtil.getDateString(context, updateTransVM.transaction.date)}"
                         android:inputType="date"
                         />
 
@@ -138,8 +138,8 @@
                         android:id="@+id/update_trans_wallet"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:enabled="@{updateTransVM.updateMode ? true : false}"
-                        android:text="@{updateTransVM.transaction.wallet}"
+                        android:enabled="false"
+                        android:text="@{updateTransVM.wallet}"
                         />
 
                 </com.google.android.material.textfield.TextInputLayout>

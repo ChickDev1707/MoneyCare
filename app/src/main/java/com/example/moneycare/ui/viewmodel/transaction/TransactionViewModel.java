@@ -1,5 +1,7 @@
 package com.example.moneycare.ui.viewmodel.transaction;
 
+import android.content.Context;
+
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -7,7 +9,7 @@ import com.example.moneycare.data.custom.GroupTransaction;
 import com.example.moneycare.data.model.Wallet;
 import com.example.moneycare.data.repository.TransactionRepository;
 import com.example.moneycare.data.repository.WalletRepository;
-import com.example.moneycare.utils.DateUtil;
+import com.example.moneycare.utils.DateTimeUtil;
 import com.example.moneycare.utils.appenum.TransactionTimeFrame;
 import com.example.moneycare.utils.appinterface.FirestoreListCallback;
 import com.example.moneycare.utils.appinterface.FirestoreObjectCallback;
@@ -34,20 +36,20 @@ public class TransactionViewModel extends ViewModel {
         this.moneyTotal = new MutableLiveData<>(0L);
 
     }
-    public void setTransactionUI(TransactionTimeFrame timeFrame, Date date, FirestoreListCallback firestoreCallback){
+    public void setTransactionUI(Context context, TransactionTimeFrame timeFrame, Date date, FirestoreListCallback firestoreCallback){
         String title = "";
         switch (timeFrame){
             case DAY:
                 this.transactionRepository.fetchDayTransactions(date, firestoreCallback);
-                title = DateUtil.getDateString(date);
+                title = DateTimeUtil.getDateString(context, date);
                 break;
             case MONTH:
                 this.transactionRepository.fetchMonthTransactions(date, firestoreCallback);
-                title = DateUtil.getMonthString(date);
+                title = DateTimeUtil.getMonthString(date);
                 break;
             case YEAR:
                 this.transactionRepository.fetchYearTransactions(date, firestoreCallback);
-                title = DateUtil.getYearString(date);
+                title = DateTimeUtil.getYearString(date);
                 break;
         }
         timeTitle.setValue(title);

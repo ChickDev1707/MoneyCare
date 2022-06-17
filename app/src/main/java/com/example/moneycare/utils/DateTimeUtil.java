@@ -1,6 +1,17 @@
 package com.example.moneycare.utils;
 
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+import androidx.preference.PreferenceManager;
+
+import java.text.SimpleDateFormat;
+import java.time.LocalTime;
 import android.os.Build;
 
 import androidx.annotation.RequiresApi;
@@ -11,10 +22,14 @@ import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.Date;
 
-public class DateUtil {
+public class DateTimeUtil {
+
     private static Calendar calendar = Calendar.getInstance();
-    public static String getDateString(Date date){
-        SimpleDateFormat formatter = new SimpleDateFormat("EE, dd/MM/yyyy");
+    public static String getDateString(Context context, Date date){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        String value = sharedPreferences.getString("date_formats", "dd/MM/yyyy");
+
+        SimpleDateFormat formatter = new SimpleDateFormat(String.format("EE, %s", value));
         String sDate = formatter.format(date);
         return sDate;
     }
@@ -95,6 +110,14 @@ public class DateUtil {
         Date date = calendar.getTime();
         return date;
     }
+    public static String getFullTimeString(int hour, int minute){
+        String hourString = Integer.toString(hour);
+        String minuteString = Integer.toString(minute);
+        hourString = hourString.length() == 1? "0" + hourString: hourString;
+        minuteString = minuteString.length() == 1? "0" + minuteString: minuteString;
+        return hourString + ":" + minuteString;
+    }
+
 
     public static Long daysLeft(Date endDate){
         long diffInMillies = endDate.getTime() - new Date().getTime();

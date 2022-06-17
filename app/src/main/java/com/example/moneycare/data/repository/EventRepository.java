@@ -2,6 +2,7 @@ package com.example.moneycare.data.repository;
 
 import androidx.annotation.NonNull;
 
+import com.example.moneycare.data.model.Event;
 import com.example.moneycare.data.model.Budget;
 import com.example.moneycare.data.model.Event;
 import com.example.moneycare.data.model.Group;
