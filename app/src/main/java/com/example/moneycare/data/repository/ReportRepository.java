@@ -22,19 +22,35 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.Transaction;
 
-
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class TransactionRepository {
+public class ReportRepository {
     FirebaseFirestore db;
-    String currentUserId;
-    public TransactionRepository(){
+    String                currentUserId;
+    GroupTransaction listTransactionsInMounth;
+    public ReportRepository(){
         db = FirebaseFirestore.getInstance();
         currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+    }
+    public void getMonthTransactions(Date monthDate, FirestoreListCallback<UserTransaction> callback){
+        CollectionReference colRef =  db.collection("users").document(currentUserId).collection("transactions");
+        colRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
+                List<UserTransaction> transactions = new ArrayList<UserTransaction>();
+                if(task.isSuccessful()){
+                    for(DocumentSnapshot snapshot:task.getResult()){
+                        UserTransaction trans = UserTransaction.fromMap(snapshot.getId(), snapshot.getData());
+                        if(DateUtil.compareMonth(monthDate, trans.date)) transactions.add(trans);
+                    }
+                    callback.onCallback(transactions);
+                }
+            }
+        });
     }
     // transactions actions
     public void fetchYearTransactions(Date yearDate, FirestoreListCallback<GroupTransaction> callback){
@@ -93,53 +109,53 @@ public class TransactionRepository {
         String groupPath = "transaction-groups/" + group.id;
         UserTransaction newTrans = new UserTransaction(null, money, groupPath, note, date, "wallets/wall-1");
         transactionsRef.add(newTrans.toMap())
-        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-            @Override
-            public void onSuccess(DocumentReference documentReference) {
-                System.out.println("add trans success");
-                updateWallet("wall-1", money, group);
-            }
-        })
-        .addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull @NotNull Exception e) {
-                System.out.println(e);
-            }
-        });
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        System.out.println("add trans success");
+                        updateWallet("wall-1", money, group);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull @NotNull Exception e) {
+                        System.out.println(e);
+                    }
+                });
     }
     public void updateWallet(String walletPath, long money, Group group){
         DocumentReference walletRef = db.collection("users").document(currentUserId).collection("wallets").document(walletPath);
         db.runTransaction(new Transaction.Function<Long>() {
-            @Override
-            public Long apply(Transaction transaction) throws FirebaseFirestoreException {
-                DocumentSnapshot snapshot = transaction.get(walletRef);
-                Long newMoney = group.type == true? snapshot.getLong("money") + money: snapshot.getLong("money") - money;
-                transaction.update(walletRef, "money", newMoney);
-                return newMoney;
-            }
-        }).addOnSuccessListener(new OnSuccessListener<Long>() {
-            @Override
-            public void onSuccess(Long result) {
-                System.out.println("Update wallet success");
-            }
-        })
-        .addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                System.out.println("Update wallet failed");
-            }
-        });
+                    @Override
+                    public Long apply(Transaction transaction) throws FirebaseFirestoreException {
+                        DocumentSnapshot snapshot = transaction.get(walletRef);
+                        Long newMoney = group.type == true? snapshot.getLong("money") + money: snapshot.getLong("money") - money;
+                        transaction.update(walletRef, "money", newMoney);
+                        return newMoney;
+                    }
+                }).addOnSuccessListener(new OnSuccessListener<Long>() {
+                    @Override
+                    public void onSuccess(Long result) {
+                        System.out.println("Update wallet success");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        System.out.println("Update wallet failed");
+                    }
+                });
     }
     public void deleteTransaction(UserTransaction transaction, Group group){
         DocumentReference docRef = db.collection("users").document(currentUserId).collection("transactions").document(transaction.id);
         docRef.delete()
-        .addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                System.out.println("delete trans success");
-                updateWallet("wall-1", transaction.money, group);
-            }
-        });
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        System.out.println("delete trans success");
+                        updateWallet("wall-1", transaction.money, group);
+                    }
+                });
     }
     // group transactions
     private void getGroupTransactionList(List<UserTransaction> transactions, FirestoreListCallback<GroupTransaction> callback){
@@ -191,38 +207,38 @@ public class TransactionRepository {
         DocumentReference walletRef = db.document(walletString);
 
         db.runTransaction(new Transaction.Function<Void>() {
-            @Override
-            public Void apply(Transaction transaction) throws FirebaseFirestoreException {
-                DocumentSnapshot transactionSnapshot = transaction.get(transactionRef);
-                DocumentSnapshot walletSnapshot = transaction.get(walletRef);
+                    @Override
+                    public Void apply(Transaction transaction) throws FirebaseFirestoreException {
+                        DocumentSnapshot transactionSnapshot = transaction.get(transactionRef);
+                        DocumentSnapshot walletSnapshot = transaction.get(walletRef);
 
-                Long oldMoney = transactionSnapshot.getLong("money");
-                Long walletTotalMoney = walletSnapshot.getLong("money");
-                Long newUpdatedMoney = getNewUpdatedMoney(walletTotalMoney, oldMoney, userTransaction.money, group.type);
+                        Long oldMoney = transactionSnapshot.getLong("money");
+                        Long walletTotalMoney = walletSnapshot.getLong("money");
+                        Long newUpdatedMoney = getNewUpdatedMoney(walletTotalMoney, oldMoney, userTransaction.money, group.type);
 
-                // update wallet
-                transaction.update(walletRef, "money", newUpdatedMoney);
+                        // update wallet
+                        transaction.update(walletRef, "money", newUpdatedMoney);
 
-                transaction.update(transactionRef, "money", userTransaction.money);
-                transaction.update(transactionRef, "group", FirestoreUtil.getReferenceFromString(userTransaction.group));
-                transaction.update(transactionRef, "note", userTransaction.note);
-                transaction.update(transactionRef, "date", userTransaction.date);
+                        transaction.update(transactionRef, "money", userTransaction.money);
+                        transaction.update(transactionRef, "group", FirestoreUtil.getReferenceFromString(userTransaction.group));
+                        transaction.update(transactionRef, "note", userTransaction.note);
+                        transaction.update(transactionRef, "date", userTransaction.date);
 
-                return null;
-            }
-        }).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void result) {
-                System.out.println("Update transaction success");
-                callback.onCallback(null);
-            }
-        })
-        .addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                System.out.println("Update transaction failed");
-            }
-        });
+                        return null;
+                    }
+                }).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void result) {
+                        System.out.println("Update transaction success");
+                        callback.onCallback(null);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        System.out.println("Update transaction failed");
+                    }
+                });
     }
     private Long getNewUpdatedMoney(Long oldTotal, Long oldValue, Long newValue, boolean type){
         Long absDiff = Math.abs(oldValue - newValue);
