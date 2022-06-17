@@ -13,7 +13,9 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.compose.ui.graphics.drawscope.Fill;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.viewpager2.widget.ViewPager2;
 
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -66,6 +68,8 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.Utils;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.protobuf.Any;
 import com.whiteelephant.monthpicker.MonthPickerDialog;
 
@@ -91,7 +95,10 @@ public class ReportFragment extends Fragment{
     private              FragmentReportBinding binding;
     private              TransactionTimeFrame           timeFrameMode;
     private              Date                           selectedDate;
-    private BarChart       barChartNetIncome;
+    private TabLayout tabLayout;
+    private ViewPager2 viewPager2;
+    private ReportAdapter reportAdapter;
+    public BarChart       barChartNetIncome;
     private PieChart pieChartIncome;
     private PieChart pieChartExpense;
     private List<BarEntry> dataChartNetIncome;
@@ -139,9 +146,9 @@ public class ReportFragment extends Fragment{
         pieChartIncome = binding.getRoot().findViewById(R.id.pieChartIncome);
         pieChartExpense = binding.getRoot().findViewById(R.id.pieChartExpense);
 
-        dataChartNetIncome = new ArrayList<BarEntry>();
-        dataChartIncome = new ArrayList<PieEntry>();
-        dataChartExpense = new ArrayList<PieEntry>();
+        dataChartNetIncome = new ArrayList<>();
+        dataChartIncome = new ArrayList<>();
+        dataChartExpense = new ArrayList<>();
 
         textViewIncome = binding.getRoot().findViewById(R.id.textViewIncome);
         textViewExpense = binding.getRoot().findViewById(R.id.textViewExpense);
@@ -155,9 +162,29 @@ public class ReportFragment extends Fragment{
         initTransList();
         initOpenWalletListBtn();
 
+//        tabLayout = binding.getRoot().findViewById(R.id.tabLayout);
+//        viewPager2 = binding.getRoot().findViewById(R.id.viewPager2);
+//        reportAdapter = new ReportAdapter(this.getActivity(), dataChartNetIncome);
+//        viewPager2.setAdapter(reportAdapter);
+//        new TabLayoutMediator(tabLayout, viewPager2, (tab, position) -> {
+//            switch (position){
+//                case 0:
+//                    tab.setText("Thu nhập ròng");
+//                    break;
+//                case 1:
+//                    tab.setText("Thu nhập");
+//                    break;
+//                case 2:
+//                    tab.setText("Chi tiêu");
+//                    break;
+//            }
+//        }).attach();
+
+
         return binding.getRoot();
     }
     private void dataProcessingChart(List<GroupTransaction> groupTransactionList){
+
         dataChartNetIncome.clear();
         dataChartIncome.clear();
         dataChartExpense.clear();
@@ -225,6 +252,24 @@ public class ReportFragment extends Fragment{
                 }
             }
         }
+    //
+        tabLayout = binding.getRoot().findViewById(R.id.tabLayout);
+        viewPager2 = binding.getRoot().findViewById(R.id.viewPager2);
+        reportAdapter = new ReportAdapter(this.getActivity(), dataChartNetIncome, dataChartIncome, dataChartExpense);
+        viewPager2.setAdapter(reportAdapter);
+        new TabLayoutMediator(tabLayout, viewPager2, (tab, position) -> {
+            switch (position){
+                case 0:
+                    tab.setText("Thu nhập ròng");
+                    break;
+                case 1:
+                    tab.setText("Thu nhập");
+                    break;
+                case 2:
+                    tab.setText("Chi tiêu");
+                    break;
+            }
+        }).attach();
     }
 
     private void initPieChartIncome(){
@@ -346,7 +391,7 @@ public class ReportFragment extends Fragment{
         viewModel.setUI(timeFrameMode, selectedDate , groupTransactionList -> {
 //            transList.setAdapter(new GroupTransactionRecyclerViewAdapter(groupTransactionList));
             viewModel.initMoneyInAndOut(groupTransactionList);
-            initCharts(groupTransactionList);
+            dataProcessingChart(groupTransactionList);
         });
     }
 
