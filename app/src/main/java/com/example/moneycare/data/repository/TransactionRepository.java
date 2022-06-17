@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.moneycare.data.custom.GroupTransaction;
+import com.example.moneycare.data.model.Event;
 import com.example.moneycare.data.model.Group;
 import com.example.moneycare.data.model.UserTransaction;
 import com.example.moneycare.utils.DateTimeUtil;
@@ -89,11 +90,11 @@ public class TransactionRepository {
         });
     }
 
-    public void saveNewTransaction(long money, Group group, String note, Date date, String walletId, FirestoreObjectCallback<Void> successCallback, FirestoreObjectCallback<Void> failureCallback){
+    public void saveNewTransaction(long money, Group group, String note, Date date, String walletId, String eventId, FirestoreObjectCallback<Void> successCallback, FirestoreObjectCallback<Void> failureCallback){
         DocumentReference transactionsRef = db.collection("users").document(currentUserId).collection("transactions").document();
         String groupPath = getGroupPath(group);
         String walletPath = getWalletPath(walletId);
-        UserTransaction newTrans = new UserTransaction(null, money, groupPath, note, date, walletPath);
+        UserTransaction newTrans = new UserTransaction(null, money, groupPath, note, date, walletPath, eventId);
 
         db.runTransaction(new Transaction.Function<Void>() {
             @Nullable
@@ -118,30 +119,6 @@ public class TransactionRepository {
             @Override
             public void onFailure(@NonNull Exception e) {
                 failureCallback.onCallback(null);
-            }
-        });
-    }
-    public void updateWalletInAddTrans(String walletPath, long money, Group group, FirestoreObjectCallback<Void> callback){
-        DocumentReference walletRef = db.collection("users").document(currentUserId).collection("wallets").document(walletPath);
-        db.runTransaction(new Transaction.Function<Long>() {
-            @Override
-            public Long apply(Transaction transaction) throws FirebaseFirestoreException {
-                DocumentSnapshot snapshot = transaction.get(walletRef);
-                Long newMoney = group.type ? snapshot.getLong("money") + money: snapshot.getLong("money") - money;
-                transaction.update(walletRef, "money", newMoney);
-                return newMoney;
-            }
-        }).addOnSuccessListener(new OnSuccessListener<Long>() {
-            @Override
-            public void onSuccess(Long result) {
-                System.out.println("Update wallet success");
-                callback.onCallback(null);
-            }
-        })
-        .addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                System.out.println("Update wallet failed");
             }
         });
     }
@@ -269,5 +246,7 @@ public class TransactionRepository {
             return String.format("transaction-groups/" + group.id);
         }else return String.format("users/%s/transaction-groups/%s", currentUserId, group.id);
     }
-
+    private String getEventPath(Event event){
+        return String.format("users/%s/events/%s", currentUserId, event.id);
+    }
 }

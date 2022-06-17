@@ -19,6 +19,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import com.example.moneycare.R;
+import com.example.moneycare.data.model.Event;
 import com.example.moneycare.data.model.Group;
 import com.example.moneycare.data.model.Wallet;
 import com.example.moneycare.databinding.ActivityNewTransactionBinding;
@@ -34,7 +35,7 @@ import java.util.List;
 public class NewTransactionActivity extends AppCompatActivity {
     private NewTransactionViewModel newTransViewModel;
     private ActivityNewTransactionBinding binding;
-    ActivityResultLauncher<Intent> toGroupActivityLauncher = registerForActivityResult(
+    ActivityResultLauncher<Intent> toSelectGroupActivityLauncher = registerForActivityResult(
         new ActivityResultContracts.StartActivityForResult(),
         new ActivityResultCallback<ActivityResult>() {
         @Override
@@ -47,6 +48,19 @@ public class NewTransactionActivity extends AppCompatActivity {
             }
         }
     });
+    ActivityResultLauncher<Intent> toSelectEventActivityLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        // There are no request codes
+                        Intent data = result.getData();
+                        Event event = data.getParcelableExtra("event");
+                        newTransViewModel.setEvent(event);
+                    }
+                }
+            });
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,7 +75,8 @@ public class NewTransactionActivity extends AppCompatActivity {
         initToolbar();
         initPickDateInput();
         initSaveTransBtn();
-        initSelectGroupEvent();
+        initSelectGroup();
+        initSelectEvent();
         initWalletList();
         // Inflate the layout for this fragment
     }
@@ -123,12 +138,21 @@ public class NewTransactionActivity extends AppCompatActivity {
                 ValidationUtil.checkEmpty(binding.newTransGroup) &&
                 ValidationUtil.checkEmpty(binding.newTransNote);
     }
-    private void initSelectGroupEvent(){
+    private void initSelectGroup(){
         binding.newTransGroup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(NewTransactionActivity.this, SelectGroupActivity.class);
-                toGroupActivityLauncher.launch(intent);
+                toSelectGroupActivityLauncher.launch(intent);
+            }
+        });
+    }
+    private void initSelectEvent(){
+        binding.newTransEvent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(NewTransactionActivity.this, SelectEventActivity.class);
+                toSelectEventActivityLauncher.launch(intent);
             }
         });
     }

@@ -3,6 +3,7 @@ package com.example.moneycare.ui.viewmodel.transaction;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.example.moneycare.data.model.Event;
 import com.example.moneycare.data.model.Group;
 import com.example.moneycare.data.model.Wallet;
 import com.example.moneycare.data.repository.TransactionRepository;
@@ -18,6 +19,7 @@ public class NewTransactionViewModel extends ViewModel {
 
     public MutableLiveData<Long> money;
     public MutableLiveData<Group> group;
+    public MutableLiveData<Event> event;
     public MutableLiveData<Date> date;
     public MutableLiveData<String> note;
     public MutableLiveData<String> walletId;
@@ -33,6 +35,7 @@ public class NewTransactionViewModel extends ViewModel {
         note = new MutableLiveData<>("");
         group = new MutableLiveData<>();
         walletId = new MutableLiveData<>();
+        event = new MutableLiveData<>(new Event());
     }
 
     public void setDate(Object selection){
@@ -42,8 +45,16 @@ public class NewTransactionViewModel extends ViewModel {
     public void setGroup(Group selectedGroup){
         group.setValue(selectedGroup);
     }
+    public void setEvent(Event selectedEvent){
+        event.setValue(selectedEvent);
+    }
     public void saveNewTransaction(FirestoreObjectCallback<Void> successCallback, FirestoreObjectCallback<Void> failureCallback){
-        this.transactionRepository.saveNewTransaction(money.getValue(), group.getValue(), note.getValue(), date.getValue(), walletId.getValue(), successCallback, failureCallback);
+        Event eventValue = event.getValue();
+        if(eventValue.id == null || eventValue.name.equals("")){
+            // event is clear or not selected
+            eventValue.id = "";
+        }
+        this.transactionRepository.saveNewTransaction(money.getValue(), group.getValue(), note.getValue(), date.getValue(), walletId.getValue(), eventValue.id, successCallback, failureCallback);
         cleanUpFields();
     }
     public void setWalletId(String id){

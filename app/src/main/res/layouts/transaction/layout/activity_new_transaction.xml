@@ -46,6 +46,7 @@
                     style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
                     app:boxBackgroundColor="@android:color/transparent"
                     app:startIconDrawable="@drawable/ic_money_32"
+                    app:endIconMode="clear_text"
                     android:hint="Số tiền"
                     android:layout_marginBottom="@dimen/text_field_bottom_margin"
                     >
@@ -107,6 +108,7 @@
                     app:boxBackgroundColor="@android:color/transparent"
                     app:startIconDrawable="@drawable/ic_calendar_today_24"
                     android:hint="Ngày"
+
                     android:layout_marginBottom="@dimen/text_field_bottom_margin"
                     >
 
@@ -137,6 +139,26 @@
                         android:inputType="none"
                         android:focusable="false"
                         />
+
+                </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_height="match_parent"
+                    android:layout_width="match_parent"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+                    app:boxBackgroundColor="@android:color/transparent"
+                    app:startIconDrawable="@drawable/ic_event_24"
+                    android:hint="Chọn sự kiện"
+                    app:endIconMode="clear_text"
+                    android:layout_marginBottom="@dimen/text_field_bottom_margin"
+                    >
+                    <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                        android:clickable="true"
+                        android:id="@+id/new_trans_event"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="none"
+                        android:text="@={newTransVM.event.name}"
+                        android:focusable="true" />
 
                 </com.google.android.material.textfield.TextInputLayout>
                 <Button

@@ -18,7 +18,6 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 
-import com.example.moneycare.MoneyFormatDialogFragment;
 import com.example.moneycare.R;
 import com.example.moneycare.databinding.ActivitySettingsBinding;
 import com.example.moneycare.utils.DateTimeUtil;

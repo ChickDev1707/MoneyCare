@@ -30,6 +30,7 @@
         <entry key="..\:/Courses/third/HKII/java/project/source/app/src/main/res/layout/activity_new_group.xml" value="0.25833333333333336" />
         <entry key="..\:/Courses/third/HKII/java/project/source/app/src/main/res/layout/activity_new_transaction.xml" value="0.11875" />
         <entry key="..\:/Courses/third/HKII/java/project/source/app/src/main/res/layout/activity_register.xml" value="0.14479166666666668" />
+        <entry key="..\:/Courses/third/HKII/java/project/source/app/src/main/res/layout/activity_select_event.xml" value="0.25833333333333336" />
         <entry key="..\:/Courses/third/HKII/java/project/source/app/src/main/res/layout/activity_select_wallet.xml" value="0.14270833333333333" />
         <entry key="..\:/Courses/third/HKII/java/project/source/app/src/main/res/layout/activity_update_group.xml" value="0.1203125" />
         <entry key="..\:/Courses/third/HKII/java/project/source/app/src/main/res/layout/activity_update_transaction.xml" value="0.25833333333333336" />
@@ -76,11 +77,13 @@
         <entry key="..\:/Courses/third/HKII/java/project/source/app/src/main/res/layouts/transaction/layout/activity_new_group.xml" value="0.25833333333333336" />
         <entry key="..\:/Courses/third/HKII/java/project/source/app/src/main/res/layouts/transaction/layout/activity_new_transaction.xml" value="0.25833333333333336" />
         <entry key="..\:/Courses/third/HKII/java/project/source/app/src/main/res/layouts/transaction/layout/activity_new_wallet.xml" value="0.12635869565217392" />
+        <entry key="..\:/Courses/third/HKII/java/project/source/app/src/main/res/layouts/transaction/layout/activity_select_event.xml" value="0.176" />
         <entry key="..\:/Courses/third/HKII/java/project/source/app/src/main/res/layouts/transaction/layout/activity_select_group.xml" value="0.25833333333333336" />
         <entry key="..\:/Courses/third/HKII/java/project/source/app/src/main/res/layouts/transaction/layout/activity_select_wallet.xml" value="0.12563323201621074" />
         <entry key="..\:/Courses/third/HKII/java/project/source/app/src/main/res/layouts/transaction/layout/activity_update_group.xml" value="0.1203125" />
         <entry key="..\:/Courses/third/HKII/java/project/source/app/src/main/res/layouts/transaction/layout/activity_update_transaction.xml" value="0.1203125" />
         <entry key="..\:/Courses/third/HKII/java/project/source/app/src/main/res/layouts/transaction/layout/activity_update_wallet.xml" value="0.25833333333333336" />
+        <entry key="..\:/Courses/third/HKII/java/project/source/app/src/main/res/layouts/transaction/layout/fragment_event_item.xml" value="0.25833333333333336" />
         <entry key="..\:/Courses/third/HKII/java/project/source/app/src/main/res/layouts/transaction/layout/fragment_group.xml" value="0.12563323201621074" />
         <entry key="..\:/Courses/third/HKII/java/project/source/app/src/main/res/layouts/transaction/layout/fragment_group_list.xml" value="0.12563323201621074" />
         <entry key="..\:/Courses/third/HKII/java/project/source/app/src/main/res/layouts/transaction/layout/fragment_group_main.xml" value="0.25833333333333336" />

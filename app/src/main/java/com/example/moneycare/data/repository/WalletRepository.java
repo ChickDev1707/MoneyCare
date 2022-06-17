@@ -132,7 +132,7 @@ public class WalletRepository {
         String groupPath = newWallet.money> walletMoney? "transaction-groups/salary": "transaction-groups/eating";
         Long money = Math.abs(newWallet.money - walletMoney);
         String walletPath = getWalletPath(newWallet.id);
-        return new UserTransaction(null, money, groupPath, "Điều chỉnh số dư", new Date(), walletPath);
+        return new UserTransaction(null, money, groupPath, "Điều chỉnh số dư", new Date(), walletPath, "");
     }
 
     public void deleteWallet(Wallet wallet, FirestoreObjectCallback<Void> successCallback, FirestoreObjectCallback<Void> failureCallback){

@@ -13,6 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MoneyCare">
         <activity
+            android:name=".ui.view.transaction.trans.SelectEventActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.view.account.SettingsActivity"
             android:exported="false"
             android:label="@string/title_activity_settings" />
@@ -67,6 +70,7 @@
         <activity
             android:name=".ui.view.MainActivity"
             android:exported="true" />
+
         <receiver
             android:name=".ui.view.account.AlarmReceiver"
             android:process=":remote" />

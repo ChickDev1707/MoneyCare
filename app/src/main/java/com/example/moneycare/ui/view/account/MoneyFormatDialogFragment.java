@@ -1,4 +1,4 @@
-package com.example.moneycare;
+package com.example.moneycare.ui.view.account;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -23,6 +23,7 @@ import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.moneycare.R;
 import com.example.moneycare.data.custom.MoneyFormatter;
 import com.example.moneycare.databinding.FragmentMoneyFormatDialogBinding;
 import com.example.moneycare.ui.view.transaction.wallet.NewWalletActivity;
