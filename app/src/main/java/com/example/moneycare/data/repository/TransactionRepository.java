@@ -389,7 +389,8 @@ public class TransactionRepository {
 
     // get transaction by event
     public void getTransactionsByEvent(String idEvent, FirestoreListCallback<GroupTransaction> callback){
-        CollectionReference colRef =  db.collection("users").document("WSHF04um7aZW5wgzxn3ZDzI3kry1").collection("transactions");
+        CollectionReference colRef =  db.collection("users")
+                .document("WSHF04um7aZW5wgzxn3ZDzI3kry1").collection("transactions");
         colRef
 //                .whereEqualTo("event", idEvent)
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {

@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -117,17 +118,22 @@ public class EventDetailActivity extends AppCompatActivity {
     private void initButtonChangeStatus(){
         String str = eventSelected.status.equals("end") ? "Đánh dấu chưa hoàn tất" : "Đánh dấu hoàn tất";
         binding.btnSwitchStatus.setText(str);
-        binding.btnSwitchStatus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                repository.changeStatus(eventSelected.id,
-                        eventSelected.status.equals("ongoing") ? "end" : "ongoing");
-                Intent intent = new Intent();
-                intent.putExtra("isUpdated", true);
-                EventDetailActivity.this.setResult(Activity.RESULT_OK, intent);
-                EventDetailActivity.this.finish();
-            }
-        });
+        if(DateUtil.daysLeft(eventSelected.endDate) == 0){
+            binding.btnSwitchStatus.setBackgroundColor(Color.parseColor("#DABEBE"));
+        }
+        else {
+            binding.btnSwitchStatus.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    repository.changeStatus(eventSelected.id,
+                            eventSelected.status.equals("ongoing") ? "end" : "ongoing");
+                    Intent intent = new Intent();
+                    intent.putExtra("isUpdated", true);
+                    EventDetailActivity.this.setResult(Activity.RESULT_OK, intent);
+                    EventDetailActivity.this.finish();
+                }
+            });
+        }
     }
     private void initButtonWatchTransactions(){
         binding.btnWatchTransactions.setOnClickListener(new View.OnClickListener() {
