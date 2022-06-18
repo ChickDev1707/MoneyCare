@@ -9,19 +9,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.moneycare.R;
-import com.example.moneycare.data.custom.GroupTransaction;
-import com.example.moneycare.data.model.UserTransaction;
-import com.example.moneycare.utils.DateUtil;
-import com.example.moneycare.utils.appenum.TransactionTimeFrame;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.data.PieEntry;
 
-import java.security.PrivateKey;
-import java.util.ArrayList;
 import java.util.List;
 
 public class FragmentReportNetIncome extends Fragment {

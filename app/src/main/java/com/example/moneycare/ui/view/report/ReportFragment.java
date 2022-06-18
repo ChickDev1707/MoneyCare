@@ -365,7 +365,7 @@ public class ReportFragment extends Fragment{
     }
     public void showTransList(){
 //        RecyclerView transList = binding.getRoot().findViewById(R.id.report_list_transaction_income);
-        viewModel.setUI(timeFrameMode, selectedDate , groupTransactionList -> {
+        viewModel.setUI(getContext(), timeFrameMode, selectedDate , groupTransactionList -> {
 //            transList.setAdapter(new ReportIncomeRecyclerViewAdapter(groupTransactionList));
             viewModel.initMoneyInAndOut(groupTransactionList);
             dataProcessingChart(groupTransactionList);
