@@ -1,52 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
     android:id="@+id/report_item"
-    android:paddingTop="@dimen/layout_padding"
-    android:paddingLeft="5dp">
-    <TextView
-        android:id="@+id/transaction_hourDayMonthYear"
-        android:layout_width="50dp"
-        android:layout_height="wrap_content"
-        android:textSize="36sp"
-        android:text="24"
-        android:textAlignment="center"
-        android:textColor="@color/blue_grey_main"
-        android:layout_marginEnd="10dp"
-        />
+    android:background="@color/white"
+    android:layout_marginBottom="20dp"
+    android:orientation="vertical">
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            app:cardCornerRadius="20dp"
+            android:layout_marginEnd="15dp"
+            app:cardElevation="0dp"
+            >
+            <ImageView
+                android:id="@+id/group_icon"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                />
+        </com.google.android.material.card.MaterialCardView>
 
-        android:orientation="vertical">
-        <TextView
-            android:id="@+id/transaction_date"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/font_size_extra_small"
-            android:text="Hello"
-            android:layout_marginTop="3dp"
-            android:textAppearance="?attr/textAppearanceListItem" />
-        <TextView
-            android:id="@+id/transaction_note"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/font_size_extra_small"
-            android:text="56 trans"
-            android:textColor="@color/gray_700"
-            android:layout_marginTop="3dp"
-            android:textAppearance="?attr/textAppearanceListItem" />
+            android:orientation="vertical">
 
+            <TextView
+                android:id="@+id/group_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="GroupTransName"
+                android:textAppearance="?attr/textAppearanceListItem"
+                android:textSize="@dimen/font_size_small" />
+
+            <TextView
+                android:id="@+id/total_transaction"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="56 trans"
+                android:textAppearance="?attr/textAppearanceListItem"
+                android:textColor="@color/gray_700"
+                android:textSize="@dimen/font_size_extra_small" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/percent_money"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="56%"
+            android:textAlignment="center"
+            android:textAppearance="?attr/textAppearanceListItem"
+            android:textSize="@dimen/font_size_normal" />
+
+        <TextView
+            android:id="@+id/total_money"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="end"
+            android:text="10000000"
+            android:textAlignment="textEnd"
+            android:textAppearance="?attr/textAppearanceListItem"
+            android:textSize="@dimen/font_size_normal" />
     </LinearLayout>
-    <TextView
-        android:id="@+id/transaction_money"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:textSize="@dimen/font_size_small"
-        android:layout_weight="1"
-        android:gravity="end"
-        android:text="100000"
-        android:textAppearance="?attr/textAppearanceListItem" />
 </LinearLayout>

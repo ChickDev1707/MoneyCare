@@ -4,12 +4,14 @@ import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.moneycare.R;
+import com.example.moneycare.data.custom.GroupTransaction;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
@@ -24,9 +26,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FragmentReportIncome extends Fragment {
+    private List<GroupTransaction> groupTransactionList;
     private PieChart       pieChartIncome;
     private List<PieEntry> dataChartIncome;
-    public FragmentReportIncome(List data){
+    public FragmentReportIncome(List<GroupTransaction> groupTransactionList, List data){
+        this.groupTransactionList = groupTransactionList;
         this.dataChartIncome = data;
     }
 
@@ -37,6 +41,8 @@ public class FragmentReportIncome extends Fragment {
         View view = inflater.inflate(R.layout.fragment_report_income, container, false);
         pieChartIncome = view.findViewById(R.id.pieChartIncome1);
         initPieChartIncome();
+        RecyclerView transList = view.findViewById(R.id.report_list_transaction_income);
+        transList.setAdapter(new ReportIncomeRecyclerViewAdapter(groupTransactionList));
         return view;
     }
     private void initPieChartIncome(){
