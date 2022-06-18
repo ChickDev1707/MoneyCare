@@ -20,13 +20,13 @@ import java.util.List;
 
 public class ReportIncomeRecyclerViewAdapter extends  RecyclerView.Adapter<ReportIncomeRecyclerViewAdapter.ViewHoldel>{
 
-    private List<GroupTransaction> groupTransactionList;
+    private List<GroupTransaction> groupTransactionIncomeList;
     private long totalMoney;
 
-    public ReportIncomeRecyclerViewAdapter(List<GroupTransaction> groupTransactionList){
-        this.groupTransactionList = groupTransactionList;
+    public ReportIncomeRecyclerViewAdapter(List<GroupTransaction> groupTransactionIncomeList){
+        this.groupTransactionIncomeList = groupTransactionIncomeList;
         this.totalMoney = 0;
-        for (GroupTransaction groupTransaction:groupTransactionList){
+        for (GroupTransaction groupTransaction:groupTransactionIncomeList){
             totalMoney+=groupTransaction.getTotalMoney();
         }
     }
@@ -39,17 +39,19 @@ public class ReportIncomeRecyclerViewAdapter extends  RecyclerView.Adapter<Repor
 
     @Override
     public void onBindViewHolder(@NonNull ViewHoldel holder, int position) {
-        GroupTransaction groupTransaction = groupTransactionList.get(position);
+        GroupTransaction groupTransaction = groupTransactionIncomeList.get(position);
         Bitmap bitmapIcon = ImageUtil.toBitmap(groupTransaction.group.image);
         holder.groupIcon.setImageBitmap(bitmapIcon);
         holder.groupName.setText(groupTransaction.group.name);
         holder.totalMoney.setText(Long.toString(groupTransaction.getTotalMoney()));
-        holder.percentMoney.setText(Float.toString(groupTransaction.getTotalMoney()*100/this.totalMoney)+"%");
+        holder.percentMoney.setText(String.format("%.1f", (float)(groupTransaction.getTotalMoney()*100.0/this.totalMoney))+"%");
     }
 
     @Override
     public int getItemCount() {
-        return this.groupTransactionList.size();
+        if (this.groupTransactionIncomeList == null)
+            return 0;
+        return this.groupTransactionIncomeList.size();
     }
 
     public class ViewHoldel extends RecyclerView.ViewHolder {

@@ -3,13 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".ui.view.report.FragmentReportIncome">
 
     <com.github.mikephil.charting.charts.PieChart
         android:id="@+id/pieChartIncome1"
         android:layout_width="match_parent"
-        android:layout_height="400dp"
+        android:layout_height="300dp"
         android:layout_margin="8dp" />
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -21,10 +22,13 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/report_list_transaction_income"
+                android:name="com.example.moneycare.FragmentReportIncome"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 android:nestedScrollingEnabled="false"
+                app:layoutManager="LinearLayoutManager"
+                tools:context=".ui.view.report.FragmentReportIncome"
                 tools:listitem="@layout/report_item" />
             </LinearLayout>
     </androidx.core.widget.NestedScrollView>

@@ -4,14 +4,17 @@ import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.example.moneycare.R;
 import com.example.moneycare.data.custom.GroupTransaction;
+import com.example.moneycare.databinding.FragmentReportIncomeBinding;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
@@ -26,11 +29,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FragmentReportIncome extends Fragment {
-    private List<GroupTransaction> groupTransactionList;
+    private FragmentReportIncomeBinding binding;
+    private List<GroupTransaction>      groupTransactionIncomeList;
     private PieChart       pieChartIncome;
     private List<PieEntry> dataChartIncome;
     public FragmentReportIncome(List<GroupTransaction> groupTransactionList, List data){
-        this.groupTransactionList = groupTransactionList;
+        this.groupTransactionIncomeList = new ArrayList<>();
+//        this.groupTransactionIncomeList = groupTransactionList;
+                for (GroupTransaction groupTransaction:groupTransactionList){
+            if (groupTransaction.group.type){
+                this.groupTransactionIncomeList.add(groupTransaction);
+            }
+        }
         this.dataChartIncome = data;
     }
 
@@ -38,12 +48,19 @@ public class FragmentReportIncome extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_report_income, container, false);
-        pieChartIncome = view.findViewById(R.id.pieChartIncome1);
+//        View view = inflater.inflate(R.layout.fragment_report_income, container, false);
+        binding = FragmentReportIncomeBinding.inflate(getLayoutInflater());
+
+        pieChartIncome = binding.pieChartIncome1;
         initPieChartIncome();
-        RecyclerView transList = view.findViewById(R.id.report_list_transaction_income);
-        transList.setAdapter(new ReportIncomeRecyclerViewAdapter(groupTransactionList));
-        return view;
+
+        RecyclerView transList = binding.reportListTransactionIncome;
+        LinearLayoutManager manager = new LinearLayoutManager(this.getContext());
+        transList.setLayoutManager(manager);
+        transList.setHasFixedSize(true);
+        transList.setAdapter(new ReportIncomeRecyclerViewAdapter(groupTransactionIncomeList));
+
+        return binding.getRoot();
     }
     private void initPieChartIncome(){
         //setupPieChartIncome();
