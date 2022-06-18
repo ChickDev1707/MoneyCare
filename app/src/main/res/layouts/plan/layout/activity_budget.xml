@@ -9,181 +9,186 @@
             name="budgetVM"
             type="com.example.moneycare.ui.viewmodel.plan.BudgetViewModel" />
     </data>
-    <RelativeLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#EFEFF3">
-        <include android:id="@+id/budget_app_bar" layout="@layout/budget_screen_app_bar"/>
+        android:layout_height="match_parent">
         <LinearLayout
-            android:id="@+id/budget_container"
-            android:visibility="invisible"
-            android:layout_below="@id/budget_app_bar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="match_parent"
+            android:background="#EFEFF3"
+            android:orientation="vertical"
+            >
+            <include layout="@layout/basic_app_bar"/>
             <LinearLayout
-                android:background="@color/white"
+                android:id="@+id/budget_container"
+                android:visibility="invisible"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="20dp"
-                android:orientation="vertical"
-                android:gravity="center_horizontal">
-                <TextView
-                    android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:background="@color/white"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="#499C54"
-                    android:textStyle="bold"
-                    android:textSize="20sp"
-                    android:text="@{budgetVM.spendableMoney.toString()}"/>
-                <TextView
-                    android:layout_width="wrap_content"
+                    android:paddingTop="20dp"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#499C54"
+                        android:textStyle="bold"
+                        android:textSize="20sp"
+                        android:text="@{budgetVM.spendableMoney.toString()}"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#808080"
+                        android:textSize="16sp"
+                        android:text="Khoản có thể chi"/>
+                </LinearLayout>
+                <GridLayout
+                    android:paddingBottom="20dp"
+                    android:background="@color/white"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:columnCount="3">
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_columnWeight="1"
+                        android:layout_height="wrap_content">
+                        <com.google.android.material.card.MaterialCardView
+                            app:cardElevation="2dp"
+                            android:background="#E0E0E0"
+                            app:cardUseCompatPadding="true"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+                            <LinearLayout
+                                android:padding="4dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:gravity="center_horizontal">
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textSize="18sp"
+                                    android:text="@{budgetVM.totalBudget.toString()}"/>
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textColor="#808080"
+                                    android:textSize="14sp"
+                                    android:text="Tổng ngân sách"/>
+                            </LinearLayout>
+                        </com.google.android.material.card.MaterialCardView>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_columnWeight="1"
+                        android:layout_height="wrap_content">
+                        <com.google.android.material.card.MaterialCardView
+                            app:cardElevation="2dp"
+                            android:background="#E0E0E0"
+                            app:cardUseCompatPadding="true"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+                            <LinearLayout
+                                android:padding="4dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:gravity="center_horizontal">
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textSize="18sp"
+                                    android:text="@{budgetVM.totalSpent.toString()}"/>
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textColor="#808080"
+                                    android:textSize="14sp"
+                                    android:text="Tổng đã chi"/>
+                            </LinearLayout>
+                        </com.google.android.material.card.MaterialCardView>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_columnWeight="1"
+                        android:layout_height="wrap_content">
+                        <com.google.android.material.card.MaterialCardView
+                            app:cardElevation="2dp"
+                            app:cardUseCompatPadding="true"
+                            android:background="#E0E0E0"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+                            <LinearLayout
+                                android:padding="4dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:gravity="center_horizontal">
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textSize="18sp"
+                                    android:text='@{budgetVM.daysLeft.toString() + " ngày"}' />
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textColor="#808080"
+                                    android:textSize="14sp"
+                                    android:text="Đến cuối tháng"/>
+                            </LinearLayout>
+                        </com.google.android.material.card.MaterialCardView>
+                    </LinearLayout>
+                </GridLayout>
+                <TextView
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="5dp"
                     android:textColor="#808080"
+                    android:textFontWeight="@integer/material_motion_duration_medium_2"
                     android:textSize="16sp"
-                    android:text="Khoản có thể chi"/>
+                    android:paddingLeft="10dp"
+                    android:text="Các nhóm đã có ngân sách"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/budget_gr_list"
+                    android:background="@color/white"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:listitem="@layout/group_item"
+                    android:name="com.example.moneycare.BudgetFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                </androidx.recyclerview.widget.RecyclerView>
             </LinearLayout>
-            <GridLayout
-                android:paddingBottom="20dp"
-                android:background="@color/white"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:columnCount="3">
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_columnWeight="1"
-                    android:layout_height="wrap_content">
-                    <com.google.android.material.card.MaterialCardView
-                        app:cardElevation="2dp"
-                        android:background="#E0E0E0"
-                        app:cardUseCompatPadding="true"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-                        <LinearLayout
-                            android:padding="4dp"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:gravity="center_horizontal">
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textSize="18sp"
-                                android:text="@{budgetVM.totalBudget.toString()}"/>
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textColor="#808080"
-                                android:textSize="14sp"
-                                android:text="Tổng ngân sách"/>
-                        </LinearLayout>
-                    </com.google.android.material.card.MaterialCardView>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_columnWeight="1"
-                    android:layout_height="wrap_content">
-                    <com.google.android.material.card.MaterialCardView
-                        app:cardElevation="2dp"
-                        android:background="#E0E0E0"
-                        app:cardUseCompatPadding="true"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-                        <LinearLayout
-                            android:padding="4dp"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:gravity="center_horizontal">
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textSize="18sp"
-                                android:text="@{budgetVM.totalSpent.toString()}"/>
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textColor="#808080"
-                                android:textSize="14sp"
-                                android:text="Tổng đã chi"/>
-                        </LinearLayout>
-                    </com.google.android.material.card.MaterialCardView>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_columnWeight="1"
-                    android:layout_height="wrap_content">
-                    <com.google.android.material.card.MaterialCardView
-                        app:cardElevation="2dp"
-                        app:cardUseCompatPadding="true"
-                        android:background="#E0E0E0"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-                        <LinearLayout
-                            android:padding="4dp"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:gravity="center_horizontal">
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textSize="18sp"
-                                android:text='@{budgetVM.daysLeft.toString() + " ngày"}' />
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textColor="#808080"
-                                android:textSize="14sp"
-                                android:text="Đến cuối tháng"/>
-                        </LinearLayout>
-                    </com.google.android.material.card.MaterialCardView>
-                </LinearLayout>
-            </GridLayout>
-            <TextView
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="5dp"
-                android:textColor="#808080"
-                android:textFontWeight="@integer/material_motion_duration_medium_2"
-                android:textSize="16sp"
-                android:paddingLeft="10dp"
-                android:text="Các nhóm đã có ngân sách"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-            <androidx.recyclerview.widget.RecyclerView
-                android:paddingHorizontal="20dp"
-                android:id="@+id/budget_gr_list"
-                android:background="@color/white"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:listitem="@layout/fragment_budgets_group_item"
-                android:name="com.example.moneycare.BudgetFragment"
+            <LinearLayout
+                android:visibility="invisible"
+                android:id="@+id/budget_empty"
+                android:layout_below="@id/basic_app_bar"
+                android:gravity="center"
+                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
-            </androidx.recyclerview.widget.RecyclerView>
+                <ImageView
+                    android:src="@mipmap/ic_empty"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:textSize="20dp"
+                    android:text="Không có ngân sách nào trong tháng này!"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+            <include
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:layout_below="@id/basic_app_bar"
+                layout="@layout/loading"
+                />
         </LinearLayout>
-        <LinearLayout
-            android:visibility="invisible"
-            android:id="@+id/budget_empty"
-            android:layout_below="@id/budget_app_bar"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <ImageView
-                android:src="@mipmap/ic_empty"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-            <TextView
-                android:textSize="20dp"
-                android:text="Không có ngân sách nào trong tháng này!"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-        </LinearLayout>
-    <include
-        android:layout_height="match_parent"
-        android:layout_width="match_parent"
-        android:layout_below="@id/budget_app_bar"
-        layout="@layout/loading"
-        />
-</RelativeLayout>
+        <include layout="@layout/floating_add_btn"/>
+    </FrameLayout>
 </layout>

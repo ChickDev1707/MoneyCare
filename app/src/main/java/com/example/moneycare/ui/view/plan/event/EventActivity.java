@@ -20,6 +20,7 @@ import com.example.moneycare.data.model.Event;
 import com.example.moneycare.data.repository.EventRepository;
 import com.example.moneycare.ui.view.plan.budget.BudgetActivity;
 import com.example.moneycare.utils.DateTimeUtil;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -110,7 +111,7 @@ public class EventActivity extends AppCompatActivity {
     }
 
     private void initToolBar(){
-        Toolbar toolbar = findViewById(R.id.add_tool_bar);
+        Toolbar toolbar = findViewById(R.id.basic_app_bar);
         toolbar.setTitle("Sự kiện");
         this.setSupportActionBar(toolbar);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -123,7 +124,7 @@ public class EventActivity extends AppCompatActivity {
     }
 
     private void initBtnAddEvent(){
-        TextView btnAddEvent = findViewById(R.id.btn_add);
+        FloatingActionButton btnAddEvent = findViewById(R.id.floating_add_btn);
         btnAddEvent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

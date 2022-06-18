@@ -5,6 +5,7 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import android.app.Activity;
@@ -16,6 +17,7 @@ import com.example.moneycare.R;
 import com.example.moneycare.databinding.ActivityManageGroupBinding;
 import com.example.moneycare.databinding.FragmentGroupMainBinding;
 import com.example.moneycare.ui.view.transaction.trans.TransactionFragment;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class ManageGroupActivity extends AppCompatActivity {
     private ActivityManageGroupBinding binding;
@@ -38,7 +40,8 @@ public class ManageGroupActivity extends AppCompatActivity {
         initOpenAddGroupBtn();
     }
     private void initOpenAddGroupBtn(){
-        binding.openAddGroupBtn.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton btn = findViewById(R.id.floating_add_btn);
+        btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ManageGroupActivity.this, NewGroupActivity.class);

@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -13,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.moneycare.data.model.Budget;
 import com.example.moneycare.data.model.Group;
-import com.example.moneycare.databinding.FragmentBudgetsGroupItemBinding;
+import com.example.moneycare.databinding.GroupItemBinding;
 import com.example.moneycare.ui.viewmodel.plan.BudgetViewModel;
 import com.example.moneycare.utils.LoadImage;
 
@@ -50,22 +49,22 @@ public class MyBudgetGroupRecyclerViewAdapter extends RecyclerView.Adapter<MyBud
     @Override
     public MyBudgetGroupRecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        return new MyBudgetGroupRecyclerViewAdapter.ViewHolder(FragmentBudgetsGroupItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
+        return new MyBudgetGroupRecyclerViewAdapter.ViewHolder(GroupItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
     }
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
         String strDate = formatter.format(budgets.get(position).getDate());
-        holder.itemName.setText(transactionGroups.get(position).name);
-        holder.itemDateCreated.setText(strDate);
-        LoadImage loadImage = new LoadImage(holder.imgView);
+        holder.groupName.setText(transactionGroups.get(position).name);
+        holder.groupCreatedDate.setText(strDate);
+        LoadImage loadImage = new LoadImage(holder.groupIcon);
         loadImage.execute(transactionGroups.get(position).image);
-        holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
+        holder.groupItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(v.getContext(), BudgetDetailActivity.class);
                 i.putExtra("imgGroup", transactionGroups.get(position).image);
-                i.putExtra("groupName", transactionGroups.get(position).name);
+                i.putExtra("groupItem", transactionGroups.get(position).name);
                 i.putExtra("idBudget", budgets.get(position).getId());
                 i.putExtra("totalBudget", budgetsVM.totalBudgetImpl);
                 toDetailBudgetActivity.launch(i);
@@ -78,22 +77,22 @@ public class MyBudgetGroupRecyclerViewAdapter extends RecyclerView.Adapter<MyBud
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public final TextView itemName;
-        public final TextView itemDateCreated;
-        public final ImageView imgView;
-        public final RelativeLayout relativeLayout;
+        public final TextView groupName;
+        public final TextView groupCreatedDate;
+        public final ImageView groupIcon;
+        public final View groupItem;
 
-        public ViewHolder(FragmentBudgetsGroupItemBinding binding) {
+        public ViewHolder(GroupItemBinding binding) {
             super(binding.getRoot());
-            itemName = binding.budgetGroupName;
-            imgView = binding.imgItem;
-            relativeLayout = binding.itemContainer;
-            itemDateCreated = binding.budgetDateCreated;
+            groupName = binding.groupName;
+            groupIcon = binding.groupIcon;
+            groupItem = binding.groupItem;
+            groupCreatedDate = binding.groupType;
         }
 
         @Override
         public String toString() {
-            return super.toString() + " '" + itemName.getText() + "'";
+            return super.toString() + " '" + groupName.getText() + "'";
         }
     }
 }

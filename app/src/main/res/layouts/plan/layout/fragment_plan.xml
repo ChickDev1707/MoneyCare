@@ -13,16 +13,18 @@
         android:background="#EFEFF3"
         android:orientation="vertical">
         <com.google.android.material.appbar.AppBarLayout
-            android:layout_width="match_parent"
             android:background="@color/white"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <com.google.android.material.appbar.MaterialToolbar
-                style="@style/Theme.AppCompat.DayNight.DarkActionBar"
-                android:padding="3dp"
-                app:title="Lập Kế Hoạch"
-                app:titleCentered="true"
+                android:id="@+id/basic_app_bar"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                app:title="Kế hoạch"
+                style="@style/Theme.AppCompat.DayNight.DarkActionBar"
+                >
+            </com.google.android.material.appbar.MaterialToolbar>
         </com.google.android.material.appbar.AppBarLayout>
         <LinearLayout
             android:orientation="vertical"

@@ -22,8 +22,10 @@ import com.example.moneycare.R;
 import com.example.moneycare.data.model.Budget;
 import com.example.moneycare.data.model.Group;
 import com.example.moneycare.databinding.ActivityBudgetBinding;
+import com.example.moneycare.ui.view.transaction.wallet.ManageWalletActivity;
 import com.example.moneycare.ui.viewmodel.plan.BudgetViewModel;
 import com.example.moneycare.utils.Convert;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -81,31 +83,8 @@ public class BudgetActivity extends AppCompatActivity {
         binding.setLifecycleOwner(this);
         setContentView(binding.getRoot());
 
-        Toolbar toolbar = findViewById(R.id.add_tool_bar);
-        this.setSupportActionBar(toolbar);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                BudgetActivity.this.finish();
-            }
-        });
-
-        TextView txtAdd = findViewById(R.id.btn_add);
-        txtAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v)
-            {
-                Intent intent = new Intent(BudgetActivity.this, AddBudgetActivity.class);
-                List<String> arrGroups = new ArrayList<String>();
-                if(budgetVM.activeGroups != null){
-                    for(Group gr:budgetVM.activeGroups){
-                        arrGroups.add(gr.id);
-                    }
-                    intent.putExtra("activeGroups", arrGroups.toArray(new String[0]));
-                }
-                toAddBudgetActivity.launch(intent);
-            }
-        });
+        initToolbar();
+        initAddBudgetBtn();
 
         budgetGroupList = findViewById(R.id.budget_gr_list);
 
@@ -143,5 +122,35 @@ public class BudgetActivity extends AppCompatActivity {
             }
         });
 
+    }
+    private void initToolbar(){
+        Toolbar toolbar = findViewById(R.id.basic_app_bar);
+        toolbar.setTitle("Ngân sách");
+        this.setSupportActionBar(toolbar);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // back button pressed
+                BudgetActivity.this.finish();
+                onBackPressed();
+            }
+        });
+    }
+    private void initAddBudgetBtn(){
+        FloatingActionButton addBudgetBtn = findViewById(R.id.floating_add_btn);
+        addBudgetBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(BudgetActivity.this, AddBudgetActivity.class);
+                List<String> arrGroups = new ArrayList<String>();
+                if(budgetVM.activeGroups != null){
+                    for(Group gr:budgetVM.activeGroups){
+                        arrGroups.add(gr.id);
+                    }
+                    intent.putExtra("activeGroups", arrGroups.toArray(new String[0]));
+                }
+                toAddBudgetActivity.launch(intent);
+            }
+        });
     }
 }

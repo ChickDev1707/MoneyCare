@@ -37,7 +37,12 @@ android {
     sourceSets {
         main {
             res {
-                srcDirs 'src\\main\\res', 'src\\main\\res\\layouts\\transaction', 'src\\main\\res\\layouts\\report', 'src\\main\\res\\layouts\\plan', 'src\\main\\res\\layouts\\account'
+                srcDirs 'src\\main\\res',
+                        'src\\main\\res\\layouts\\transaction',
+                        'src\\main\\res\\layouts\\report',
+                        'src\\main\\res\\layouts\\plan',
+                        'src\\main\\res\\layouts\\account',
+                        'src\\main\\res\\layouts\\components'
             }
         }
     }

@@ -1,6 +1,5 @@
 package com.example.moneycare.ui.view.plan.event;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,24 +8,14 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.moneycare.data.model.Budget;
 import com.example.moneycare.data.model.Event;
-import com.example.moneycare.data.model.Group;
-import com.example.moneycare.databinding.FragmentBudgetsGroupItemBinding;
 import com.example.moneycare.databinding.FragmentEventItemBinding;
-import com.example.moneycare.ui.view.plan.budget.BudgetDetailActivity;
-import com.example.moneycare.ui.viewmodel.plan.BudgetViewModel;
-import com.example.moneycare.utils.Convert;
 import com.example.moneycare.utils.DateTimeUtil;
 import com.example.moneycare.utils.LoadImage;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
