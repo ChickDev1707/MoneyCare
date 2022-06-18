@@ -123,58 +123,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/linearLayout6" />
-                    <TextView
-                        android:id="@+id/textView5"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="Thu nhập ròng"
-                        android:textAlignment="center"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/font_size_large"
-                        android:textStyle="bold"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/view4" />
 
-                    <TextView
-                        android:id="@+id/textViewNetIncome"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="@{Converter.longToString(reportListVM.moneyTotal)}"
-                        android:textAlignment="center"
-                        android:textColor="@color/blue_dark"
-                        android:textSize="@dimen/font_size_large"
-                        android:textStyle="bold"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView5" />
-
-
-                    <com.github.mikephil.charting.charts.BarChart
-                        android:id="@+id/barChartNetIncome"
-                        android:layout_width="match_parent"
-                        android:layout_height="400dp"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginEnd="8dp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textViewNetIncome" />
-
-                    <View
-                        android:id="@+id/view"
-                        android:layout_width="wrap_content"
-                        android:layout_height="2dp"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginEnd="8dp"
-                        android:layout_weight="1"
-                        android:background="@color/gray_100"
-                        android:gravity="end"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/barChartNetIncome" />
                     <LinearLayout
                         android:id="@+id/linearLayout1"
                         android:layout_width="match_parent"
