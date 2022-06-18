@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.moneycare.data.custom.GroupTransaction;
 import com.example.moneycare.databinding.GroupTransactionItemBinding;
 import com.example.moneycare.utils.Converter;
+import com.example.moneycare.utils.ImageLoader;
 import com.example.moneycare.utils.ImageUtil;
 
 import java.util.List;
@@ -42,8 +43,8 @@ public class GroupTransactionRecyclerViewAdapter extends RecyclerView.Adapter<Gr
         holder.totalTransaction.setText(totalTransFullText);
         holder.totalMoney.setText(Converter.toFormattedMoney(context, groupTransaction.getTotalMoney()));
 
-        Bitmap bitmapIcon = ImageUtil.toBitmap(groupTransaction.group.image);
-        holder.groupIcon.setImageBitmap(bitmapIcon);
+        ImageLoader imageLoader = new ImageLoader(holder.groupIcon);
+        imageLoader.execute(groupTransaction.group.image);
         holder.transactionListView.setAdapter(new TransactionRecyclerViewAdapter(groupTransaction.group, groupTransaction.transactionList));
     }
 

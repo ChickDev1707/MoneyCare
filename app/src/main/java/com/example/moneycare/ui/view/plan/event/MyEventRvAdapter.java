@@ -12,9 +12,9 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.moneycare.data.model.Event;
-import com.example.moneycare.databinding.FragmentEventItemBinding;
+import com.example.moneycare.databinding.EventItemBinding;
 import com.example.moneycare.utils.DateTimeUtil;
-import com.example.moneycare.utils.LoadImage;
+import com.example.moneycare.utils.ImageLoader;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +38,7 @@ public class MyEventRvAdapter extends RecyclerView.Adapter<MyEventRvAdapter.View
     @Override
     public MyEventRvAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        return new MyEventRvAdapter.ViewHolder(FragmentEventItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
+        return new MyEventRvAdapter.ViewHolder(EventItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
     }
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
@@ -46,8 +46,8 @@ public class MyEventRvAdapter extends RecyclerView.Adapter<MyEventRvAdapter.View
         holder.daysLeft.setText("Còn " + DateTimeUtil.daysLeft(events.get(position).endDate) + " ngày");
 //        holder.spent.setText(Convert.convertToThousandsSeparator());
         if(events.get(position).image != ""){
-            LoadImage loadImage = new LoadImage(holder.imgView);
-            loadImage.execute(events.get(position).image);
+            ImageLoader imageLoader = new ImageLoader(holder.imgView);
+            imageLoader.execute(events.get(position).image);
         }
         holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,7 +70,7 @@ public class MyEventRvAdapter extends RecyclerView.Adapter<MyEventRvAdapter.View
         public final TextView spent;
         public final RelativeLayout relativeLayout;
 
-        public ViewHolder(FragmentEventItemBinding binding) {
+        public ViewHolder(EventItemBinding binding) {
             super(binding.getRoot());
             eventName = binding.eventName;
             imgView = binding.imgItem;

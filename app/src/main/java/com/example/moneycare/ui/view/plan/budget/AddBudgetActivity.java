@@ -24,10 +24,9 @@ import com.example.moneycare.R;
 import com.example.moneycare.data.model.Budget;
 import com.example.moneycare.data.model.Group;
 import com.example.moneycare.data.repository.BudgetRepository;
-import com.example.moneycare.data.repository.GroupRepository;
 import com.example.moneycare.databinding.ActivityAddBudgetBinding;
 import com.example.moneycare.ui.viewmodel.plan.NewBudgetViewModel;
-import com.example.moneycare.utils.LoadImage;
+import com.example.moneycare.utils.ImageLoader;
 
 import java.text.DecimalFormat;
 import java.time.LocalDate;
@@ -56,8 +55,8 @@ public class AddBudgetActivity extends AppCompatActivity {
                         viewModel.groupSelected.setValue(group);
 
                         ImageView imgView = findViewById(R.id.img_item_select_group);
-                        LoadImage loadImage = new LoadImage(imgView);
-                        loadImage.execute(group.image);
+                        ImageLoader imageLoader = new ImageLoader(imgView);
+                        imageLoader.execute(group.image);
                         imgView.setBackgroundColor(0xFFFFFF);
                     }
                 }

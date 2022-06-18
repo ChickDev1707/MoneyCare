@@ -13,7 +13,6 @@ public class ImageUtil
                 base64Str.substring(base64Str.indexOf(",")  + 1),
                 Base64.DEFAULT
         );
-
         return BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
     }
 

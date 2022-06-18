@@ -1,11 +1,8 @@
 package com.example.moneycare.ui.view.plan.event;
 
-import static com.example.moneycare.utils.Convert.convertToNumber;
-
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContract;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,15 +23,10 @@ import com.example.moneycare.data.model.Wallet;
 import com.example.moneycare.data.repository.EventRepository;
 import com.example.moneycare.data.repository.TransactionRepository;
 import com.example.moneycare.data.repository.WalletRepository;
-import com.example.moneycare.databinding.ActivityAddEventBinding;
 import com.example.moneycare.databinding.ActivityEventDetailBinding;
-import com.example.moneycare.ui.view.plan.budget.BudgetDetailActivity;
-import com.example.moneycare.ui.view.plan.budget.UpdateBudgetActivity;
 import com.example.moneycare.ui.viewmodel.plan.EventViewModel;
 import com.example.moneycare.utils.DateTimeUtil;
-import com.example.moneycare.utils.LoadImage;
-
-import java.text.SimpleDateFormat;
+import com.example.moneycare.utils.ImageLoader;
 
 public class EventDetailActivity extends AppCompatActivity {
 
@@ -98,8 +90,8 @@ public class EventDetailActivity extends AppCompatActivity {
             eventVM.wallet.setValue(wallet);
         }
 
-        LoadImage loadImage = new LoadImage(binding.imgItemEventDetail);
-        loadImage.execute(eventSelected.image);
+        ImageLoader imageLoader = new ImageLoader(binding.imgItemEventDetail);
+        imageLoader.execute(eventSelected.image);
     }
 
     private void initToolbar(){

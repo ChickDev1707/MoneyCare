@@ -6,13 +6,9 @@ import android.os.AsyncTask;
 import android.util.Base64;
 import android.widget.ImageView;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-
-public class LoadImage extends AsyncTask<String, Void, Bitmap> {
-    private ImageView imgView;
-    public LoadImage(ImageView view){
+public class ImageLoader extends AsyncTask<String, Void, Bitmap> {
+    private final ImageView imgView;
+    public ImageLoader(ImageView view){
         this.imgView = view;
     }
 
@@ -20,8 +16,7 @@ public class LoadImage extends AsyncTask<String, Void, Bitmap> {
     protected Bitmap doInBackground(String... strings) {
         Bitmap decodedByte = null;
         try{
-            byte[] decodedString = Base64.decode(strings[0], Base64.DEFAULT);
-            decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+            decodedByte= ImageUtil.toBitmap(strings[0]);
         }catch (Exception e){
             System.out.println("Can't convert to bitmap!");
         }

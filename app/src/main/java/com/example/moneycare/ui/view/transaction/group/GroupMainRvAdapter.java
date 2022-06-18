@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.example.moneycare.data.model.Group;
 import com.example.moneycare.databinding.GroupItemBinding;
+import com.example.moneycare.utils.ImageLoader;
 import com.example.moneycare.utils.ImageUtil;
 
 import java.util.List;
@@ -37,9 +38,9 @@ public class GroupMainRvAdapter extends RecyclerView.Adapter<GroupMainRvAdapter.
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         Group group = groups.get(position);
-        
-        Bitmap bitmapIcon = ImageUtil.toBitmap(group.image);
-        holder.groupIcon.setImageBitmap(bitmapIcon);
+
+        ImageLoader imageLoader = new ImageLoader(holder.groupIcon);
+        imageLoader.execute(group.image);
         holder.groupName.setText(group.name);
 
         String groupType = group.isDefault? "" : "C";

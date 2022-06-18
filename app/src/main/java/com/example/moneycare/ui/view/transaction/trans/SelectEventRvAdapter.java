@@ -12,7 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.moneycare.data.model.Event;
-import com.example.moneycare.databinding.FragmentEventItemBinding;
+import com.example.moneycare.databinding.EventItemBinding;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +28,7 @@ public class SelectEventRvAdapter extends RecyclerView.Adapter<SelectEventRvAdap
     @Override
     public SelectEventRvAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        return new SelectEventRvAdapter.ViewHolder(FragmentEventItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
+        return new SelectEventRvAdapter.ViewHolder(EventItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
     }
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
@@ -58,7 +58,7 @@ public class SelectEventRvAdapter extends RecyclerView.Adapter<SelectEventRvAdap
         public final TextView spent;
         public final RelativeLayout eventItem;
 
-        public ViewHolder(FragmentEventItemBinding binding) {
+        public ViewHolder(EventItemBinding binding) {
             super(binding.getRoot());
             eventItem = binding.itemContainer;
             eventName = binding.eventName;

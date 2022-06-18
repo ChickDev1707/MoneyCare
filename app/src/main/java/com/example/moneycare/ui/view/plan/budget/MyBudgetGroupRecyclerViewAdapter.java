@@ -14,7 +14,7 @@ import com.example.moneycare.data.model.Budget;
 import com.example.moneycare.data.model.Group;
 import com.example.moneycare.databinding.GroupItemBinding;
 import com.example.moneycare.ui.viewmodel.plan.BudgetViewModel;
-import com.example.moneycare.utils.LoadImage;
+import com.example.moneycare.utils.ImageLoader;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -57,8 +57,8 @@ public class MyBudgetGroupRecyclerViewAdapter extends RecyclerView.Adapter<MyBud
         String strDate = formatter.format(budgets.get(position).getDate());
         holder.groupName.setText(transactionGroups.get(position).name);
         holder.groupCreatedDate.setText(strDate);
-        LoadImage loadImage = new LoadImage(holder.groupIcon);
-        loadImage.execute(transactionGroups.get(position).image);
+        ImageLoader imageLoader = new ImageLoader(holder.groupIcon);
+        imageLoader.execute(transactionGroups.get(position).image);
         holder.groupItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

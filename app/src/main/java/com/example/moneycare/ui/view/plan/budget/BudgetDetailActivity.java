@@ -26,7 +26,7 @@ import com.example.moneycare.data.repository.BudgetRepository;
 import com.example.moneycare.data.repository.TransactionRepository;
 import com.example.moneycare.databinding.ActivityBudgetDetailBinding;
 import com.example.moneycare.ui.viewmodel.plan.BudgetViewModel;
-import com.example.moneycare.utils.LoadImage;
+import com.example.moneycare.utils.ImageLoader;
 
 
 public class BudgetDetailActivity extends AppCompatActivity {
@@ -95,8 +95,8 @@ public class BudgetDetailActivity extends AppCompatActivity {
         });
 
         //Load image
-        LoadImage loadImage = new LoadImage(findViewById(R.id.img_item_detail));
-        loadImage.execute(imgGroup);
+        ImageLoader imageLoader = new ImageLoader(findViewById(R.id.img_item_detail));
+        imageLoader.execute(imgGroup);
 
         //Group name
         TextView tvGrName = findViewById(R.id.item_group_name_detail);

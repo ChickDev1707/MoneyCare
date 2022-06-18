@@ -1,7 +1,5 @@
 package com.example.moneycare.ui.view.plan.event;
 
-import static com.example.moneycare.utils.Convert.convertToMoneyCompact;
-
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
@@ -15,24 +13,21 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.DropBoxManager;
 import android.provider.MediaStore;
 import android.view.View;
 
 import com.example.moneycare.R;
 import com.example.moneycare.data.model.Event;
 import com.example.moneycare.data.model.Wallet;
-import com.example.moneycare.databinding.ActivityAddEventBinding;
 import com.example.moneycare.databinding.ActivityUpdateEventBinding;
 import com.example.moneycare.ui.view.transaction.wallet.SelectWalletActivity;
 import com.example.moneycare.ui.viewmodel.plan.EventViewModel;
 import com.example.moneycare.utils.ImageUtil;
-import com.example.moneycare.utils.LoadImage;
+import com.example.moneycare.utils.ImageLoader;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class UpdateEventActivity extends AppCompatActivity {
@@ -93,8 +88,8 @@ public class UpdateEventActivity extends AppCompatActivity {
         Wallet wallet = new Wallet();
         wallet.name = walletName;
         eventVM.wallet.setValue(wallet);
-        LoadImage loadImage = new LoadImage(binding.selectEventUpdateImg);
-        loadImage.execute(eventUpdated.image);
+        ImageLoader imageLoader = new ImageLoader(binding.selectEventUpdateImg);
+        imageLoader.execute(eventUpdated.image);
         eventVM.image.setValue(ImageUtil.toBitmap(eventUpdated.image));
     }
     private void initToolbar(){

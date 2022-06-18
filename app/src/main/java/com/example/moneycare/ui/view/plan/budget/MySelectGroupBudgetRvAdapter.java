@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.moneycare.data.model.Group;
 import com.example.moneycare.databinding.GroupItemBinding;
-import com.example.moneycare.utils.LoadImage;
+import com.example.moneycare.utils.ImageLoader;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,8 +40,8 @@ public class MySelectGroupBudgetRvAdapter extends RecyclerView.Adapter<MySelectG
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.groupName.setText(transactionGroups.get(position).name);
-        LoadImage loadImage = new LoadImage(holder.groupIcon);
-        loadImage.execute(transactionGroups.get(position).image);
+        ImageLoader imageLoader = new ImageLoader(holder.groupIcon);
+        imageLoader.execute(transactionGroups.get(position).image);
         holder.groupItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

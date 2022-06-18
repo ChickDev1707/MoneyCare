@@ -21,7 +21,7 @@ import com.example.moneycare.data.model.Group;
 import com.example.moneycare.data.repository.BudgetRepository;
 import com.example.moneycare.databinding.ActivityUpdateBudgetBinding;
 import com.example.moneycare.ui.viewmodel.plan.BudgetViewModel;
-import com.example.moneycare.utils.LoadImage;
+import com.example.moneycare.utils.ImageLoader;
 
 import java.text.DecimalFormat;
 
@@ -80,8 +80,8 @@ public class UpdateBudgetActivity extends AppCompatActivity {
 
     private void loadDataWhenUpdate(){
         ImageView imgView = findViewById(R.id.update_budget_img_group);
-        LoadImage loadImage = new LoadImage(imgView);
-        loadImage.execute(imgGroup);
+        ImageLoader imageLoader = new ImageLoader(imgView);
+        imageLoader.execute(imgGroup);
         imgView.setBackgroundColor(0xFFFFFF);
 
         Group group = new Group();

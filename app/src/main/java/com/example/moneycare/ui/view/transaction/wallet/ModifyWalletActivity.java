@@ -22,6 +22,7 @@ import com.example.moneycare.data.model.Wallet;
 import com.example.moneycare.data.repository.WalletRepository;
 import com.example.moneycare.databinding.ActivityModifyWalletBinding;
 import com.example.moneycare.ui.view.transaction.trans.TransactionFragment;
+import com.example.moneycare.utils.ImageLoader;
 import com.example.moneycare.utils.ImageUtil;
 
 public class ModifyWalletActivity extends AppCompatActivity {
@@ -61,8 +62,8 @@ public class ModifyWalletActivity extends AppCompatActivity {
         repository.fetchWallet(walletId, wallet->{
             binding.walletName.setText(wallet.name);
             binding.walletMoney.setText(Long.toString(wallet.money));
-            Bitmap bitmap = ImageUtil.toBitmap(wallet.image);
-            binding.walletImage.setImageBitmap(bitmap);
+            ImageLoader imageLoader = new ImageLoader(binding.walletImage);
+            imageLoader.execute(wallet.image);
             selectedWallet = wallet;
         });
     }
