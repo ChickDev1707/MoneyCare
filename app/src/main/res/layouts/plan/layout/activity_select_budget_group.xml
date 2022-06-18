@@ -34,7 +34,7 @@
                 android:paddingHorizontal="20dp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 android:id="@+id/select_group_budget_list"
-                tools:listitem="@layout/fragment_select_group_budget_item"
+                tools:listitem="@layout/group_item"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
         </LinearLayout>

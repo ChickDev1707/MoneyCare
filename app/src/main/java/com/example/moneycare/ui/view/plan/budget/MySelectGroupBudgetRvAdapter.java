@@ -6,13 +6,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.moneycare.data.model.Group;
-import com.example.moneycare.databinding.FragmentSelectGroupBudgetItemBinding;
+import com.example.moneycare.databinding.GroupItemBinding;
 import com.example.moneycare.utils.LoadImage;
 
 import java.util.ArrayList;
@@ -35,14 +35,14 @@ public class MySelectGroupBudgetRvAdapter extends RecyclerView.Adapter<MySelectG
     @Override
     public MySelectGroupBudgetRvAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        return new MySelectGroupBudgetRvAdapter.ViewHolder(FragmentSelectGroupBudgetItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
+        return new MySelectGroupBudgetRvAdapter.ViewHolder(GroupItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
     }
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.itemName.setText(transactionGroups.get(position).name);
-        LoadImage loadImage = new LoadImage(holder.imgView);
+        holder.groupName.setText(transactionGroups.get(position).name);
+        LoadImage loadImage = new LoadImage(holder.groupIcon);
         loadImage.execute(transactionGroups.get(position).image);
-        holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
+        holder.groupItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
@@ -58,20 +58,20 @@ public class MySelectGroupBudgetRvAdapter extends RecyclerView.Adapter<MySelectG
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public final TextView itemName;
-        public final ImageView imgView;
-        public final RelativeLayout relativeLayout;
+        public final TextView groupName;
+        public final ImageView groupIcon;
+        public final LinearLayout groupItem;
 
-        public ViewHolder(FragmentSelectGroupBudgetItemBinding binding) {
+        public ViewHolder(GroupItemBinding binding) {
             super(binding.getRoot());
-            itemName = binding.budgetSelectGroupName;
-            imgView = binding.imgSelectGroupBudgetItem;
-            relativeLayout = binding.itemContainer;
+            groupName = binding.groupName;
+            groupIcon = binding.groupIcon;
+            groupItem = binding.groupItem;
         }
 
         @Override
         public String toString() {
-            return super.toString() + " '" + itemName.getText() + "'";
+            return super.toString() + " '" + groupName.getText() + "'";
         }
     }
 }
