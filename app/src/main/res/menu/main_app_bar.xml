@@ -27,4 +27,8 @@
                 />
         </menu>
     </item>
+    <item
+        android:id="@+id/modify_wallet"
+        app:showAsAction="never"
+        android:title="Điều chỉnh số dư" />
 </menu>

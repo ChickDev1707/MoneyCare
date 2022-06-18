@@ -17,11 +17,13 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import com.example.moneycare.R;
 import com.example.moneycare.databinding.ActivityNewGroupBinding;
 import com.example.moneycare.ui.view.transaction.trans.NewTransactionActivity;
 import com.example.moneycare.ui.viewmodel.transaction.NewGroupViewModel;
+import com.example.moneycare.utils.ValidationUtil;
 
 import java.io.IOException;
 
@@ -108,11 +110,26 @@ public class NewGroupActivity extends AppCompatActivity {
         binding.saveNewGroupBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                viewModel.saveNewGroup();
-                NewGroupActivity.this.setResult(RESULT_OK);
-                NewGroupActivity.this.finish();
+                boolean check = checkAllFields();
+                if(check){
+                    viewModel.saveNewGroup(data->{
+                        NewGroupActivity.this.setResult(RESULT_OK);
+                        NewGroupActivity.this.finish();
+                        Toast toast =  Toast.makeText(NewGroupActivity.this, "Thêm nhóm thành công", Toast.LENGTH_SHORT);
+                        toast.show();
+                    },
+                    data->{
+                        Toast toast =  Toast.makeText(NewGroupActivity.this, "Lỗi! Thêm nhóm thất bại", Toast.LENGTH_SHORT);
+                        toast.show();
+                    });
+
+                }
             }
         });
+    }
+    private boolean checkAllFields(){
+        return ValidationUtil.checkEmpty(binding.newGroupName) &&
+                ValidationUtil.checkEmpty(binding.groupImgPicker);
     }
 
 }

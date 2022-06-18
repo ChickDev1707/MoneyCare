@@ -80,25 +80,24 @@ public class GroupRepository {
             }
         });
     }
-    public void saveNewGroup(String name, boolean type, String image){
+    public void saveNewGroup(String name, boolean type, String image, FirestoreObjectCallback<Void> successCallback, FirestoreObjectCallback<Void> failureCallback){
         CollectionReference groupsRef = db.collection("users").document(currentUserId).collection("transaction-groups");
         Group newGroup = new Group(null, name, type, image);
         groupsRef.add(newGroup.toMap())
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        System.out.println("add group success");
-//                        callback.onCallback(null);
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull @NotNull Exception e) {
-                        System.out.println(e);
-                    }
-                });
+        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+            @Override
+            public void onSuccess(DocumentReference documentReference) {
+                successCallback.onCallback(null);
+            }
+        })
+        .addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull @NotNull Exception e) {
+                failureCallback.onCallback(null);
+            }
+        });
     }
-    public void updateGroup(Group group){
+    public void updateGroup(Group group, FirestoreObjectCallback<Void> successCallback, FirestoreObjectCallback<Void> failureCallback){
         DocumentReference groupRef = db.collection("users").document(currentUserId).collection("transaction-groups").document(group.id);
         db.runTransaction(new Transaction.Function<Void>() {
             @Override
@@ -110,24 +109,29 @@ public class GroupRepository {
         }).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void result) {
-                System.out.println("Update group success");
+                successCallback.onCallback(null);
             }
         })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        System.out.println("Update group failed");
-                    }
-                });
+        .addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                failureCallback.onCallback(null);
+            }
+        });
     }
-    public void deleteGroup(Group group){
+    public void deleteGroup(Group group, FirestoreObjectCallback<Void> successCallback, FirestoreObjectCallback<Void> failureCallback){
         DocumentReference docRef = db.collection("users").document(currentUserId).collection("transaction-groups").document(group.id);
         docRef.delete()
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        System.out.println("delete group success");
-                    }
-                });
+        .addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                successCallback.onCallback(null);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                failureCallback.onCallback(null);
+            }
+        });
     }
 }

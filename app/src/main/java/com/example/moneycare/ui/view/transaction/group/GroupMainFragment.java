@@ -76,6 +76,7 @@ public class GroupMainFragment extends Fragment {
         ).attach();
     }
 
+
     private class GroupViewPagerAdapter extends FragmentStateAdapter {
         private List<GroupListFragment> fragmentList = new ArrayList<>();
         private List<String> titleList = new ArrayList<>();

@@ -23,7 +23,8 @@
         android:id="@+id/planFragment"
         android:name="com.example.moneycare.ui.view.plan.PlanFragment"
         android:label="fragment_plan"
-        tools:layout="@layout/fragment_plan" />
+        tools:layout="@layout/fragment_plan" >
+    </fragment>
     <fragment
         android:id="@+id/accountFragment"
         android:name="com.example.moneycare.ui.view.account.AccountFragment"

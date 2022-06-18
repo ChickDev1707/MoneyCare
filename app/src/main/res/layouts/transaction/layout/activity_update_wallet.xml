@@ -5,6 +5,7 @@
             name="updateWalletVM"
             type="com.example.moneycare.ui.viewmodel.transaction.UpdateWalletViewModel" />
         <import type="android.view.View"/>
+        <import type="com.example.moneycare.utils.Converter"/>
     </data>
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -49,7 +50,7 @@
                     >
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/new_wallet_name"
+                        android:id="@+id/update_wallet_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textSize="@dimen/font_size_extra_large"
@@ -69,12 +70,13 @@
                     >
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/new_wallet_money"
+                        android:id="@+id/update_wallet_money"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textSize="@dimen/font_size_normal"
+                        android:inputType="number"
                         android:enabled="@{updateWalletVM.updateMode ? true : false}"
-                        android:text="@={`` + updateWalletVM.wallet.money}"
+                        android:text="@={Converter.longToString(updateWalletVM.wallet.money)}"
                         />
 
                 </com.google.android.material.textfield.TextInputLayout>

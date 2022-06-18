@@ -1,0 +1,27 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory app:title="@string/header_display">
+
+        <Preference
+            app:key="money_format"
+            app:title="@string/title_money_format"
+            app:useSimpleSummaryProvider="true" />
+        <Preference
+            app:key="money_currency_format"
+            app:summary="@string/summary_currency_format"
+            app:title="@string/title_currency_format" />
+
+        <ListPreference
+            app:key="date_formats"
+            app:defaultValue="dd/MM/yyyy"
+            app:entries="@array/date_formats"
+            app:entryValues="@array/date_format_values"
+            app:title="@string/title_date_format" />
+    </PreferenceCategory>
+    <PreferenceCategory app:title="@string/header_notification">
+        <Preference
+            app:key="notification_time"
+            app:summary="@string/summary_notification_time"
+            app:title="@string/title_notification_time" />
+    </PreferenceCategory>
+</PreferenceScreen>

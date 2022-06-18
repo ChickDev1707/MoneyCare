@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.example.moneycare.data.model.User;
 import com.example.moneycare.data.model.UserTransaction;
 import com.example.moneycare.data.model.Wallet;
 import com.example.moneycare.data.repository.LoginRepository;
@@ -40,7 +41,7 @@ public class InitWalletViewModel extends ViewModel {
     public void setImage(Bitmap bitmap){
         image.setValue(bitmap);
     }
-    public void createUser(FirebaseUser user, FirestoreObjectCallback<String> callback){
+    public void createUser(User user, FirestoreObjectCallback<String> callback){
         String imageUrl = ImageUtil.toBase64(image.getValue());
         Wallet wallet = new Wallet(null, name.getValue(), money.getValue(), imageUrl);
         this.loginRepository.createNewUser(user, wallet, callback);

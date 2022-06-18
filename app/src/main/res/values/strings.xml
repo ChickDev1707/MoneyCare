@@ -15,6 +15,8 @@
     <string name="title_new_group">Thêm nhóm</string>
     <string name="title_trans_group">Nhóm giao dịch</string>
     <string name="title_new_wallet">Thêm ví</string>
+    <string name="title_modify_wallet">Điều chỉnh số dư</string>
+    <string name="title_settings">Cài đặt</string>
 
     <!-- bottom nav -->
     <string name="bot_nav_transaction_title">Giao dịch</string>
@@ -22,11 +24,10 @@
     <string name="bot_nav_plan_title">Kế hoạch</string>
     <string name="bot_nav_account_title">Tài khoản</string>
 
-    <string name="transaction_preference_key">transaction_setting</string>
-    <string name="wallet_preference_key">wallet_preference</string>
-    <string name="time_frame_key">time_mode</string>
-    <string name="current_wallet_key">current_wallet</string>
-    <string name="title_activity_manage_group">ManageGroupActivity</string>
+    <string name="transaction_preference">transaction_settings</string>
+    <string name="pref_key_time_frame">time_frame</string>
+    <string name="pref_key_current_wallet">current_wallet</string>
+
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
@@ -39,5 +40,24 @@
     <string name="init_wallet_description">Money care giúp bạn quản lý chi tiêu từ các ví. Bạn có thể tạo mới và điều chỉnh các ví tùy biến.</string>
     <string name="intro_description">Ứng dụng quản lý chi tiêu hàng đầu trên thị trường, được mọi người tin tưởng sử dụng.</string>
     <string name="register_description">Đăng ký tài khoản để truy cập các tính năng tuyệt vời từ money care</string>
+    <string name="title_activity_settings">SettingsActivity</string>
+
+    <!-- Preference Titles -->
+    <string name="header_display">Hiển thị</string>
+    <string name="header_notification">Thông báo</string>
+
+    <!-- Display Preferences -->
+    <string name="title_money_format">Kiểu hiển thị số tiền</string>
+    <string name="title_currency_format">Đơn vị tiền cho ví tổng</string>
+    <string name="title_date_format">Chọn định dạng ngày tháng</string>
+    <string name="summary_currency_format">VND</string>
+    <string name="summary_date_format">2022/06/17</string>
+
+    <!-- Notification Preferences -->
+    <string name="title_notification_sound">Âm thanh thông báo</string>
+    <string name="title_notification_time">Nhắc thêm giao dịch hàng ngày</string>
+    <string name="summary_notification_sound">Bật âm thanh cho thông báo</string>
+    <string name="summary_notification_time">22:00</string>
+    <string name="title_activity_test">TestActivity</string>
 
 </resources>

@@ -1,16 +1,51 @@
 package com.example.moneycare.utils;
 
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+import androidx.preference.PreferenceManager;
+
 import java.text.SimpleDateFormat;
+import java.time.LocalTime;
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.Date;
 
-public class DateUtil {
+public class DateTimeUtil {
+
     private static Calendar calendar = Calendar.getInstance();
-    public static String getDateString(Date date){
-        SimpleDateFormat formatter = new SimpleDateFormat("EE, dd/MM/yyyy");
+    public static String getDateString(Context context, Date date){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        String value = sharedPreferences.getString("date_formats", "dd/MM/yyyy");
+
+        SimpleDateFormat formatter = new SimpleDateFormat(String.format("EE, %s", value));
         String sDate = formatter.format(date);
         return sDate;
+    }
+    public static String getDateStringDMY(Date date){
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        String sDate = formatter.format(date);
+        return sDate;
+    }
+    //first date of current month
+    public static Date getFirstDateOfMonth(){
+        LocalDate localDate =  LocalDate.now().withDayOfMonth(1);
+        return Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+    }
+    public static Date getLastDateOfMonth() {
+        LocalDate localDate = LocalDate.now().withDayOfMonth(LocalDate.now().lengthOfMonth());
+        return Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
     }
     public static String getMonthString(Date date){
         SimpleDateFormat formatter = new SimpleDateFormat("MMM, yyyy");
@@ -74,5 +109,19 @@ public class DateUtil {
         calendar.set(Calendar.DATE, day);
         Date date = calendar.getTime();
         return date;
+    }
+    public static String getFullTimeString(int hour, int minute){
+        String hourString = Integer.toString(hour);
+        String minuteString = Integer.toString(minute);
+        hourString = hourString.length() == 1? "0" + hourString: hourString;
+        minuteString = minuteString.length() == 1? "0" + minuteString: minuteString;
+        return hourString + ":" + minuteString;
+    }
+
+
+    public static Long daysLeft(Date endDate){
+        long diffInMillies = endDate.getTime() - new Date().getTime();
+        Long res = diffInMillies / (3600 * 1000 * 24) + 1;
+        return res < 0 ? 0L : res;
     }
 }

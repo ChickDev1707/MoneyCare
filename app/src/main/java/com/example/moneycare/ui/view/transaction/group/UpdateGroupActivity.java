@@ -19,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.RadioButton;
+import android.widget.Toast;
 
 import com.example.moneycare.R;
 import com.example.moneycare.data.model.Group;
@@ -28,6 +29,7 @@ import com.example.moneycare.databinding.ActivityUpdateTransactionBinding;
 import com.example.moneycare.ui.view.transaction.trans.UpdateTransactionActivity;
 import com.example.moneycare.ui.viewmodel.transaction.UpdateGroupViewModel;
 import com.example.moneycare.ui.viewmodel.transaction.UpdateTransactionViewModel;
+import com.example.moneycare.utils.ValidationUtil;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -88,9 +90,16 @@ public class UpdateGroupActivity extends AppCompatActivity {
                 viewModel.switchUpdateMode();
                 return true;
             case R.id.delete_item:
-                viewModel.deleteGroup();
-                UpdateGroupActivity.this.setResult(RESULT_OK);
-                UpdateGroupActivity.this.finish();
+                viewModel.deleteGroup(data->{
+                    UpdateGroupActivity.this.setResult(RESULT_OK);
+                    UpdateGroupActivity.this.finish();
+                    Toast toast =  Toast.makeText(UpdateGroupActivity.this, "Xóa nhóm thành công", Toast.LENGTH_SHORT);
+                    toast.show();
+                },
+                data->{
+                    Toast toast =  Toast.makeText(UpdateGroupActivity.this, "Lỗi! Xóa nhóm thất bại", Toast.LENGTH_SHORT);
+                    toast.show();
+                });
                 return true;
             default:
         }
@@ -135,10 +144,24 @@ public class UpdateGroupActivity extends AppCompatActivity {
         binding.updateGroupBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                viewModel.updateGroup();
-                UpdateGroupActivity.this.setResult(RESULT_OK);
-                UpdateGroupActivity.this.finish();
+                boolean check = checkAllFields();
+                if(check){
+                    viewModel.updateGroup(data->{
+                        UpdateGroupActivity.this.setResult(RESULT_OK);
+                        UpdateGroupActivity.this.finish();
+                        Toast toast =  Toast.makeText(UpdateGroupActivity.this, "Cập nhật nhóm thành công", Toast.LENGTH_SHORT);
+                        toast.show();
+                    },
+                    data->{
+                        Toast toast =  Toast.makeText(UpdateGroupActivity.this, "Lỗi! Cập nhật nhóm thất bại", Toast.LENGTH_SHORT);
+                        toast.show();
+                    });
+                }
             }
         });
+    }
+    private boolean checkAllFields(){
+        return ValidationUtil.checkEmpty(binding.newGroupName) &&
+                ValidationUtil.checkEmpty(binding.groupImgPicker);
     }
 }

@@ -9,9 +9,9 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.example.moneycare.data.custom.GroupTransaction;
 import com.example.moneycare.databinding.GroupTransactionItemBinding;
+import com.example.moneycare.utils.Converter;
 import com.example.moneycare.utils.ImageUtil;
 
 import java.util.List;
@@ -34,12 +34,13 @@ public class GroupTransactionRecyclerViewAdapter extends RecyclerView.Adapter<Gr
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
+        Context context = holder.groupNameView.getContext();
         GroupTransaction groupTransaction = groupTransactions.get(position);
         holder.groupNameView.setText(groupTransaction.group.name);
 
         String totalTransFullText = Integer.toString(groupTransaction.transactionList.size()) + " giao dịch";
         holder.totalTransaction.setText(totalTransFullText);
-        holder.totalMoney.setText(Long.toString(groupTransaction.getTotalMoney()));
+        holder.totalMoney.setText(Converter.toFormattedMoney(context, groupTransaction.getTotalMoney()));
 
         Bitmap bitmapIcon = ImageUtil.toBitmap(groupTransaction.group.image);
         holder.groupIcon.setImageBitmap(bitmapIcon);

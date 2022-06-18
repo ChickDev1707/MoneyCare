@@ -31,9 +31,10 @@ public class IntroActivity extends AppCompatActivity {
     private FirebaseAuth.AuthStateListener mAuthStateListener;
     List<AuthUI.IdpConfig> providers = Arrays.asList(
             new AuthUI.IdpConfig.EmailBuilder().build(),
-            new AuthUI.IdpConfig.PhoneBuilder().build(),
             new AuthUI.IdpConfig.GoogleBuilder().build(),
-            new AuthUI.IdpConfig.MicrosoftBuilder().build());
+            new AuthUI.IdpConfig.PhoneBuilder().build(),
+            new AuthUI.IdpConfig.MicrosoftBuilder().build()
+            );
 
     private final ActivityResultLauncher<Intent> signInLauncher = registerForActivityResult(
             new FirebaseAuthUIActivityResultContract(),
@@ -58,13 +59,7 @@ public class IntroActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityIntroBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-//        mFirebaseAuth = FirebaseAuth.getInstance();
-//        FirebaseUser user = mFirebaseAuth.getCurrentUser();
-//        if(user != null){
-//            Intent intent = new Intent(this, MainActivity.class);
-//            startActivity(intent);
-//
-//        }
+
         mFirebaseAuth = FirebaseAuth.getInstance();
         initSignInStateListener();
         initToLoginScreenBtn();
@@ -101,7 +96,6 @@ public class IntroActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = AuthUI.getInstance()
                         .createSignInIntentBuilder()
-                        .setTheme(R.style.LoginTheme)
                         .setIsSmartLockEnabled(false)
                         .setAvailableProviders(providers)
                         .build();
