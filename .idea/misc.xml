@@ -123,16 +123,27 @@
         <entry key="..\:/Courses/third/HKII/java/project/source/app/src/main/res/xml/root_preferences.xml" value="0.16510416666666666" />
         <entry key="..\:/Users/ThanhDan/source/repos/MoneyCare/app/src/main/res/layout/basic_app_bar.xml" value="0.18802083333333333" />
         <entry key="..\:/Users/ThanhDan/source/repos/MoneyCare/app/src/main/res/layout/dropdown_item.xml" value="0.18802083333333333" />
+        <entry key="..\:/Users/ThanhDan/source/repos/MoneyCare/app/src/main/res/layout/fragment_report_expense.xml" value="0.278125" />
+        <entry key="..\:/Users/ThanhDan/source/repos/MoneyCare/app/src/main/res/layout/fragment_report_income.xml" value="0.278125" />
+        <entry key="..\:/Users/ThanhDan/source/repos/MoneyCare/app/src/main/res/layout/fragment_report_net_income.xml" value="0.278125" />
+        <entry key="..\:/Users/ThanhDan/source/repos/MoneyCare/app/src/main/res/layout/fragment_report_view_pager_net_income.xml" value="0.278125" />
         <entry key="..\:/Users/ThanhDan/source/repos/MoneyCare/app/src/main/res/layout/main_app_bar.xml" value="0.18802083333333333" />
+        <entry key="..\:/Users/ThanhDan/source/repos/MoneyCare/app/src/main/res/layout/report_item.xml" value="0.21086008719778043" />
         <entry key="..\:/Users/ThanhDan/source/repos/MoneyCare/app/src/main/res/layout/update_app_bar.xml" value="0.18802083333333333" />
         <entry key="..\:/Users/ThanhDan/source/repos/MoneyCare/app/src/main/res/layouts/account/layout/account_panel_item.xml" value="0.278125" />
         <entry key="..\:/Users/ThanhDan/source/repos/MoneyCare/app/src/main/res/layouts/account/layout/fragment_account.xml" value="0.278125" />
-        <entry key="..\:/Users/ThanhDan/source/repos/MoneyCare/app/src/main/res/layouts/report/layout/fragment_report.xml" value="0.22" />
+        <entry key="..\:/Users/ThanhDan/source/repos/MoneyCare/app/src/main/res/layouts/report/layout/fragment_report.xml" value="0.33" />
+        <entry key="..\:/Users/ThanhDan/source/repos/MoneyCare/app/src/main/res/layouts/transaction/layout/activity_manage_group.xml" value="0.278125" />
+        <entry key="..\:/Users/ThanhDan/source/repos/MoneyCare/app/src/main/res/layouts/transaction/layout/activity_manage_wallet.xml" value="0.278125" />
+        <entry key="..\:/Users/ThanhDan/source/repos/MoneyCare/app/src/main/res/layouts/transaction/layout/activity_new_group.xml" value="0.278125" />
+        <entry key="..\:/Users/ThanhDan/source/repos/MoneyCare/app/src/main/res/layouts/transaction/layout/activity_new_transaction.xml" value="0.278125" />
+        <entry key="..\:/Users/ThanhDan/source/repos/MoneyCare/app/src/main/res/layouts/transaction/layout/activity_select_wallet.xml" value="0.278125" />
         <entry key="..\:/Users/ThanhDan/source/repos/MoneyCare/app/src/main/res/layouts/transaction/layout/fragment_group_list.xml" value="0.278125" />
-        <entry key="..\:/Users/ThanhDan/source/repos/MoneyCare/app/src/main/res/layouts/transaction/layout/fragment_transaction_list.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/ThanhDan/source/repos/MoneyCare/app/src/main/res/layouts/transaction/layout/fragment_group_main.xml" value="0.33" />
+        <entry key="..\:/Users/ThanhDan/source/repos/MoneyCare/app/src/main/res/layouts/transaction/layout/fragment_transaction_list.xml" value="0.5" />
         <entry key="..\:/Users/ThanhDan/source/repos/MoneyCare/app/src/main/res/layouts/transaction/layout/group_item.xml" value="0.18802083333333333" />
-        <entry key="..\:/Users/ThanhDan/source/repos/MoneyCare/app/src/main/res/layouts/transaction/layout/group_transaction_item.xml" value="0.18802083333333333" />
-        <entry key="..\:/Users/ThanhDan/source/repos/MoneyCare/app/src/main/res/layouts/transaction/layout/transaction_item.xml" value="0.18802083333333333" />
+        <entry key="..\:/Users/ThanhDan/source/repos/MoneyCare/app/src/main/res/layouts/transaction/layout/group_transaction_item.xml" value="0.21715817694369974" />
+        <entry key="..\:/Users/ThanhDan/source/repos/MoneyCare/app/src/main/res/layouts/transaction/layout/transaction_item.xml" value="0.33" />
         <entry key="..\:/Users/ThanhDan/source/repos/MoneyCare/app/src/main/res/layouts/transaction/layout/wallet_item.xml" value="0.18802083333333333" />
         <entry key="..\:/Users/ThanhDan/source/repos/MoneyCare/app/src/main/res/menu/bottom_nav_menu.xml" value="0.18802083333333333" />
         <entry key="..\:/Users/ThanhDan/source/repos/MoneyCare/app/src/main/res/menu/top_app_bar.xml" value="0.18802083333333333" />
