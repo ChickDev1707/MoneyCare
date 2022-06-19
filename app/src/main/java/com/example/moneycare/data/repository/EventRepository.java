@@ -33,7 +33,7 @@ public class EventRepository {
 
     public EventRepository(){
         db = FirebaseFirestore.getInstance();
-//        idUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        idUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
     }
 
     public void fetchEvents(FirestoreListCallback callback){

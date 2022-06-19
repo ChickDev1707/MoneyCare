@@ -106,6 +106,7 @@ public class ReportFragment extends Fragment{
         binding.setLifecycleOwner(this);
         timeFrameMode = TransactionTimeFrame.DAY;
 
+        groupTransactionList = new ArrayList<>();
         dataChartNetIncome = new ArrayList<>();
         dataChartIncome = new ArrayList<>();
         dataChartExpense = new ArrayList<>();
@@ -122,6 +123,7 @@ public class ReportFragment extends Fragment{
         return binding.getRoot();
     }
     private void dataProcessingChart(List<GroupTransaction> groupTransactionList){
+        this.groupTransactionList.clear();
         this.groupTransactionList = groupTransactionList;
         dataChartNetIncome.clear();
         dataChartIncome.clear();
@@ -194,6 +196,7 @@ public class ReportFragment extends Fragment{
         tabLayout = binding.getRoot().findViewById(R.id.tabLayout);
         viewPager2 = binding.getRoot().findViewById(R.id.viewPager2);
         reportAdapter = new ReportTabLayoutAdapter(this.getActivity(), groupTransactionList, dataChartNetIncome, dataChartIncome, dataChartExpense);
+
         viewPager2.setAdapter(reportAdapter);
         new TabLayoutMediator(tabLayout, viewPager2, (tab, position) -> {
             switch (position){
@@ -220,6 +223,7 @@ public class ReportFragment extends Fragment{
 //            transList.setAdapter(new ReportIncomeRecyclerViewAdapter(groupTransactionList));
             viewModel.initMoneyInAndOut(groupTransactionList);
             dataProcessingChart(groupTransactionList);
+
         });
     }
 

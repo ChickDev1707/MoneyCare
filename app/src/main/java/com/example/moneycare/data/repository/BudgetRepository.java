@@ -33,7 +33,7 @@ public class BudgetRepository {
 
     public BudgetRepository(){
         db = FirebaseFirestore.getInstance();
-//        userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
     }
 
     public void fetchBudgetsInMonth(FirestoreListCallback callback){

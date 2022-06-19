@@ -39,7 +39,7 @@ public class TransactionRepository {
     String currentUserId;
     public TransactionRepository(){
         db = FirebaseFirestore.getInstance();
-//        currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
     }
     // transactions actions
     public void fetchYearTransactions(Date yearDate, FirestoreListCallback<GroupTransaction> callback){
