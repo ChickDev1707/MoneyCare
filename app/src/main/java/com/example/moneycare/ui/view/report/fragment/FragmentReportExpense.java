@@ -12,10 +12,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.moneycare.R;
 import com.example.moneycare.data.custom.GroupTransaction;
 import com.example.moneycare.databinding.FragmentReportExpenseBinding;
-import com.example.moneycare.ui.view.report.adapter.ReportIncomeRecyclerViewAdapter;
+import com.example.moneycare.ui.view.report.adapter.ReportExpenseRecyclerViewAdapter;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
@@ -35,7 +34,6 @@ public class FragmentReportExpense extends Fragment {
     private List<PieEntry> dataChartExpense;
     public FragmentReportExpense(List<GroupTransaction> groupTransactionList, List data){
         this.groupTransactionExpenseList = new ArrayList<>();
-//        this.groupTransactionIncomeList = groupTransactionList;
         for (GroupTransaction groupTransaction:groupTransactionList){
             if (!groupTransaction.group.type){
                 this.groupTransactionExpenseList.add(groupTransaction);
@@ -58,7 +56,7 @@ public class FragmentReportExpense extends Fragment {
         LinearLayoutManager manager = new LinearLayoutManager(this.getContext());
         transList.setLayoutManager(manager);
         transList.setHasFixedSize(true);
-        transList.setAdapter(new ReportIncomeRecyclerViewAdapter(groupTransactionExpenseList));
+        transList.setAdapter(new ReportExpenseRecyclerViewAdapter(groupTransactionExpenseList));
 
 
         return binding.getRoot();

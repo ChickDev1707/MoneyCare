@@ -33,8 +33,7 @@ public class FragmentReportIncome extends Fragment {
     private List<PieEntry> dataChartIncome;
     public FragmentReportIncome(List<GroupTransaction> groupTransactionList, List data){
         this.groupTransactionIncomeList = new ArrayList<>();
-//        this.groupTransactionIncomeList = groupTransactionList;
-                for (GroupTransaction groupTransaction:groupTransactionList){
+        for (GroupTransaction groupTransaction:groupTransactionList){
             if (groupTransaction.group.type){
                 this.groupTransactionIncomeList.add(groupTransaction);
             }

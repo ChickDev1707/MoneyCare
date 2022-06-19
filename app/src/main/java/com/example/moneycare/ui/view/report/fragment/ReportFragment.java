@@ -65,7 +65,6 @@ public class ReportFragment extends Fragment{
     private TabLayout tabLayout;
     private ViewPager2             viewPager2;
     private ReportTabLayoutAdapter reportAdapter;
-    private BarChart               barChartNetIncome;
     private List<GroupTransaction> groupTransactionList;
     private List<BarEntry> dataChartNetIncome;
     private List<PieEntry>    dataChartIncome;
@@ -196,8 +195,8 @@ public class ReportFragment extends Fragment{
         tabLayout = binding.getRoot().findViewById(R.id.tabLayout);
         viewPager2 = binding.getRoot().findViewById(R.id.viewPager2);
         reportAdapter = new ReportTabLayoutAdapter(this.getActivity(), groupTransactionList, dataChartNetIncome, dataChartIncome, dataChartExpense);
-
         viewPager2.setAdapter(reportAdapter);
+
         new TabLayoutMediator(tabLayout, viewPager2, (tab, position) -> {
             switch (position){
                 case 0:

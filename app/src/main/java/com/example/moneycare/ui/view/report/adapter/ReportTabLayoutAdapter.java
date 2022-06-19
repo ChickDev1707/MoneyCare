@@ -50,10 +50,4 @@ public class ReportTabLayoutAdapter extends FragmentStateAdapter {
     public int getItemCount() {
         return 3;
     }
-
-    public class ViewHolder extends RecyclerView.ViewHolder{
-        public ViewHolder(@NonNull View itemView) {
-            super(itemView);
-        }
-    }
 }
