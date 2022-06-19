@@ -116,7 +116,6 @@ public class UpdateWalletActivity extends AppCompatActivity {
     private void handleSelectImage(Uri selectedImage){
         try {
             Bitmap bitmapImg = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
-            binding.walletImageView.setImageBitmap(bitmapImg);
             viewModel.setImage(selectedImage, bitmapImg);
         } catch (IOException e) {
             e.printStackTrace();
@@ -146,7 +145,6 @@ public class UpdateWalletActivity extends AppCompatActivity {
     }
     private boolean checkAllFields(){
         return ValidationUtil.checkEmpty(binding.updateWalletName) &&
-                ValidationUtil.checkEmpty(binding.updateWalletMoney) &&
-                ValidationUtil.checkEmpty(binding.walletImgPicker);
+                ValidationUtil.checkEmpty(binding.updateWalletMoney);
     }
 }

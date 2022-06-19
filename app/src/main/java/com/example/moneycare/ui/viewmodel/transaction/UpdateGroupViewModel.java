@@ -26,12 +26,15 @@ public class UpdateGroupViewModel extends ViewModel {
     }
     public void init(){
         group = new MutableLiveData<>();
-        imgUrl = new MutableLiveData<>();
+        imgUrl = new MutableLiveData<>("");
         updateMode = new MutableLiveData<>(false);
         image = new MutableLiveData<>();
     }
     public void initGroup(Group group){
         this.group.setValue(group);
+
+        Bitmap groupImage = ImageUtil.toBitmap(group.image);
+        image.setValue(groupImage);
     }
 
     public void setImage(Uri imagePath, Bitmap bitmap){

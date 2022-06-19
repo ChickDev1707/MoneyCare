@@ -37,7 +37,7 @@ public class UpdateTransactionViewModel extends ViewModel {
     private void initLiveData(){
         transaction = new MutableLiveData<>();
         group = new MutableLiveData<>();
-        event = new MutableLiveData<>();
+        event = new MutableLiveData<>(new Event());
         wallet = new MutableLiveData<>();
         updateMode = new MutableLiveData<>(false);
     }
