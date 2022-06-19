@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 import com.example.moneycare.R;
 import com.example.moneycare.data.model.Group;
 import com.example.moneycare.data.repository.GroupRepository;
-import com.example.moneycare.data.repository.TransactionRepository;
 import com.example.moneycare.databinding.FragmentGroupMainBinding;
 import com.google.android.material.tabs.TabLayoutMediator;
 

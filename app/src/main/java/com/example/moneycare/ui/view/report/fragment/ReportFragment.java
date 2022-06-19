@@ -1,6 +1,7 @@
 package com.example.moneycare.ui.view.report.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -27,6 +28,7 @@ import com.example.moneycare.data.model.Wallet;
 import com.example.moneycare.databinding.FragmentReportBinding;
 import com.example.moneycare.ui.view.MainActivity;
 import com.example.moneycare.ui.view.report.adapter.ReportTabLayoutAdapter;
+import com.example.moneycare.ui.view.transaction.wallet.SelectWalletActivity;
 import com.example.moneycare.ui.viewmodel.report.ReportViewModel;
 import com.example.moneycare.utils.Converter;
 import com.example.moneycare.utils.DateTimeUtil;
@@ -338,9 +340,8 @@ public class ReportFragment extends Fragment{
         binding.appBarLayout.walletIconBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent toSelectWalletIntent = new Intent(getActivity(), SelectWalletActivity.class);
-//                startActivity(toSelectWalletIntent);
-                ((MainActivity) getActivity()).launchReloadWallet();
+                Intent toSelectWalletIntent = new Intent(getActivity(), SelectWalletActivity.class);
+                startActivity(toSelectWalletIntent);
             }
         });
     }

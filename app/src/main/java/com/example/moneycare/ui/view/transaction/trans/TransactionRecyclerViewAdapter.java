@@ -53,11 +53,9 @@ public class TransactionRecyclerViewAdapter extends RecyclerView.Adapter<Transac
             @Override
             public void onClick(View view) {
                 MainActivity context = (MainActivity) holder.transactionDate.getContext();
-                ActivityResultLauncher<Intent> launcher = context.getReloadTransFragmentLauncher();
-
                 Intent intent = new Intent(context, UpdateTransactionActivity.class);
                 intent.putExtra("transaction", transaction);
-                launcher.launch(intent);
+                context.startActivity(intent);
             }
         });
     }

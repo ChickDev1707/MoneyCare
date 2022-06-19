@@ -27,6 +27,7 @@ import com.example.moneycare.data.model.Wallet;
 import com.example.moneycare.databinding.FragmentTransactionListBinding;
 import com.example.moneycare.ui.view.MainActivity;
 import com.example.moneycare.ui.view.transaction.wallet.ModifyWalletActivity;
+import com.example.moneycare.ui.view.transaction.wallet.SelectWalletActivity;
 import com.example.moneycare.ui.viewmodel.transaction.TransactionViewModel;
 import com.example.moneycare.utils.Converter;
 import com.example.moneycare.utils.DateTimeUtil;
@@ -145,8 +146,7 @@ public class TransactionFragment extends Fragment {
     private void openModifyWallet(){
         MainActivity activity = (MainActivity) getActivity();
         Intent intent = new Intent(activity, ModifyWalletActivity.class);
-        ActivityResultLauncher toModifyWalletLauncher = activity.getReloadTransFragmentLauncher();
-        toModifyWalletLauncher.launch(intent);
+        startActivity(intent);
     }
     private void handleSelectTimeFrame(TransactionTimeFrame timeFrame){
         timeFrameMode = timeFrame;
@@ -235,7 +235,8 @@ public class TransactionFragment extends Fragment {
         binding.appBarLayout.walletIconBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((MainActivity) getActivity()).launchReloadWallet();
+                Intent intent = new Intent(getActivity(), SelectWalletActivity.class);
+                startActivity(intent);
             }
         });
     }
@@ -279,5 +280,11 @@ public class TransactionFragment extends Fragment {
     public void initElements(){
         showTransList();
         initWalletFromPreference();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        initElements();
     }
 }
