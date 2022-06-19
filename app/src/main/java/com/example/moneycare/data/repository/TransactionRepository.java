@@ -198,7 +198,7 @@ public class TransactionRepository {
         }
         return -1;
     }
-    public void updateTransaction(UserTransaction userTransaction, Group group, FirestoreObjectCallback<Void> successCallback, FirestoreObjectCallback<Void> failureCallback){
+    public void updateTransaction(UserTransaction userTransaction, Group group, String eventId, FirestoreObjectCallback<Void> successCallback, FirestoreObjectCallback<Void> failureCallback){
         DocumentReference transactionRef = db.collection("users").document(currentUserId).collection("transactions").document(userTransaction.id);
         DocumentReference walletRef = db.document(userTransaction.wallet);
         DocumentReference groupRef = db.document(userTransaction.group);
@@ -226,6 +226,7 @@ public class TransactionRepository {
                 transaction.update(transactionRef, "group", FirestoreUtil.getReferenceFromPath(getGroupPath(group)));
                 transaction.update(transactionRef, "note", userTransaction.note);
                 transaction.update(transactionRef, "date", userTransaction.date);
+                transaction.update(transactionRef, "eventId", eventId);
                 return null;
             }
         }).addOnSuccessListener(new OnSuccessListener<Void>() {

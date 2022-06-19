@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.example.moneycare.R;
+import com.example.moneycare.data.model.Event;
 import com.example.moneycare.data.model.Group;
 import com.example.moneycare.data.model.UserTransaction;
 import com.example.moneycare.databinding.ActivityUpdateTransactionBinding;
@@ -43,6 +44,19 @@ public class UpdateTransactionActivity extends AppCompatActivity {
                 }
             }
     });
+    ActivityResultLauncher<Intent> toSelectEventActivityLauncher = registerForActivityResult(
+        new ActivityResultContracts.StartActivityForResult(),
+        new ActivityResultCallback<ActivityResult>() {
+            @Override
+            public void onActivityResult(ActivityResult result) {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    // There are no request codes
+                    Intent data = result.getData();
+                    Event event = data.getParcelableExtra("event");
+                    updateTransViewModel.setEvent(event);
+                }
+            }
+    });
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,9 +67,9 @@ public class UpdateTransactionActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         initToolbar();
-        initSelectGroupEvent();
+        initSelectGroup();
+        initSelectEvent();
         initUpdateTransactionBtn();
-
         UserTransaction transaction = (UserTransaction) getIntent().getParcelableExtra("transaction");
         updateTransViewModel.initTransaction(transaction);
     }
@@ -100,7 +114,7 @@ public class UpdateTransactionActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void initSelectGroupEvent(){
+    private void initSelectGroup(){
         binding.updateTransGroup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -124,6 +138,15 @@ public class UpdateTransactionActivity extends AppCompatActivity {
                         ToastUtil.showToast(UpdateTransactionActivity.this, "Lỗi! Cập nhật giao dịch thất bại");
                     });
                 }
+            }
+        });
+    }
+    private void initSelectEvent(){
+        binding.newTransEvent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(UpdateTransactionActivity.this, SelectEventActivity.class);
+                toSelectEventActivityLauncher.launch(intent);
             }
         });
     }
