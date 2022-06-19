@@ -1,5 +1,7 @@
 package com.example.moneycare.ui.view.report.fragment;
 
+import static com.example.moneycare.utils.appenum.TransactionTimeFrame.*;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -103,7 +105,7 @@ public class ReportFragment extends Fragment{
         binding = FragmentReportBinding.inflate(getLayoutInflater());
         binding.setReportListVM(viewModel);
         binding.setLifecycleOwner(this);
-        timeFrameMode = TransactionTimeFrame.DAY;
+        timeFrameMode = DAY;
 
         groupTransactionList = new ArrayList<>();
         dataChartNetIncome = new ArrayList<>();
@@ -121,80 +123,117 @@ public class ReportFragment extends Fragment{
 
         return binding.getRoot();
     }
-    private void dataProcessingChart(List<GroupTransaction> groupTransactionList){
-        this.groupTransactionList.clear();
-        this.groupTransactionList = groupTransactionList;
-        dataChartNetIncome.clear();
-        dataChartIncome.clear();
-        dataChartExpense.clear();
-        long[] dataValues = new long[32];
-        for (int i = 0; i<=31; i++){
+    public List<GroupTransaction> sortTotalMoneyOfGroupTrans(List<GroupTransaction> groupTransactionList){
+        List<GroupTransaction> groupTransactions = new ArrayList<>();
+        groupTransactions.add(groupTransactionList.get(0));
+        for (int i=1; i<groupTransactionList.size(); i++){
+            boolean iOK = true;
+            for (int j=0; j<groupTransactions.size();j++){
+                if (groupTransactions.get(j).getTotalMoney()<=groupTransactionList.get(i).getTotalMoney()){
+                    groupTransactions.add(j, groupTransactionList.get(i));
+                    iOK = false;
+                    break;
+                }
+            }
+            if (iOK) groupTransactions.add(groupTransactionList.get(i));
+        }
+        return groupTransactions;
+    }
+    private void dataProcessingChartInDay(List<GroupTransaction> groupTransactionList){
+        long[] dataValues = new long[24];
+        for (int i = 0; i<=23; i++){
             dataValues[i] = 0;
         }
-        if (timeFrameMode == TransactionTimeFrame.MONTH)
-        {
+        if (timeFrameMode == DAY){
             for (GroupTransaction groupTransaction: groupTransactionList){
-                for (UserTransaction transaction:groupTransaction.transactionList){
-                    if (groupTransaction.group.type)
-                        dataValues[DateTimeUtil.getDay(transaction.date)]+=transaction.money/1000;
-                    else
-                        dataValues[DateTimeUtil.getDay(transaction.date)]-=transaction.money/1000;
-                }
                 if(groupTransaction.group.type){
                     dataChartIncome.add(new PieEntry(groupTransaction.getTotalMoney(), groupTransaction.group.name));
                 }
                 else{
                     dataChartExpense.add(new PieEntry(groupTransaction.getTotalMoney(), groupTransaction.group.name));
                 }
+                for (UserTransaction transaction:groupTransaction.transactionList){
+                    if (groupTransaction.group.type)
+                        dataValues[DateTimeUtil.getHour(transaction.date)]+=transaction.money/1000;
+                    else
+                        dataValues[DateTimeUtil.getHour(transaction.date)]-=transaction.money/1000;
+                }
             }
-            for (int i=1; i<= 31; i++){
+            for (int i=0; i<= 23; i++){
                 dataChartNetIncome.add(new BarEntry(i, dataValues[i]));
             }
-        } else {
-            if (timeFrameMode == TransactionTimeFrame.DAY){
-                for (GroupTransaction groupTransaction: groupTransactionList){
-                    if(groupTransaction.group.type){
-                        dataChartIncome.add(new PieEntry(groupTransaction.getTotalMoney(), groupTransaction.group.name));
-                    }
-                    else{
-                        dataChartExpense.add(new PieEntry(groupTransaction.getTotalMoney(), groupTransaction.group.name));
-                    }
-                    for (UserTransaction transaction:groupTransaction.transactionList){
-                        if (groupTransaction.group.type)
-                            dataValues[DateTimeUtil.getHour(transaction.date)]+=transaction.money/1000;
-                        else
-                            dataValues[DateTimeUtil.getHour(transaction.date)]-=transaction.money/1000;
-                    }
-                }
-                for (int i=0; i<= 23; i++){
-                    dataChartNetIncome.add(new BarEntry(i, dataValues[i]));
-                }
-            } else {
-                if (timeFrameMode == TransactionTimeFrame.YEAR){
-                    for (GroupTransaction groupTransaction: groupTransactionList){
-                        for (UserTransaction transaction:groupTransaction.transactionList){
-                            if (groupTransaction.group.type)
-                                dataValues[DateTimeUtil.getMonth(transaction.date)]+=transaction.money/1000;
-                            else
-                                dataValues[DateTimeUtil.getMonth(transaction.date)]-=transaction.money/1000;
-                        }
-                        if(groupTransaction.group.type){
-                            dataChartIncome.add(new PieEntry(groupTransaction.getTotalMoney(), groupTransaction.group.name));
-                        }
-                        else{
-                            dataChartExpense.add(new PieEntry(groupTransaction.getTotalMoney(), groupTransaction.group.name));
-                        }
-                    }
-                    for (int i=1; i<= 12; i++){
-                        dataChartNetIncome.add(new BarEntry(i, dataValues[i]));
-                    }
-                }
+        }
+    }
+    private void dataProcessingChartInMonth(List<GroupTransaction> groupTransactionList){
+        long[] dataValues = new long[32];
+        for (int i = 0; i<=31; i++){
+            dataValues[i] = 0;
+        }
+        for (GroupTransaction groupTransaction: groupTransactionList){
+            for (UserTransaction transaction:groupTransaction.transactionList){
+                if (groupTransaction.group.type)
+                    dataValues[DateTimeUtil.getDay(transaction.date)]+=transaction.money/1000;
+                else
+                    dataValues[DateTimeUtil.getDay(transaction.date)]-=transaction.money/1000;
+            }
+            if(groupTransaction.group.type){
+                dataChartIncome.add(new PieEntry(groupTransaction.getTotalMoney(), groupTransaction.group.name));
+            }
+            else{
+                dataChartExpense.add(new PieEntry(groupTransaction.getTotalMoney(), groupTransaction.group.name));
             }
         }
-    //
+        for (int i=1; i<= 31; i++){
+            dataChartNetIncome.add(new BarEntry(i, dataValues[i]));
+        }
+    }
+    private void dataProcessingChartInYear(List<GroupTransaction> groupTransactionList){
+        long[] dataValues = new long[13];
+        for (int i = 0; i<=12; i++){
+            dataValues[i] = 0;
+        }
+        for (GroupTransaction groupTransaction: groupTransactionList){
+            for (UserTransaction transaction:groupTransaction.transactionList){
+                if (groupTransaction.group.type)
+                    dataValues[DateTimeUtil.getMonth(transaction.date)]+=transaction.money/1000;
+                else
+                    dataValues[DateTimeUtil.getMonth(transaction.date)]-=transaction.money/1000;
+            }
+            if(groupTransaction.group.type){
+                dataChartIncome.add(new PieEntry(groupTransaction.getTotalMoney(), groupTransaction.group.name));
+            }
+            else{
+                dataChartExpense.add(new PieEntry(groupTransaction.getTotalMoney(), groupTransaction.group.name));
+            }
+        }
+        for (int i=1; i<= 12; i++){
+            dataChartNetIncome.add(new BarEntry(i, dataValues[i]));
+        }
+    }
+    private void dataProcessingChart(List<GroupTransaction> groupTransactionList){
+        this.groupTransactionList.clear();
+        this.groupTransactionList = sortTotalMoneyOfGroupTrans(groupTransactionList);
+        dataChartNetIncome.clear();
+        dataChartIncome.clear();
+        dataChartExpense.clear();
+        switch (timeFrameMode) {
+            case DAY:
+                dataProcessingChartInDay(this.groupTransactionList);
+                break;
+            case MONTH:
+                dataProcessingChartInMonth(this.groupTransactionList);
+                break;
+            case YEAR:
+                dataProcessingChartInYear(this.groupTransactionList);
+                break;
+            default:
+                break;
+        }
+    }
+    private void initViewPager(){
         tabLayout = binding.getRoot().findViewById(R.id.tabLayout);
         viewPager2 = binding.getRoot().findViewById(R.id.viewPager2);
-        reportAdapter = new ReportTabLayoutAdapter(this.getActivity(), groupTransactionList, dataChartNetIncome, dataChartIncome, dataChartExpense);
+        reportAdapter = new ReportTabLayoutAdapter(this.getActivity(), groupTransactionList, dataChartNetIncome, dataChartIncome, dataChartExpense, viewModel.moneyIn.getValue(), viewModel.moneyOut.getValue(), viewModel.moneyTotal.getValue());
         viewPager2.setAdapter(reportAdapter);
 
         new TabLayoutMediator(tabLayout, viewPager2, (tab, position) -> {
@@ -211,18 +250,15 @@ public class ReportFragment extends Fragment{
             }
         }).attach();
     }
-
     private void initTransList(){
         selectedDate = new Date();
         showTransList();
     }
     public void showTransList(){
-//        RecyclerView transList = binding.getRoot().findViewById(R.id.report_list_transaction_income);
         viewModel.setUI(getContext(), timeFrameMode, selectedDate , groupTransactionList -> {
-//            transList.setAdapter(new ReportIncomeRecyclerViewAdapter(groupTransactionList));
             viewModel.initMoneyInAndOut(groupTransactionList);
             dataProcessingChart(groupTransactionList);
-
+            initViewPager();
         });
     }
 
@@ -239,13 +275,13 @@ public class ReportFragment extends Fragment{
                 openPickDateDialog();
                 return true;
             case R.id.time_frame_day:
-                handleSelectTimeFrame(TransactionTimeFrame.DAY);
+                handleSelectTimeFrame(DAY);
                 return true;
             case R.id.time_frame_month:
-                handleSelectTimeFrame(TransactionTimeFrame.MONTH);
+                handleSelectTimeFrame(MONTH);
                 return true;
             case R.id.time_frame_year:
-                handleSelectTimeFrame(TransactionTimeFrame.YEAR);
+                handleSelectTimeFrame(YEAR);
                 return true;
             default:
         }
@@ -331,7 +367,7 @@ public class ReportFragment extends Fragment{
     public void initTransactionSetting(){
         SharedPreferences sharedPref = getActivity().getSharedPreferences(getString(R.string.transaction_preference), Context.MODE_PRIVATE);
         int timeFrameValue = sharedPref.getInt(getString(R.string.pref_key_time_frame), 1);
-        timeFrameMode = TransactionTimeFrame.getTimeFrame(timeFrameValue);
+        timeFrameMode = getTimeFrame(timeFrameValue);
     }
     private void initOpenWalletListBtn(){
         binding.appBarLayout.walletIconBtn.setOnClickListener(new View.OnClickListener() {
@@ -346,7 +382,6 @@ public class ReportFragment extends Fragment{
     private void initWalletFromPreference(){
         String walletId = getWalletFromPreference();
         if(walletId.equals("")){
-            // no pref
             viewModel.fetchFirstWallet(wallet->{
                 updateWalletUI(wallet);
                 setWalletToPreference(wallet.id);
@@ -362,7 +397,7 @@ public class ReportFragment extends Fragment{
     }
     private void updateWalletUI(Wallet wallet){
         binding.appBarLayout.walletName.setText(wallet.name);
-        binding.appBarLayout.walletMoney.setText(Converter.toFormattedMoney(getContext(), wallet.money));
+        binding.appBarLayout.walletMoney.setText(Converter.toFormattedMoney(this.getContext(), wallet.money));
 
         if(!wallet.image.equals("")){
             Bitmap walletBimapImg = ImageUtil.toBitmap(wallet.image);

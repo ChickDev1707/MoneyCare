@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.moneycare.data.custom.GroupTransaction;
 import com.example.moneycare.databinding.ReportItemBinding;
+import com.example.moneycare.utils.Converter;
 import com.example.moneycare.utils.ImageUtil;
 
 import java.util.List;
@@ -41,8 +42,8 @@ public class ReportExpenseRecyclerViewAdapter extends  RecyclerView.Adapter<Repo
         Bitmap bitmapIcon = ImageUtil.toBitmap(groupTransaction.group.image);
         holder.groupIcon.setImageBitmap(bitmapIcon);
         holder.groupName.setText(groupTransaction.group.name);
-        holder.totalMoney.setText(Long.toString(groupTransaction.getTotalMoney()));
-        holder.percentMoney.setText(String.format("%.1f", (float)(groupTransaction.getTotalMoney()*100.0/this.totalMoney))+"%");
+        holder.totalMoney.setText(Converter.toFormattedMoney(holder.totalMoney.getContext(), groupTransaction.getTotalMoney()));
+        holder.percentMoney.setText(Converter.toPercent(groupTransaction.getTotalMoney(), this.totalMoney));
     }
 
     @Override
