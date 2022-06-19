@@ -5,6 +5,8 @@
             name="updateGroupVM"
             type="com.example.moneycare.ui.viewmodel.transaction.UpdateGroupViewModel" />
         <import type="android.view.View"/>
+        <import type="com.example.moneycare.utils.DataBindingAdapter"/>
+
     </data>
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -72,6 +74,7 @@
                         app:cardElevation="1dp"
                         >
                         <ImageView
+                            app:imageBitmap="@{updateGroupVM.image}"
                             android:id="@+id/group_image_view"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"

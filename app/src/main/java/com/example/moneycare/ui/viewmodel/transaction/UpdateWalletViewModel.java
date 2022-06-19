@@ -25,12 +25,14 @@ public class UpdateWalletViewModel extends ViewModel {
     }
     public void init(){
         wallet = new MutableLiveData<>();
-        imgUrl = new MutableLiveData<>();
+        imgUrl = new MutableLiveData<>("");
         updateMode = new MutableLiveData<>(false);
         image = new MutableLiveData<>();
     }
     public void initWallet(Wallet wallet){
         this.wallet.setValue(wallet);
+        Bitmap bitmap = ImageUtil.toBitmap(wallet.image);
+        image.setValue(bitmap);
     }
 
     public void setImage(Uri imagePath, Bitmap bitmap){

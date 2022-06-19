@@ -117,7 +117,6 @@ public class UpdateGroupActivity extends AppCompatActivity {
     private void handleSelectImage(Uri selectedImage){
         try {
             Bitmap bitmapImg = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
-            binding.groupImageView.setImageBitmap(bitmapImg);
             viewModel.setImage(selectedImage, bitmapImg);
         } catch (IOException e) {
             e.printStackTrace();
@@ -153,7 +152,6 @@ public class UpdateGroupActivity extends AppCompatActivity {
         });
     }
     private boolean checkAllFields(){
-        return ValidationUtil.checkEmpty(binding.newGroupName) &&
-                ValidationUtil.checkEmpty(binding.groupImgPicker);
+        return ValidationUtil.checkEmpty(binding.newGroupName);
     }
 }
