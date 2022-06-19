@@ -7,10 +7,13 @@ import com.example.moneycare.data.model.Budget;
 import com.example.moneycare.data.model.Group;
 import com.example.moneycare.data.model.UserTransaction;
 import com.example.moneycare.utils.DateTimeUtil;
+import com.example.moneycare.utils.appinterface.FirestoreListCallback;
+import com.example.moneycare.utils.appinterface.FirestoreObjectCallback;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -26,13 +29,15 @@ import java.util.List;
 
 public class BudgetRepository {
     FirebaseFirestore db;
+    public String userId;
 
     public BudgetRepository(){
         db = FirebaseFirestore.getInstance();
+//        userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
     }
 
-    public void fetchBudgetsInMonth(BudgetRepository.FirestoreCallback callback){
-        Query query =  db.collection("budgets")
+    public void fetchBudgetsInMonth(FirestoreListCallback callback){
+        Query query =  db.collection("users").document(userId).collection("budgets")
                 .whereGreaterThanOrEqualTo("date", DateTimeUtil.getFirstDateOfMonth())
                 .whereLessThanOrEqualTo("date", DateTimeUtil.getLastDateOfMonth());
         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -51,19 +56,9 @@ public class BudgetRepository {
         });
     }
 
-    public void fetchGroupByPath(FirestoreObjectCallback callback, String docPath){
-        DocumentReference docRef = db.document(docPath);
-        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                Group group = Group.fromMap(documentSnapshot.getId(),documentSnapshot.getData());
-                callback.onCallback(group);
-            }
-        });
-    }
-
     public void fetchBudgetById(FirestoreObjectCallback callback, String id){
-        DocumentReference docRef = db.collection("budgets").document(id);
+        DocumentReference docRef = db.collection("users").document(userId)
+                .collection("budgets").document(id);
         docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
@@ -75,7 +70,7 @@ public class BudgetRepository {
     }
 
     public void insertBudget(Budget budget){
-        db.collection("budgets")
+        db.collection("users").document(userId).collection("budgets")
                 .add(budget.toMap())
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
@@ -92,7 +87,7 @@ public class BudgetRepository {
     }
 
     public void updateBudget(String id, Long money){
-        db.collection("budgets").document(id)
+        db.collection("users").document(userId).collection("budgets").document(id)
             .update("budgetOfMonth", money)
             .addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
@@ -110,7 +105,9 @@ public class BudgetRepository {
 
     public void deleteBudget(String idBudget){
 //        DocumentReference docRef = db.collection("users").document("LE3oa0LyuujvLqmvxoQw").collection("budgets").document(idBudget);
-        DocumentReference docRef = db.collection("budgets").document(idBudget);
+        DocumentReference docRef = db.collection("users").
+                document(userId).collection("budgets")
+                .document(idBudget);
         docRef.delete()
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -118,15 +115,5 @@ public class BudgetRepository {
                         System.out.println("delete budgets success");
                     }
                 });
-    }
-
-    public interface FirestoreCallback<T> {
-        public void onCallback(List<T> list);
-    }
-    public interface FirestoreMultiCallback<T> {
-        public void onCallback(List<T> list1, List<T> list2);
-    }
-    public interface FirestoreObjectCallback<T> {
-        public void onCallback(T object);
     }
 }

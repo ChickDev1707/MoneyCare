@@ -31,7 +31,6 @@ public class MySelectGroupBudgetRvAdapter extends RecyclerView.Adapter<MySelectG
         this.transactionGroups = groups;
     }
 
-
     @Override
     public MySelectGroupBudgetRvAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 

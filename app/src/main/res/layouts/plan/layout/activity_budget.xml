@@ -8,6 +8,7 @@
         <variable
             name="budgetVM"
             type="com.example.moneycare.ui.viewmodel.plan.BudgetViewModel" />
+        <import type="com.example.moneycare.utils.Converter"/>
     </data>
     <FrameLayout
         android:layout_width="match_parent"
@@ -21,15 +22,16 @@
             <include layout="@layout/basic_app_bar"/>
             <LinearLayout
                 android:id="@+id/budget_container"
-                android:visibility="invisible"
+                android:visibility="visible"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
                 <LinearLayout
+                    android:paddingHorizontal="@dimen/layout_padding"
                     android:background="@color/white"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingTop="20dp"
+                    android:paddingTop="@dimen/layout_padding"
                     android:orientation="vertical"
                     android:gravity="center_horizontal">
                     <TextView
@@ -37,17 +39,17 @@
                         android:layout_height="wrap_content"
                         android:textColor="#499C54"
                         android:textStyle="bold"
-                        android:textSize="20sp"
-                        android:text="@{budgetVM.spendableMoney.toString()}"/>
+                        android:textSize="@dimen/font_size_medium"
+                        android:text="@{Converter.toFormattedMoney(context, budgetVM.spendableMoney)}"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="#808080"
-                        android:textSize="16sp"
+                        android:textSize="@dimen/font_size_small"
                         android:text="Khoản có thể chi"/>
                 </LinearLayout>
                 <GridLayout
-                    android:paddingBottom="20dp"
+                    android:paddingBottom="@dimen/layout_padding"
                     android:background="@color/white"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -72,8 +74,8 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:textSize="18sp"
-                                    android:text="@{budgetVM.totalBudget.toString()}"/>
+                                    android:textSize="@dimen/font_size_normal"
+                                    android:text="@{Converter.toFormattedMoney(context, budgetVM.totalBudget)}"/>
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
@@ -102,8 +104,8 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:textSize="18sp"
-                                    android:text="@{budgetVM.totalSpent.toString()}"/>
+                                    android:textSize="@dimen/font_size_normal"
+                                    android:text="@{Converter.toFormattedMoney(context, budgetVM.totalSpent)}"/>
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
@@ -132,7 +134,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:textSize="18sp"
+                                    android:textSize="@dimen/font_size_normal"
                                     android:text='@{budgetVM.daysLeft.toString() + " ngày"}' />
                                 <TextView
                                     android:layout_width="wrap_content"
@@ -145,24 +147,29 @@
                     </LinearLayout>
                 </GridLayout>
                 <TextView
-                    android:layout_marginTop="20dp"
+                    android:paddingHorizontal="@dimen/layout_padding"
+                    android:layout_marginTop="@dimen/layout_padding"
                     android:layout_marginBottom="5dp"
                     android:textColor="#808080"
                     android:textFontWeight="@integer/material_motion_duration_medium_2"
-                    android:textSize="16sp"
-                    android:paddingLeft="10dp"
+                    android:textSize="@dimen/font_size_normal"
                     android:text="Các nhóm đã có ngân sách"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/budget_gr_list"
+                <androidx.core.widget.NestedScrollView
                     android:background="@color/white"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    tools:listitem="@layout/group_item"
-                    android:name="com.example.moneycare.BudgetFragment"
+                    android:paddingHorizontal="@dimen/layout_padding"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
-                </androidx.recyclerview.widget.RecyclerView>
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/budget_gr_list"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        tools:listitem="@layout/group_item"
+                        android:name="com.example.moneycare.BudgetFragment"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                    </androidx.recyclerview.widget.RecyclerView>
+                </androidx.core.widget.NestedScrollView>
             </LinearLayout>
             <LinearLayout
                 android:visibility="invisible"
@@ -177,7 +184,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
                 <TextView
-                    android:textSize="20dp"
+                    android:textSize="@dimen/font_size_medium"
                     android:text="Không có ngân sách nào trong tháng này!"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>

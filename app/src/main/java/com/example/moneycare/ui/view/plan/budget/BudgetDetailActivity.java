@@ -1,8 +1,5 @@
 package com.example.moneycare.ui.view.plan.budget;
 
-import static com.example.moneycare.utils.Convert.convertToNumber;
-import static com.example.moneycare.utils.Convert.convertToThousandsSeparator;
-
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
@@ -23,7 +20,6 @@ import android.widget.TextView;
 import com.example.moneycare.R;
 import com.example.moneycare.data.model.Budget;
 import com.example.moneycare.data.repository.BudgetRepository;
-import com.example.moneycare.data.repository.TransactionRepository;
 import com.example.moneycare.databinding.ActivityBudgetDetailBinding;
 import com.example.moneycare.ui.viewmodel.plan.BudgetViewModel;
 import com.example.moneycare.utils.ImageLoader;
@@ -35,7 +31,6 @@ public class BudgetDetailActivity extends AppCompatActivity {
     private String groupName;
     private Long totalBudget;
     private BudgetRepository budgetRepository;
-    private TransactionRepository transactionRepository;
     private BudgetViewModel budgetsVM;
     private ActivityBudgetDetailBinding binding;
 
@@ -49,12 +44,10 @@ public class BudgetDetailActivity extends AppCompatActivity {
                         Intent data = result.getData();
                         Long money = data.getLongExtra("money", 0L);
 
-                        totalBudget = totalBudget - convertToNumber(budgetsVM.limitOfMonth.getValue()) + money;
+                        totalBudget = totalBudget - budgetsVM.limitOfMonth.getValue() + money;
 
-                        budgetsVM.limitOfMonth.setValue(convertToThousandsSeparator(money));
+                        budgetsVM.limitOfMonth.setValue(money);
                         budgetsVM.calculateSpendPerDay();
-
-
                     }
                 }
             });
@@ -64,8 +57,6 @@ public class BudgetDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         budgetRepository = new BudgetRepository();
-        transactionRepository = new TransactionRepository();
-
 
         Intent intent = getIntent();
         imgGroup = intent.getStringExtra("imgGroup");
@@ -80,6 +71,26 @@ public class BudgetDetailActivity extends AppCompatActivity {
         binding.setLifecycleOwner(this);
         setContentView(binding.getRoot());
 
+        initToolbar();
+        //Load image
+        ImageLoader imageLoader = new ImageLoader(findViewById(R.id.img_item_detail));
+        imageLoader.execute(imgGroup);
+
+        loadData();
+
+
+    }
+    private void loadData(){
+        //Group name
+        TextView tvGrName = findViewById(R.id.item_group_name_detail);
+        tvGrName.setText(groupName);
+        budgetRepository.fetchBudgetById(budget -> {
+            budgetsVM.limitOfMonth.setValue(((Budget)budget).getBudgetOfMonth());
+            //Tổng đã chi
+            budgetsVM.fetchTransactionsByGroup(((Budget)budget).getDate(),((Budget)budget).getGroup_id());
+        }, idBudget);
+    }
+    private void initToolbar(){
         //toolbar
         Toolbar toolbar = findViewById(R.id.update_app_bar);
         toolbar.setTitle("Chi tiết ngân sách");
@@ -93,20 +104,6 @@ public class BudgetDetailActivity extends AppCompatActivity {
                 BudgetDetailActivity.this.finish();
             }
         });
-
-        //Load image
-        ImageLoader imageLoader = new ImageLoader(findViewById(R.id.img_item_detail));
-        imageLoader.execute(imgGroup);
-
-        //Group name
-        TextView tvGrName = findViewById(R.id.item_group_name_detail);
-        tvGrName.setText(groupName);
-        budgetRepository.fetchBudgetById(budget -> {
-            budgetsVM.limitOfMonth.setValue(convertToThousandsSeparator(((Budget)budget).getBudgetOfMonth()));
-            //Tổng đã chi
-            budgetsVM.fetchTransactionsByGroup(((Budget)budget).getDate(),((Budget)budget).getGroup_id());
-        }, idBudget);
-
     }
 
     @Override
@@ -123,7 +120,7 @@ public class BudgetDetailActivity extends AppCompatActivity {
                 intent.putExtra("idBudget", idBudget);
                 intent.putExtra("imgGroup", imgGroup);
                 intent.putExtra("groupName", groupName);
-                intent.putExtra("money", convertToNumber(budgetsVM.limitOfMonth.getValue()));
+                intent.putExtra("money", budgetsVM.limitOfMonth.getValue());
                 toUpdateBudgetActivity.launch(intent);
                 return true;
             case R.id.delete_item:

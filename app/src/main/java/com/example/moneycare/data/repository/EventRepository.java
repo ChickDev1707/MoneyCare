@@ -14,6 +14,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -28,13 +29,15 @@ import java.util.List;
 
 public class EventRepository {
     FirebaseFirestore db;
+    public String idUser;
 
     public EventRepository(){
         db = FirebaseFirestore.getInstance();
+//        idUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
     }
 
     public void fetchEvents(FirestoreListCallback callback){
-        Query query =  db.collection("events");
+        Query query =  db.collection("users").document(idUser).collection("events");
         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull  Task<QuerySnapshot> task) {
@@ -51,7 +54,8 @@ public class EventRepository {
     }
 
     public void fetchEventById(FirestoreObjectCallback callback, String id){
-        DocumentReference docRef = db.collection("events").document(id);
+        DocumentReference docRef = db.collection("users").document(idUser)
+                .collection("events").document(id);
         docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
@@ -62,7 +66,7 @@ public class EventRepository {
     }
 
     public void insertEvent(Event event){
-        db.collection("events")
+        db.collection("users").document(idUser).collection("events")
                 .add(event.toMap())
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
@@ -79,7 +83,7 @@ public class EventRepository {
     }
 
     public void updateEvent(Event event){
-        db.collection("events").document(event.id)
+        db.collection("users").document(idUser).collection("events").document(event.id)
             .update(event.toMap())
             .addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
@@ -95,7 +99,7 @@ public class EventRepository {
             });
     }
     public void changeStatus(String id, String status){
-        db.collection("events").document(id)
+        db.collection("users").document(idUser).collection("events").document(id)
                 .update("status", status)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -112,8 +116,7 @@ public class EventRepository {
     }
 
     public void deleteEvent(String idEvent){
-//        DocumentReference docRef = db.collection("users").document("LE3oa0LyuujvLqmvxoQw").collection("budgets").document(idBudget);
-        DocumentReference docRef = db.collection("events").document(idEvent);
+        DocumentReference docRef = db.collection("users").document(idUser).collection("events").document(idEvent);
         docRef.delete()
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override

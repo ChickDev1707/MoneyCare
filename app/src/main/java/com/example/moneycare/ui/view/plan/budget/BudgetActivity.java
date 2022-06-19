@@ -1,7 +1,5 @@
 package com.example.moneycare.ui.view.plan.budget;
 
-import static com.example.moneycare.utils.Convert.convertToMoneyCompact;
-
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
@@ -16,15 +14,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.example.moneycare.R;
 import com.example.moneycare.data.model.Budget;
 import com.example.moneycare.data.model.Group;
 import com.example.moneycare.databinding.ActivityBudgetBinding;
-import com.example.moneycare.ui.view.transaction.wallet.ManageWalletActivity;
 import com.example.moneycare.ui.viewmodel.plan.BudgetViewModel;
-import com.example.moneycare.utils.Convert;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.time.LocalDate;
@@ -47,10 +42,8 @@ public class BudgetActivity extends AppCompatActivity {
                 Intent data = result.getData();
                 if(data != null){
                     Long totalBudget = data.getLongExtra("totalBudget", 0L);
-                    budgetVM.totalBudgetImpl = totalBudget;
-                    budgetVM.totalBudget.setValue(convertToMoneyCompact(totalBudget));
-                    budgetVM.spendableMoneyImpl = budgetVM.totalBudgetImpl -  budgetVM.totalSpentImpl;
-                    budgetVM.spendableMoney.setValue(convertToMoneyCompact(budgetVM.spendableMoneyImpl));
+                    budgetVM.totalBudget.setValue(totalBudget);
+                    budgetVM.spendableMoney.setValue(budgetVM.totalBudget.getValue() - budgetVM.totalSpent.getValue());
                 }
                 else {
                     finish();
@@ -85,12 +78,18 @@ public class BudgetActivity extends AppCompatActivity {
 
         initToolbar();
         initAddBudgetBtn();
+        loadListBudget();
 
+
+    }
+
+    private void loadListBudget(){
         budgetGroupList = findViewById(R.id.budget_gr_list);
 
         MyBudgetGroupRecyclerViewAdapter adapter = new MyBudgetGroupRecyclerViewAdapter();
         adapter.toDetailBudgetActivity = toDetailBudgetActivity;
         adapter.budgetsVM = budgetVM;
+
         budgetVM.fetchTransactionGroupsByBudget((groups, budgets) ->{
             LinearLayout layoutContainer = findViewById(R.id.budget_container);
             LinearLayout layoutEmpty = findViewById(R.id.budget_empty);
@@ -112,8 +111,7 @@ public class BudgetActivity extends AppCompatActivity {
                     sum[0] = sum[0] + n.getBudgetOfMonth();
                 });
                 budgetVM.activeGroups = groups;
-                budgetVM.totalBudgetImpl = sum[0];
-                budgetVM.totalBudget.setValue(Convert.convertToMoneyCompact(sum[0]));
+                budgetVM.totalBudget.setValue(sum[0]);
                 budgetVM.getTotalSpentInMonth();
             }
             else if(groups.size() == 0){
@@ -121,8 +119,8 @@ public class BudgetActivity extends AppCompatActivity {
                 layoutContainer.setVisibility(View.INVISIBLE);
             }
         });
-
     }
+
     private void initToolbar(){
         Toolbar toolbar = findViewById(R.id.basic_app_bar);
         toolbar.setTitle("Ngân sách");

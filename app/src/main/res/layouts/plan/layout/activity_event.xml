@@ -11,15 +11,15 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="#EFEFF3">
-
-            <include
-                layout="@layout/basic_app_bar" />
+            <include android:id="@+id/event_app_bar"  layout="@layout/basic_app_bar" />
             <androidx.core.widget.NestedScrollView
-                android:layout_below="@id/basic_app_bar"
+                android:layout_below="@id/event_app_bar"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent">
                 <LinearLayout
-                    android:visibility="invisible"
+                    android:paddingHorizontal="@dimen/layout_padding"
+                    android:background="@color/white"
+                    android:visibility="visible"
                     android:id="@+id/event_container"
                     android:orientation="vertical"
                     android:layout_width="match_parent"
@@ -32,7 +32,6 @@
                         android:orientation="vertical">
                         <TextView
                             android:text="ĐANG ÁP DỤNG"
-                            android:layout_marginLeft="20dp"
                             android:layout_marginTop="20dp"
                             android:layout_marginBottom="5dp"
                             android:layout_width="match_parent"
@@ -53,7 +52,6 @@
                         android:orientation="vertical">
                         <TextView
                             android:text="ĐÃ KẾT THÚC"
-                            android:layout_marginLeft="20dp"
                             android:layout_marginTop="20dp"
                             android:layout_marginBottom="5dp"
                             android:layout_width="match_parent"
@@ -81,7 +79,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
                 <TextView
-                    android:textSize="20dp"
+                    android:textSize="@dimen/font_size_normal"
                     android:text="Không có sự kiện nào!"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>

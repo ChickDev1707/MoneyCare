@@ -13,11 +13,11 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/gray_100"
+        android:background="#EFEFF3"
         >
         <include android:id="@+id/event_trans_tool_bar" layout="@layout/basic_app_bar" />
         <LinearLayout
-            android:visibility="invisible"
+            android:visibility="visible"
             android:id="@+id/event_trans_container"
             android:layout_below="@id/event_trans_tool_bar"
             android:layout_width="match_parent"
@@ -36,8 +36,7 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:paddingBottom="@dimen/layout_padding"
-                        android:paddingLeft="@dimen/layout_padding"
-                        android:paddingRight="@dimen/layout_padding"
+                        android:paddingHorizontal="@dimen/layout_padding"
                         android:background="@color/white"
                         android:layout_marginBottom="30dp"
                         >
@@ -132,7 +131,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
             <TextView
-                android:textSize="20dp"
+                android:textSize="@dimen/font_size_medium"
                 android:text="Không có giao dịch nào!"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>

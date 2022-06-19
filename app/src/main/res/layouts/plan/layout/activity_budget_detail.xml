@@ -7,6 +7,7 @@
         <variable
             name="budgetVM"
             type="com.example.moneycare.ui.viewmodel.plan.BudgetViewModel" />
+        <import type="com.example.moneycare.utils.Converter"/>
     </data>
     <LinearLayout
         android:orientation="vertical"
@@ -15,7 +16,7 @@
         <include layout="@layout/update_app_bar"/>
         <LinearLayout
             android:orientation="vertical"
-            android:paddingHorizontal="20dp"
+            android:paddingHorizontal="@dimen/layout_padding"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <LinearLayout
@@ -32,7 +33,7 @@
                 <TextView
                     android:id="@+id/item_group_name_detail"
                     android:text="Ăn uống"
-                    android:textSize="24dp"
+                    android:textSize="@dimen/font_size_extra_large"
                     android:layout_gravity="center_vertical"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
@@ -47,7 +48,7 @@
                     android:layout_height="60dp">
                     <TextView
                         android:text="Giới hạn"
-                        android:textSize="22dp"
+                        android:textSize="@dimen/font_size_large"
                         android:layout_centerVertical="true"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
@@ -58,8 +59,8 @@
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:id="@+id/tv_limit_of_month"
-                        android:text="@{budgetVM.limitOfMonth.toString()}"
-                        android:textSize="22dp" />
+                        android:text="@{Converter.toFormattedMoney(context, budgetVM.limitOfMonth)}"
+                        android:textSize="@dimen/font_size_large" />
                     <com.google.android.material.divider.MaterialDivider
                         android:layout_alignParentBottom="true"
                         style="@style/Widget.MaterialComponents.MaterialDivider"
@@ -71,14 +72,14 @@
                     android:layout_height="60dp">
                     <TextView
                         android:text="Tổng đã chi"
-                        android:textSize="22dp"
+                        android:textSize="@dimen/font_size_large"
                         android:layout_centerVertical="true"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
                     <TextView
                         android:id="@+id/tv_total_spend"
-                        android:text="@{budgetVM.totalSpentByGroup.toString()}"
-                        android:textSize="22dp"
+                        android:text="@{Converter.toFormattedMoney(context, budgetVM.totalSpentByGroup)}"
+                        android:textSize="@dimen/font_size_large"
                         android:layout_centerVertical="true"
                         android:layout_alignParentRight="true"
                         android:layout_width="wrap_content"
@@ -92,22 +93,21 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="60dp">
-
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:text="Nên chi hàng ngày"
-                        android:textSize="22dp" />
+                        android:textSize="@dimen/font_size_large" />
 
                     <TextView
                         android:id="@+id/tv_spend_per_day"
-                        android:text="@{budgetVM.spendPerDay.toString()}"
+                        android:text="@{Converter.toFormattedMoney(context, budgetVM.spendPerDay)}"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:textSize="22dp" />
+                        android:textSize="@dimen/font_size_large" />
                     <com.google.android.material.divider.MaterialDivider
                         android:layout_alignParentBottom="true"
                         style="@style/Widget.MaterialComponents.MaterialDivider"

@@ -31,7 +31,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <androidx.recyclerview.widget.RecyclerView
-                android:paddingHorizontal="20dp"
+                android:paddingHorizontal="@dimen/layout_padding"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 android:id="@+id/select_group_budget_list"
                 tools:listitem="@layout/group_item"
@@ -50,7 +50,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
             <TextView
-                android:textSize="20dp"
+                android:textSize="@dimen/font_size_normal"
                 android:text="Tất cả các nhóm đã được tạo ngân sách!"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>

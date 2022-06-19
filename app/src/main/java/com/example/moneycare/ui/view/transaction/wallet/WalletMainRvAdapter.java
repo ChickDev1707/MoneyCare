@@ -3,23 +3,16 @@ package com.example.moneycare.ui.view.transaction.wallet;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.graphics.Bitmap;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.moneycare.data.model.Group;
 import com.example.moneycare.data.model.Wallet;
-import com.example.moneycare.databinding.GroupItemBinding;
 import com.example.moneycare.databinding.WalletItemBinding;
-import com.example.moneycare.utils.Convert;
+import com.example.moneycare.utils.Converter;
 import com.example.moneycare.utils.ImageLoader;
-import com.example.moneycare.utils.ImageUtil;
 
 import java.util.List;
 
@@ -43,7 +36,7 @@ public class WalletMainRvAdapter extends RecyclerView.Adapter<WalletMainRvAdapte
         Wallet wallet = wallets.get(position);
 
         holder.walletName.setText(wallet.name);
-        holder.walletMoney.setText(Convert.convertToThousandsSeparator(wallet.money));
+        holder.walletMoney.setText(Converter.toFormattedMoney(holder.walletName.getContext(), wallet.money));
 
         ImageLoader imageLoader = new ImageLoader(holder.walletIcon);
         imageLoader.execute(wallet.image);
@@ -66,7 +59,7 @@ public class WalletMainRvAdapter extends RecyclerView.Adapter<WalletMainRvAdapte
             walletName = binding.walletName;
             walletMoney = binding.walletMoney;
             walletIcon = binding.walletIcon;
-            walletItem = binding.walletItem;
+            walletItem = binding.walletItem;    
         }
 
         @Override

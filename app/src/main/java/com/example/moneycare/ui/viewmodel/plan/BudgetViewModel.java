@@ -11,7 +11,7 @@ import com.example.moneycare.data.model.Group;
 import com.example.moneycare.data.repository.BudgetRepository;
 import com.example.moneycare.data.repository.GroupRepository;
 import com.example.moneycare.data.repository.TransactionRepository;
-import com.example.moneycare.utils.Convert;
+import com.example.moneycare.utils.appinterface.FirestoreMultiListCallback;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -30,18 +30,15 @@ public class BudgetViewModel extends ViewModel {
 
     //fragment budget
     public MutableLiveData<String> name = new MutableLiveData<String>();
-    public MutableLiveData<String> totalBudget = new MutableLiveData<String>();
-    public Long totalBudgetImpl;
-    public MutableLiveData<String> totalSpent = new MutableLiveData<String>();
-    public Long totalSpentImpl;
+    public MutableLiveData<Long> totalBudget = new MutableLiveData<Long>();
+    public MutableLiveData<Long> totalSpent = new MutableLiveData<Long>();
     public MutableLiveData<Integer> daysLeft = new MutableLiveData<Integer>();
-    public MutableLiveData<String> spendableMoney = new MutableLiveData<String>();
-    public Long spendableMoneyImpl;
+    public MutableLiveData<Long> spendableMoney = new MutableLiveData<Long>();
 
     //fragment detail budget
-    public MutableLiveData<String> totalSpentByGroup  = new MutableLiveData<String>(); // Tổng đã chi
-    public MutableLiveData<String> limitOfMonth  = new MutableLiveData<String>(); // Giới hạn
-    public MutableLiveData<String> spendPerDay  = new MutableLiveData<String>(); // Nên chi hàng ngày
+    public MutableLiveData<Long> totalSpentByGroup  = new MutableLiveData<Long>(); // Tổng đã chi
+    public MutableLiveData<Long> limitOfMonth  = new MutableLiveData<Long>(); // Giới hạn
+    public MutableLiveData<Long> spendPerDay  = new MutableLiveData<Long>(); // Nên chi hàng ngày
 
 
     public MutableLiveData<Group> groupSelected  = new MutableLiveData<Group>();
@@ -60,18 +57,15 @@ public class BudgetViewModel extends ViewModel {
     public void init(){
         System.out.println("init");
         name.setValue("Hello");
-        totalBudget.setValue("0.0 K");
-        totalSpent.setValue("0.0 K");
-        spendableMoney.setValue("0.0 K");
+        totalBudget.setValue(0L);
+        totalSpent.setValue(0L);
+        spendableMoney.setValue(0L);
         daysLeft.setValue(0);
-        totalBudgetImpl = 0L;
-        totalSpentImpl = 0L;
-        spendableMoneyImpl = 0L;
 
 
-        totalSpentByGroup.setValue("0");
-        limitOfMonth.setValue("0");
-        spendPerDay.setValue("0");
+        totalSpentByGroup.setValue(0L);
+        limitOfMonth.setValue(0L);
+        spendPerDay.setValue(0L);
 
         moneyLimit.setValue(0L);
         groupSelected.setValue(null);
@@ -82,7 +76,7 @@ public class BudgetViewModel extends ViewModel {
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void calculateSpendPerDay(){
         Long spd = 0L;
-        Long remainMoney = Convert.convertToNumber(limitOfMonth.getValue()) - Convert.convertToNumber(totalSpentByGroup.getValue());
+        Long remainMoney = limitOfMonth.getValue() - totalSpentByGroup.getValue();
 
         daysLeft.setValue(LocalDate.now().lengthOfMonth() - LocalDate.now().getDayOfMonth() + 1);
 
@@ -92,34 +86,33 @@ public class BudgetViewModel extends ViewModel {
         else{
             spd = remainMoney / daysLeft.getValue();
         }
-        spendPerDay.setValue(Convert.convertToThousandsSeparator(spd));
+        spendPerDay.setValue(spd);
     }
 
     public void getTotalSpentInMonth(){
         budgetRepository.fetchBudgetsInMonth(budgets -> {
            for (Budget budget : (List<Budget>)budgets){
                transactionRepository.getTotalSpendByGroup(total -> {
-                   totalSpentImpl = totalSpentImpl + (Long)total;
-                   totalSpent.setValue(Convert.convertToMoneyCompact(totalSpentImpl));
-                   spendableMoneyImpl = totalBudgetImpl - totalSpentImpl;
-                   spendableMoney.setValue(Convert.convertToMoneyCompact(spendableMoneyImpl));
+                   totalSpent.setValue(totalSpent.getValue() + (Long)total);
+                   spendableMoney.setValue(totalBudget.getValue() - totalSpent.getValue());
                },budget.getDate(), budget.getGroup_id());
            }
         });
     }
     public void fetchTransactionsByGroup(Date startDate, String idGroup){
         transactionRepository.getTotalSpendByGroup(total -> {
-            totalSpentByGroup.setValue(Convert.convertToThousandsSeparator((Long)total));
+            totalSpentByGroup.setValue((Long)total);
             calculateSpendPerDay();
         }, startDate, idGroup);
     }
-    public void fetchTransactionGroupsByBudget(BudgetRepository.FirestoreMultiCallback callback){
+    public void fetchTransactionGroupsByBudget(FirestoreMultiListCallback callback){
          groupRepository.fetchGroups(groups -> {
              budgetRepository.fetchBudgetsInMonth(budgets -> {
                  List<Group> groupList = new ArrayList<Group>();
                  ((List<Budget>)budgets).forEach(element -> {
+                     String[] arr = element.getGroup_id().split("/");
                      Group group = ((List<Group>)groups).stream()
-                             .filter(x -> x.id.equals(element.getGroup_id().split("/")[1]))
+                             .filter(x -> x.id.equals(arr[arr.length - 1]))
                              .findFirst()
                              .orElse(null);
                      if(group != null)

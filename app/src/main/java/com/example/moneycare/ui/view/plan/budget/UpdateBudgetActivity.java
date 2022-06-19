@@ -1,7 +1,5 @@
 package com.example.moneycare.ui.view.plan.budget;
 
-import static com.example.moneycare.utils.Convert.convertToNumber;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProvider;
@@ -55,7 +53,21 @@ public class UpdateBudgetActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         loadDataWhenUpdate();
+        initToolbar();
+        initEnterMoney();
+        initButtonUpdate();
+    }
 
+    private void initButtonUpdate(){
+        Button btnUpdate= findViewById(R.id.btn_update_budget);
+        btnUpdate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                handleUpdate();
+            }
+        });
+    }
+    private void initToolbar(){
         Toolbar toolbar = findViewById(R.id.basic_app_bar);
         toolbar.setTitle("Sửa ngân sách");
         setSupportActionBar(toolbar);
@@ -65,19 +77,7 @@ public class UpdateBudgetActivity extends AppCompatActivity {
                 UpdateBudgetActivity.this.finish();
             }
         });
-
-        Button btnUpdate= findViewById(R.id.btn_update_budget);
-        btnUpdate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                handleUpdate();
-            }
-        });
-
-        initEnterMoney();
-
     }
-
     private void loadDataWhenUpdate(){
         ImageView imgView = findViewById(R.id.update_budget_img_group);
         ImageLoader imageLoader = new ImageLoader(imgView);
@@ -136,5 +136,14 @@ public class UpdateBudgetActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+    public static Long convertToNumber(String str){
+        try {
+            String[] arrs = str.split(",");
+            return Long.valueOf(String.join("", arrs));
+        }
+        catch(Exception e){
+            return -1L;
+        }
     }
 }

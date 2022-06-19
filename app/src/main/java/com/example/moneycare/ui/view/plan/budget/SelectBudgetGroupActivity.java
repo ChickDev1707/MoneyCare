@@ -34,8 +34,37 @@ public class SelectBudgetGroupActivity extends AppCompatActivity {
         if(tmp != null){
             activeGroups = Arrays.asList(tmp);
         }
+
         repository = new GroupRepository();
 
+        initToolbar();
+        loadData();
+    }
+    private void loadData(){
+        RecyclerView groupList = findViewById(R.id.select_group_budget_list);
+        repository.fetchGroups((groups) ->{
+            LinearLayout layoutContainer = findViewById(R.id.select_group_budget_list_layout);
+            LinearLayout layoutEmpty = findViewById(R.id.select_group_budget_list_empty_layout);
+            List<Group> availableGroups = new ArrayList<Group>();
+            for (Group gr :(List<Group>)groups) {
+                if(!activeGroups.contains(gr.id) && gr.type == false){
+                    availableGroups.add(gr);
+                }
+            }
+            if(availableGroups.size() >0){
+                layoutContainer.setVisibility(View.VISIBLE);
+                layoutEmpty.setVisibility(View.INVISIBLE);
+                MySelectGroupBudgetRvAdapter adapter = new MySelectGroupBudgetRvAdapter(SelectBudgetGroupActivity.this, availableGroups);
+                groupList.setAdapter(adapter);
+            }
+            else {
+                layoutEmpty.setVisibility(View.VISIBLE);
+                layoutContainer.setVisibility(View.INVISIBLE);
+            }
+        });
+    }
+
+    private void initToolbar(){
         Toolbar toolbar = binding.basicAppBar;
         toolbar.setTitle("Nhóm giao dịch");
         this.setSupportActionBar(toolbar);
@@ -47,32 +76,5 @@ public class SelectBudgetGroupActivity extends AppCompatActivity {
                 SelectBudgetGroupActivity.this.onBackPressed();
             }
         });
-
-        RecyclerView groupList = findViewById(R.id.select_group_budget_list);
-         repository.fetchGroups((groups) ->{
-             LinearLayout layoutContainer = findViewById(R.id.select_group_budget_list_layout);
-             LinearLayout layoutEmpty = findViewById(R.id.select_group_budget_list_empty_layout);
-             List<Group> availableGroups = new ArrayList<Group>();
-             for (Group gr :(List<Group>)groups) {
-                 if(!activeGroups.contains(gr.id) && gr.type == false){
-                     availableGroups.add(gr);
-                 }
-             }
-             if(availableGroups.size() >0){
-                 layoutContainer.setVisibility(View.VISIBLE);
-                 layoutEmpty.setVisibility(View.INVISIBLE);
-                 MySelectGroupBudgetRvAdapter adapter = new MySelectGroupBudgetRvAdapter(SelectBudgetGroupActivity.this, availableGroups);
-                 groupList.setAdapter(adapter);
-             }
-             else {
-                 layoutEmpty.setVisibility(View.VISIBLE);
-                 layoutContainer.setVisibility(View.INVISIBLE);
-             }
-        });
-
     }
-
-
-
-
 }

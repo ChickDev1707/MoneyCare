@@ -17,7 +17,7 @@
         android:layout_height="match_parent">
         <include layout="@layout/update_app_bar"/>
         <LinearLayout
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="@dimen/layout_padding"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -26,12 +26,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <LinearLayout
-                    android:paddingBottom="10dp"
+                    android:padding="@dimen/layout_padding"
                     android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <LinearLayout
-                        android:padding="20dp"
+                        android:layout_marginBottom="@dimen/text_field_bottom_margin"
                         android:gravity="center_vertical"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
@@ -51,7 +51,7 @@
                             android:text="@{eventVM.eventName}"
                             android:id="@+id/event_name_detail"
                             android:layout_centerVertical="true"
-                            android:textSize="24dp"
+                            android:textSize="@dimen/font_size_extra_large"
                             android:textStyle="bold"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"/>
@@ -60,26 +60,27 @@
                         android:layout_width="match_parent"
                         android:layout_height="1dp"/>
                     <RelativeLayout
-                        android:paddingHorizontal="20dp"
-                        android:paddingVertical="10dp"
+                        android:layout_marginVertical="@dimen/text_field_bottom_margin"
                         android:orientation="vertical"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
+
                         <TextView
-                            android:layout_marginRight="20dp"
-                            android:layout_centerVertical="true"
                             android:id="@+id/icon_calendar"
-                            android:drawableLeft="@drawable/ic_calendar_today_24"
-                            android:layout_width="40dp"
-                            android:layout_height="wrap_content"/>
+                            android:layout_width="wrap_content"
+                            android:layout_marginHorizontal="10dp"
+                            android:gravity="center_horizontal"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:drawableLeft="@drawable/ic_calendar_today_24" />
 
                         <TextView
                             android:id="@+id/end_date_event_detail"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_toRightOf="@id/icon_calendar"
-                            android:text="@{DateTimeUtil.getDateStringDMY(eventVM.endDate)}"
-                            android:textSize="18sp" />
+                            android:text="@{DateTimeUtil.getDateString(context,eventVM.endDate)}"
+                            android:textSize="@dimen/font_size_normal" />
 
                         <TextView
                             android:id="@+id/days_left_event_detail"
@@ -88,19 +89,18 @@
                             android:layout_below="@id/end_date_event_detail"
                             android:layout_toRightOf="@id/icon_calendar"
                             android:text="Còn 3 ngày"
-                            android:textSize="14dp" />
+                            android:textSize="14sp" />
                     </RelativeLayout>
                     <LinearLayout
-                        android:paddingHorizontal="20dp"
-                        android:paddingVertical="10dp"
+                        android:layout_marginVertical="@dimen/text_field_bottom_margin"
                         android:gravity="center_vertical"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
                         <TextView
-                            android:layout_marginRight="20dp"
                             android:layout_centerVertical="true"
+                            android:layout_marginHorizontal="10dp"
                             android:drawableLeft="@drawable/ic_account_balance_wallet_24"
-                            android:layout_width="40dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"/>
                         <TextView
                             android:id="@+id/event_detail_wallet"
@@ -108,7 +108,7 @@
                             android:layout_height="wrap_content"
                             android:layout_toRightOf="@id/icon_calendar"
                             android:text="@{eventVM.wallet.name}"
-                            android:textSize="18dp" />
+                            android:textSize="@dimen/font_size_normal" />
                     </LinearLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -126,7 +126,7 @@
                         android:paddingVertical="10dp"
                         android:textAlignment="center"
                         android:background="@color/white"
-                        android:textSize="18dp"
+                        android:textSize="@dimen/font_size_normal"
                         android:id="@+id/btn_switch_status"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
@@ -139,7 +139,7 @@
                         android:textColor="@color/red_main"
                         android:textAlignment="center"
                         android:background="@color/white"
-                        android:textSize="18dp"
+                        android:textSize="@dimen/font_size_normal"
                         android:text="Sổ giao dịch"
                         android:id="@+id/btn_watch_transactions"
                         android:layout_width="match_parent"

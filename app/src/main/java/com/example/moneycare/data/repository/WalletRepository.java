@@ -31,7 +31,7 @@ public class WalletRepository {
     String currentUserId;
     public WalletRepository(){
         db = FirebaseFirestore.getInstance();
-        currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+//        currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
     }
     // wallet
     public void fetchWallets(FirestoreListCallback<Wallet> callback){

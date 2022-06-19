@@ -14,6 +14,7 @@ import com.example.moneycare.data.model.Budget;
 import com.example.moneycare.data.model.Group;
 import com.example.moneycare.databinding.GroupItemBinding;
 import com.example.moneycare.ui.viewmodel.plan.BudgetViewModel;
+import com.example.moneycare.utils.DateTimeUtil;
 import com.example.moneycare.utils.ImageLoader;
 
 import java.text.SimpleDateFormat;
@@ -53,10 +54,8 @@ public class MyBudgetGroupRecyclerViewAdapter extends RecyclerView.Adapter<MyBud
     }
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-        String strDate = formatter.format(budgets.get(position).getDate());
         holder.groupName.setText(transactionGroups.get(position).name);
-        holder.groupCreatedDate.setText(strDate);
+        holder.groupCreatedDate.setText(DateTimeUtil.getDateString(holder.groupName.getContext(),budgets.get(position).getDate()));
         ImageLoader imageLoader = new ImageLoader(holder.groupIcon);
         imageLoader.execute(transactionGroups.get(position).image);
         holder.groupItem.setOnClickListener(new View.OnClickListener() {
@@ -66,7 +65,7 @@ public class MyBudgetGroupRecyclerViewAdapter extends RecyclerView.Adapter<MyBud
                 i.putExtra("imgGroup", transactionGroups.get(position).image);
                 i.putExtra("groupItem", transactionGroups.get(position).name);
                 i.putExtra("idBudget", budgets.get(position).getId());
-                i.putExtra("totalBudget", budgetsVM.totalBudgetImpl);
+                i.putExtra("totalBudget", budgetsVM.totalBudget.getValue());
                 toDetailBudgetActivity.launch(i);
             }
         });

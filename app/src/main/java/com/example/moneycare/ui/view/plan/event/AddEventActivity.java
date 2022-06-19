@@ -1,7 +1,5 @@
 package com.example.moneycare.ui.view.plan.event;
 
-import static com.example.moneycare.utils.Convert.convertToMoneyCompact;
-
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
@@ -34,7 +32,6 @@ import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClic
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class AddEventActivity extends AppCompatActivity {
@@ -93,6 +90,7 @@ public class AddEventActivity extends AppCompatActivity {
             }
         });
     }
+
     private void initPickDateInput(){
         binding.addEventEndDate.setOnClickListener(new View.OnClickListener() {
             @Override

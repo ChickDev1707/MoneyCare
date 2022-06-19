@@ -5,6 +5,7 @@ import android.os.Parcelable;
 
 import com.example.moneycare.utils.FirestoreUtil;
 import com.google.firebase.Timestamp;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.Exclude;
 
@@ -59,11 +60,13 @@ public class Event implements Parcelable {
 
     @Exclude
     public Map<String, Object> toMap() {
+        String idUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
         HashMap<String, Object> result = new HashMap<>();
         result.put("name", name);
         result.put("image", image);
         result.put("endDate", new Timestamp(endDate));
         if(wallet != ""){
+            wallet = "users/" + idUser + "/wallets" + wallet;
             result.put("wallet", FirestoreUtil.getReferenceFromPath(wallet));
         }
         result.put("status", status);

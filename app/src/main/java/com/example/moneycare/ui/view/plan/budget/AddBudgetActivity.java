@@ -1,7 +1,5 @@
 package com.example.moneycare.ui.view.plan.budget;
 
-import static com.example.moneycare.utils.Convert.convertToNumber;
-
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
@@ -26,6 +24,7 @@ import com.example.moneycare.data.model.Group;
 import com.example.moneycare.data.repository.BudgetRepository;
 import com.example.moneycare.databinding.ActivityAddBudgetBinding;
 import com.example.moneycare.ui.viewmodel.plan.NewBudgetViewModel;
+import com.example.moneycare.utils.DateTimeUtil;
 import com.example.moneycare.utils.ImageLoader;
 
 import java.text.DecimalFormat;
@@ -80,6 +79,24 @@ public class AddBudgetActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(binding.getRoot());
 
+        initToolbar();
+        initSelectGroupEvent();
+        //Enter money
+        initEnterMoney();
+        initButtonAdd();
+
+    }
+
+    private void initButtonAdd (){
+        Button btnAdd = findViewById(R.id.btn_add_budget);
+        btnAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                handleAdd();
+            }
+        });
+    }
+    private void initToolbar(){
         //toolbar
         Toolbar toolbar = findViewById(R.id.basic_app_bar);
 
@@ -87,25 +104,11 @@ public class AddBudgetActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
-             public void onClick(View v) {
+            public void onClick(View v) {
                 AddBudgetActivity.this.finish();
             }
         });
-
-
-        initSelectGroupEvent();
-        //Enter money
-        initEnterMoney();
-
-        Button btnAdd = findViewById(R.id.btn_add_budget);
-        btnAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                    handleAdd();
-            }
-        });
     }
-
     private void initSelectGroupEvent(){
         binding.addBudgetGroupName.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -153,15 +156,34 @@ public class AddBudgetActivity extends AppCompatActivity {
         });
     }
 
+    public Long convertToNumber(String str){
+        try {
+            String[] arrs = str.split(",");
+            return Long.valueOf(String.join("", arrs));
+        }
+        catch(Exception e){
+            return -1L;
+        }
+    }
+
     private void init(){
         budgetRepository = new BudgetRepository();
     }
 
     private void handleAdd(){
         if(viewModel.groupSelected.getValue() != null){
-            budgetRepository.insertBudget(new Budget("transaction-groups/" + viewModel.groupSelected.getValue().id,
-                    Long.parseLong(viewModel.moneyLimit.getValue().toString())
-                    , Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant())));
+            Budget budget = new Budget();
+            budget.setDate(Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant()));
+            budget.setBudget(viewModel.moneyLimit.getValue());
+            String groupId;
+            if(viewModel.groupSelected.getValue().isDefault == true){
+                groupId = "/transaction-groups/" + viewModel.groupSelected.getValue().id;
+            }
+            else {
+                groupId = "users/" + budgetRepository.userId + "/transaction-groups/" + viewModel.groupSelected.getValue().id;
+            }
+            budget.setGroup_id(groupId);
+            budgetRepository.insertBudget(budget);
             AddBudgetActivity.this.setResult(Activity.RESULT_OK);
             AddBudgetActivity.this.finish();
         }
