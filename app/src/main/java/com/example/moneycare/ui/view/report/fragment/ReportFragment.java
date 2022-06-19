@@ -378,4 +378,9 @@ public class ReportFragment extends Fragment{
         editor.apply();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        showTransList();
+    }
 }

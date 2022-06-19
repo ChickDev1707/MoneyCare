@@ -50,7 +50,6 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
-
                     <LinearLayout
                         android:id="@+id/linearLayout5"
                         android:layout_width="match_parent"
@@ -69,7 +68,6 @@
                             android:gravity="start"
                             android:text="Thu nhập"
                             android:textSize="@dimen/font_size_normal" />
-
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -78,10 +76,7 @@
                             android:text="@{Converter.longToString(reportListVM.moneyIn)}"
                             android:textColor="@color/green_main"
                             android:textSize="@dimen/font_size_normal" />
-
-
                     </LinearLayout>
-
                     <LinearLayout
                         android:id="@+id/linearLayout6"
                         android:layout_width="match_parent"
@@ -111,7 +106,6 @@
                             android:textSize="@dimen/font_size_normal" />
 
                     </LinearLayout>
-
                     <View
                         android:id="@+id/view4"
                         android:layout_width="wrap_content"
@@ -154,7 +148,6 @@
                             android:textStyle="bold" />
 
                     </LinearLayout>
-/>
                     <com.google.android.material.tabs.TabLayout
                         android:id="@+id/tabLayout"
                         android:layout_width="match_parent"
@@ -167,7 +160,6 @@
                         app:layout_constraintTop_toBottomOf="@+id/linearLayout1">
 
                     </com.google.android.material.tabs.TabLayout>
-
                     <androidx.viewpager2.widget.ViewPager2
                         android:id="@+id/viewPager2"
                         android:layout_width="match_parent"
