@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -21,6 +20,7 @@ import androidx.preference.PreferenceManager;
 import com.example.moneycare.R;
 import com.example.moneycare.databinding.ActivitySettingsBinding;
 import com.example.moneycare.utils.DateTimeUtil;
+import com.example.moneycare.utils.ToastUtil;
 import com.google.android.material.timepicker.MaterialTimePicker;
 import com.google.android.material.timepicker.TimeFormat;
 
@@ -122,8 +122,7 @@ public class SettingsActivity extends AppCompatActivity {
                     int minute = picker.getMinute();
                     saveNotificationTimePref(hour, minute);
                     setNotificationTimeAlarmFromPref();
-                    Toast toast =  Toast.makeText(getContext(), "Đặt giờ nhắc thành công", Toast.LENGTH_SHORT);
-                    toast.show();
+                    ToastUtil.showToast(getContext(), "Đặt giờ nhắc thành công");
                 }
             });
         }

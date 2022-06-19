@@ -19,16 +19,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.RadioButton;
-import android.widget.Toast;
 
 import com.example.moneycare.R;
 import com.example.moneycare.data.model.Group;
-import com.example.moneycare.data.model.UserTransaction;
 import com.example.moneycare.databinding.ActivityUpdateGroupBinding;
-import com.example.moneycare.databinding.ActivityUpdateTransactionBinding;
-import com.example.moneycare.ui.view.transaction.trans.UpdateTransactionActivity;
 import com.example.moneycare.ui.viewmodel.transaction.UpdateGroupViewModel;
-import com.example.moneycare.ui.viewmodel.transaction.UpdateTransactionViewModel;
+import com.example.moneycare.utils.ToastUtil;
 import com.example.moneycare.utils.ValidationUtil;
 
 import org.jetbrains.annotations.NotNull;
@@ -93,12 +89,10 @@ public class UpdateGroupActivity extends AppCompatActivity {
                 viewModel.deleteGroup(data->{
                     UpdateGroupActivity.this.setResult(RESULT_OK);
                     UpdateGroupActivity.this.finish();
-                    Toast toast =  Toast.makeText(UpdateGroupActivity.this, "Xóa nhóm thành công", Toast.LENGTH_SHORT);
-                    toast.show();
+                    ToastUtil.showToast(UpdateGroupActivity.this, "Xóa nhóm thành công");
                 },
                 data->{
-                    Toast toast =  Toast.makeText(UpdateGroupActivity.this, "Lỗi! Xóa nhóm thất bại", Toast.LENGTH_SHORT);
-                    toast.show();
+                    ToastUtil.showToast(UpdateGroupActivity.this, "Lỗi! Xóa nhóm thất bại");
                 });
                 return true;
             default:
@@ -149,12 +143,10 @@ public class UpdateGroupActivity extends AppCompatActivity {
                     viewModel.updateGroup(data->{
                         UpdateGroupActivity.this.setResult(RESULT_OK);
                         UpdateGroupActivity.this.finish();
-                        Toast toast =  Toast.makeText(UpdateGroupActivity.this, "Cập nhật nhóm thành công", Toast.LENGTH_SHORT);
-                        toast.show();
+                        ToastUtil.showToast(UpdateGroupActivity.this, "Cập nhật nhóm thành công");
                     },
                     data->{
-                        Toast toast =  Toast.makeText(UpdateGroupActivity.this, "Lỗi! Cập nhật nhóm thất bại", Toast.LENGTH_SHORT);
-                        toast.show();
+                        ToastUtil.showToast(UpdateGroupActivity.this, "Lỗi! Cập nhật nhóm thất bại");
                     });
                 }
             }

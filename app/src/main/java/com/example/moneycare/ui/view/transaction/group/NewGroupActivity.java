@@ -17,12 +17,12 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.RadioGroup;
-import android.widget.Toast;
 
 import com.example.moneycare.R;
 import com.example.moneycare.databinding.ActivityNewGroupBinding;
 import com.example.moneycare.ui.view.transaction.trans.NewTransactionActivity;
 import com.example.moneycare.ui.viewmodel.transaction.NewGroupViewModel;
+import com.example.moneycare.utils.ToastUtil;
 import com.example.moneycare.utils.ValidationUtil;
 
 import java.io.IOException;
@@ -115,12 +115,10 @@ public class NewGroupActivity extends AppCompatActivity {
                     viewModel.saveNewGroup(data->{
                         NewGroupActivity.this.setResult(RESULT_OK);
                         NewGroupActivity.this.finish();
-                        Toast toast =  Toast.makeText(NewGroupActivity.this, "Thêm nhóm thành công", Toast.LENGTH_SHORT);
-                        toast.show();
+                        ToastUtil.showToast(NewGroupActivity.this, "Thêm nhóm thành công");
                     },
                     data->{
-                        Toast toast =  Toast.makeText(NewGroupActivity.this, "Lỗi! Thêm nhóm thất bại", Toast.LENGTH_SHORT);
-                        toast.show();
+                        ToastUtil.showToast(NewGroupActivity.this, "Lỗi! Thêm nhóm thất bại");
                     });
 
                 }

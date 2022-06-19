@@ -15,7 +15,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import com.example.moneycare.R;
 import com.example.moneycare.data.model.Group;
@@ -23,6 +22,7 @@ import com.example.moneycare.data.model.UserTransaction;
 import com.example.moneycare.databinding.ActivityUpdateTransactionBinding;
 import com.example.moneycare.ui.view.transaction.group.SelectGroupActivity;
 import com.example.moneycare.ui.viewmodel.transaction.UpdateTransactionViewModel;
+import com.example.moneycare.utils.ToastUtil;
 import com.example.moneycare.utils.ValidationUtil;
 
 import org.jetbrains.annotations.NotNull;
@@ -89,12 +89,10 @@ public class UpdateTransactionActivity extends AppCompatActivity {
                 updateTransViewModel.deleteTransaction(data -> {
                     UpdateTransactionActivity.this.setResult(RESULT_OK);
                     UpdateTransactionActivity.this.finish();
-                    Toast toast =  Toast.makeText(UpdateTransactionActivity.this, "Xóa giao dịch thành công", Toast.LENGTH_SHORT);
-                    toast.show();
+                    ToastUtil.showToast(UpdateTransactionActivity.this, "Xóa giao dịch thành công");
                 },
                 data->{
-                    Toast toast =  Toast.makeText(UpdateTransactionActivity.this, "Lỗi! Xóa giao dịch thất bại", Toast.LENGTH_SHORT);
-                    toast.show();
+                    ToastUtil.showToast(UpdateTransactionActivity.this, "Lỗi! Xóa giao dịch thất bại");
                 });
                 return true;
             default:
@@ -120,12 +118,10 @@ public class UpdateTransactionActivity extends AppCompatActivity {
                     updateTransViewModel.updateTransaction(object -> {
                         UpdateTransactionActivity.this.setResult(RESULT_OK);
                         UpdateTransactionActivity.this.finish();
-                        Toast toast =  Toast.makeText(UpdateTransactionActivity.this, "Cập nhật giao dịch thành công", Toast.LENGTH_SHORT);
-                        toast.show();
+                        ToastUtil.showToast(UpdateTransactionActivity.this, "Cập nhật giao dịch thành công");
                     },
                     object->{
-                        Toast toast =  Toast.makeText(UpdateTransactionActivity.this, "Lỗi! Cập nhật giao dịch thất bại", Toast.LENGTH_SHORT);
-                        toast.show();
+                        ToastUtil.showToast(UpdateTransactionActivity.this, "Lỗi! Cập nhật giao dịch thất bại");
                     });
                 }
             }

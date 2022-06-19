@@ -21,7 +21,6 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.CompoundButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.moneycare.R;
 import com.example.moneycare.data.custom.MoneyFormatter;
@@ -29,6 +28,7 @@ import com.example.moneycare.databinding.FragmentMoneyFormatDialogBinding;
 import com.example.moneycare.ui.view.transaction.wallet.NewWalletActivity;
 import com.example.moneycare.utils.Converter;
 import com.example.moneycare.utils.PrefUtil;
+import com.example.moneycare.utils.ToastUtil;
 import com.example.moneycare.utils.appenum.MoneySeparator;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.gson.Gson;
@@ -79,8 +79,7 @@ public class MoneyFormatDialogFragment extends DialogFragment {
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         saveFormatter();
-                        Toast toast =  Toast.makeText(currentActivity, "Cập nhật định dạng tiền thành công", Toast.LENGTH_SHORT);
-                        toast.show();
+                        ToastUtil.showToast(currentActivity, "Cập nhật định dạng tiền thành công");
                     }
                 })
                 .setNegativeButton("HỦY", new DialogInterface.OnClickListener() {

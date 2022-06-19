@@ -6,11 +6,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Toast;
 
 import com.example.moneycare.R;
 import com.example.moneycare.databinding.ActivityRegisterBinding;
 
+import com.example.moneycare.utils.ToastUtil;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -51,8 +51,7 @@ public class RegisterActivity extends AppCompatActivity {
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            Toast toast =  Toast.makeText(RegisterActivity.this, e.getMessage(), Toast.LENGTH_SHORT);
-                            toast.show();
+                            ToastUtil.showToast(RegisterActivity.this, e.getMessage());
                         }
                     });
             }

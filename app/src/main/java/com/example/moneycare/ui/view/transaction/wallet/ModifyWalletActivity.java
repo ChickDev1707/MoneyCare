@@ -6,24 +6,20 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.Fragment;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Toast;
 
 import com.example.moneycare.R;
 import com.example.moneycare.data.model.Wallet;
 import com.example.moneycare.data.repository.WalletRepository;
 import com.example.moneycare.databinding.ActivityModifyWalletBinding;
-import com.example.moneycare.ui.view.transaction.trans.TransactionFragment;
 import com.example.moneycare.utils.ImageLoader;
-import com.example.moneycare.utils.ImageUtil;
+import com.example.moneycare.utils.ToastUtil;
 
 public class ModifyWalletActivity extends AppCompatActivity {
 
@@ -96,11 +92,9 @@ public class ModifyWalletActivity extends AppCompatActivity {
                 repository.updateWallet(selectedWallet, data->{
                     ModifyWalletActivity.this.setResult(Activity.RESULT_OK);
                     ModifyWalletActivity.this.finish();
-                    Toast toast =  Toast.makeText(ModifyWalletActivity.this, "Điều chỉnh số dư thành công", Toast.LENGTH_SHORT);
-                    toast.show();
+                    ToastUtil.showToast(ModifyWalletActivity.this, "Điều chỉnh số dư thành công");
                 }, data -> {
-                    Toast toast =  Toast.makeText(ModifyWalletActivity.this, "Lỗi! Điều chỉnh số dư thất bại", Toast.LENGTH_SHORT);
-                    toast.show();
+                    ToastUtil.showToast(ModifyWalletActivity.this, "Lỗi! Điều chỉnh số dư thất bại");
                 });
             }
         });
