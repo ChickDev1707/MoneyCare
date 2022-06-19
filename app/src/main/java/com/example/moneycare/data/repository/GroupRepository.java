@@ -50,7 +50,7 @@ public class GroupRepository {
             @Override
             public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
                 List<Group> allGroups = new ArrayList<>(defaultGroups);
-                List<Group> userGroups = getGroupsData(task, true);
+                List<Group> userGroups = getGroupsData(task, false);
                 allGroups.addAll(userGroups);
                 callback.onCallback(allGroups);
             }

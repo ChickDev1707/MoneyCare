@@ -15,6 +15,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import com.example.moneycare.data.model.Wallet;
 import com.example.moneycare.databinding.ActivityMainBinding;
 import com.example.moneycare.ui.view.transaction.trans.NewTransactionActivity;
 import com.example.moneycare.R;
@@ -35,7 +36,6 @@ public class MainActivity extends AppCompatActivity {
                     // There are no request codes
                     Fragment navHostFragment = getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
                     Fragment firstFragment = navHostFragment.getChildFragmentManager().getFragments().get(0);
-                    System.out.println("result");
                     if(firstFragment.getClass().equals(TransactionFragment.class)){
                         TransactionFragment fragment = (TransactionFragment) firstFragment;
                         fragment.initElements();
@@ -54,8 +54,8 @@ public class MainActivity extends AppCompatActivity {
                     Fragment firstFragment = navHostFragment.getChildFragmentManager().getFragments().get(0);
                     if(firstFragment.getClass().equals(TransactionFragment.class)){
                         TransactionFragment fragment = (TransactionFragment) firstFragment;
-                        String walletId = (String) result.getData().getExtras().get("walletId");
-                        fragment.handleSelectWallet(walletId);
+                        Wallet selectedWallet = result.getData().getParcelableExtra("wallet");
+                        fragment.handleSelectWallet(selectedWallet.id);
                     }
                 }
             }
