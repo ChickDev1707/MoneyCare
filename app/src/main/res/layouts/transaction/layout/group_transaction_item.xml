@@ -5,7 +5,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="@dimen/layout_padding"
     android:background="@color/white"
     android:layout_marginBottom="20dp"
     android:orientation="vertical">
@@ -13,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:padding="@dimen/layout_padding"
         >
         <com.google.android.material.card.MaterialCardView
             android:layout_width="40dp"
@@ -59,13 +59,10 @@
             android:text="100000"
             android:textAppearance="?attr/textAppearanceListItem" />
     </LinearLayout>
-    <View
-        android:layout_width="wrap_content"
-        android:layout_height="2dp"
-        android:gravity="end"
-        android:layout_weight="1"
-        android:layout_marginTop="@dimen/layout_padding"
-        android:background="@color/gray_100" />
+    <com.google.android.material.divider.MaterialDivider
+        style="@style/Widget.MaterialComponents.MaterialDivider"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">

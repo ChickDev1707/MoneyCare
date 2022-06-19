@@ -87,6 +87,7 @@
                     app:boxBackgroundColor="@android:color/transparent"
                     app:startIconDrawable="@drawable/ic_notes_24"
                     android:hint="Ghi chú"
+                    app:endIconMode="clear_text"
                     android:layout_marginBottom="@dimen/text_field_bottom_margin"
                     >
 
@@ -166,6 +167,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_gravity="right"
+                    android:foreground="?android:attr/selectableItemBackground"
                     android:text="Thêm"/>
             </LinearLayout>
 

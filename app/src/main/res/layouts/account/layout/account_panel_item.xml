@@ -6,9 +6,9 @@
     android:padding="12dp"
     android:paddingStart="30dp"
     android:layout_marginBottom="2dp"
-    android:background="@color/white"
     android:orientation="horizontal"
     android:clickable="true"
+    android:background="?android:attr/selectableItemBackground"
     >
 
     <LinearLayout

@@ -152,7 +152,6 @@ public class UpdateTransactionActivity extends AppCompatActivity {
     }
     private boolean checkAllFields(){
         return ValidationUtil.checkEmpty(binding.updateTransMoney) &&
-                ValidationUtil.checkEmpty(binding.updateTransGroup) &&
-                ValidationUtil.checkEmpty(binding.updateTransNote);
+                ValidationUtil.checkEmpty(binding.updateTransGroup);
     }
 }

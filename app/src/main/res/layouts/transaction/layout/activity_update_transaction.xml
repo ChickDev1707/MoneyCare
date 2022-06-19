@@ -46,6 +46,7 @@
                     app:boxBackgroundColor="@android:color/transparent"
                     app:startIconDrawable="@drawable/ic_money_32"
                     android:hint="Số tiền"
+                    app:endIconMode="clear_text"
                     android:layout_marginBottom="@dimen/text_field_bottom_margin"
                     >
 
@@ -89,6 +90,7 @@
                     style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
                     app:boxBackgroundColor="@android:color/transparent"
                     app:startIconDrawable="@drawable/ic_notes_24"
+                    app:endIconMode="clear_text"
                     android:layout_marginBottom="@dimen/text_field_bottom_margin"
                     >
 

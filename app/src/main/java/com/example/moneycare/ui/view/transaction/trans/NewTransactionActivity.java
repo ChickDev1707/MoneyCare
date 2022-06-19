@@ -132,8 +132,7 @@ public class NewTransactionActivity extends AppCompatActivity {
     }
     private boolean checkAllFields(){
         return ValidationUtil.checkEmpty(binding.newTransMoney) &&
-                ValidationUtil.checkEmpty(binding.newTransGroup) &&
-                ValidationUtil.checkEmpty(binding.newTransNote);
+                ValidationUtil.checkEmpty(binding.newTransGroup);
     }
     private void initSelectGroup(){
         binding.newTransGroup.setOnClickListener(new View.OnClickListener() {
