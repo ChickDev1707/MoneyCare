@@ -1,4 +1,4 @@
-package com.example.moneycare.ui.view.report;
+package com.example.moneycare.ui.view.report.fragment;
 
 import android.os.Bundle;
 

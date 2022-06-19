@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/reportFragment"
-        android:name="com.example.moneycare.ui.view.report.ReportFragment"
+        android:name="com.example.moneycare.ui.view.report.fragment.ReportFragment"
         android:label="fragment_report"
         tools:layout="@layout/fragment_report" />
     <fragment

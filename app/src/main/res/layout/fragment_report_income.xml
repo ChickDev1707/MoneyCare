@@ -5,10 +5,10 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    tools:context=".ui.view.report.FragmentReportIncome">
+    tools:context=".ui.view.report.fragment.FragmentReportIncome">
 
     <com.github.mikephil.charting.charts.PieChart
-        android:id="@+id/pieChartIncome1"
+        android:id="@+id/pieChartIncome"
         android:layout_width="match_parent"
         android:layout_height="300dp"
         android:layout_margin="8dp" />
@@ -28,7 +28,7 @@
                 android:layout_margin="8dp"
                 android:nestedScrollingEnabled="false"
                 app:layoutManager="LinearLayoutManager"
-                tools:context=".ui.view.report.FragmentReportIncome"
+                tools:context=".ui.view.report.fragment.FragmentReportIncome"
                 tools:listitem="@layout/report_item" />
             </LinearLayout>
     </androidx.core.widget.NestedScrollView>

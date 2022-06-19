@@ -1,9 +1,8 @@
-package com.example.moneycare.ui.view.report;
+package com.example.moneycare.ui.view.report.fragment;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 
@@ -12,7 +11,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.view.LayoutInflater;
@@ -21,7 +19,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.example.moneycare.R;
 import com.example.moneycare.data.custom.GroupTransaction;
@@ -29,25 +26,15 @@ import com.example.moneycare.data.model.UserTransaction;
 import com.example.moneycare.data.model.Wallet;
 import com.example.moneycare.databinding.FragmentReportBinding;
 import com.example.moneycare.ui.view.MainActivity;
-import com.example.moneycare.ui.view.transaction.trans.GroupTransactionRecyclerViewAdapter;
+import com.example.moneycare.ui.view.report.adapter.ReportTabLayoutAdapter;
 import com.example.moneycare.ui.viewmodel.report.ReportViewModel;
 import com.example.moneycare.utils.Converter;
 import com.example.moneycare.utils.DateTimeUtil;
 import com.example.moneycare.utils.ImageUtil;
 import com.example.moneycare.utils.appenum.TransactionTimeFrame;
-import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.data.BarData;
-import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.data.PieData;
-import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
-import com.github.mikephil.charting.formatter.PercentFormatter;
-import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 import com.google.android.material.tabs.TabLayout;
@@ -71,14 +58,14 @@ public class ReportFragment extends Fragment{
     // TODO: Customize parameter argument names
     private static final String          ARG_COLUMN_COUNT = "column-count";
     // TODO: Customize parameters
-    private              ReportViewModel viewModel;
-    private              FragmentReportBinding binding;
-    private              TransactionTimeFrame           timeFrameMode;
+    private ReportViewModel       viewModel;
+    private FragmentReportBinding binding;
+    private TransactionTimeFrame  timeFrameMode;
     private              Date                           selectedDate;
     private TabLayout tabLayout;
     private ViewPager2             viewPager2;
     private ReportTabLayoutAdapter reportAdapter;
-    private   BarChart               barChartNetIncome;
+    private BarChart               barChartNetIncome;
     private List<GroupTransaction> groupTransactionList;
     private List<BarEntry> dataChartNetIncome;
     private List<PieEntry>    dataChartIncome;
@@ -118,17 +105,10 @@ public class ReportFragment extends Fragment{
         binding.setReportListVM(viewModel);
         binding.setLifecycleOwner(this);
         timeFrameMode = TransactionTimeFrame.DAY;
-//        barChartNetIncome = binding.getRoot().findViewById(R.id.barChartNetIncome);
-//        pieChartIncome = binding.getRoot().findViewById(R.id.pieChartIncome);
-//        pieChartExpense = binding.getRoot().findViewById(R.id.pieChartExpense);
 
         dataChartNetIncome = new ArrayList<>();
         dataChartIncome = new ArrayList<>();
         dataChartExpense = new ArrayList<>();
-
-//        textViewIncome = binding.getRoot().findViewById(R.id.textViewIncome);
-//        textViewExpense = binding.getRoot().findViewById(R.id.textViewExpense);
-
 
         Toolbar toolbar = binding.getRoot().findViewById(R.id.main_app_bar);
         toolbar.setTitle("");
@@ -138,25 +118,6 @@ public class ReportFragment extends Fragment{
         initTransList();
         initOpenWalletListBtn();
         initWalletFromPreference();
-
-//        tabLayout = binding.getRoot().findViewById(R.id.tabLayout);
-//        viewPager2 = binding.getRoot().findViewById(R.id.viewPager2);
-//        reportAdapter = new ReportTabLayoutAdapter(this.getActivity(), dataChartNetIncome);
-//        viewPager2.setAdapter(reportAdapter);
-//        new TabLayoutMediator(tabLayout, viewPager2, (tab, position) -> {
-//            switch (position){
-//                case 0:
-//                    tab.setText("Thu nhập ròng");
-//                    break;
-//                case 1:
-//                    tab.setText("Thu nhập");
-//                    break;
-//                case 2:
-//                    tab.setText("Chi tiêu");
-//                    break;
-//            }
-//        }).attach();
-
 
         return binding.getRoot();
     }
@@ -248,116 +209,6 @@ public class ReportFragment extends Fragment{
             }
         }).attach();
     }
-
-//    private void initPieChartIncome(){
-//        //setupPieChartIncome();
-//        pieChartIncome.setDrawHoleEnabled(true);
-//        pieChartIncome.setUsePercentValues(true);
-//        pieChartIncome.setEntryLabelTextSize(12);
-//        pieChartIncome.setEntryLabelColor(Color.BLACK);
-////        pieChartIncome.setCenterText("Spending by Category");
-////        pieChartIncome.setCenterTextSize(24);
-//        pieChartIncome.getDescription().setEnabled(false);
-//
-//        Legend l = pieChartIncome.getLegend();
-//        l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
-//        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
-//        l.setOrientation(Legend.LegendOrientation.VERTICAL);
-//        l.setDrawInside(false);
-//        l.setEnabled(false);
-//
-//        //loadPieChartIncomeData
-//        ArrayList<Integer> colors = new ArrayList<>();
-//        for (int color: ColorTemplate.MATERIAL_COLORS) {
-//            colors.add(color);
-//        }
-//
-//        for (int color: ColorTemplate.VORDIPLOM_COLORS) {
-//            colors.add(color);
-//        }
-//
-//        PieDataSet dataSet = new PieDataSet(dataChartIncome, "");
-//        dataSet.setColors(colors);
-//
-//        PieData data = new PieData(dataSet);
-//        data.setDrawValues(true);
-//        data.setValueFormatter(new PercentFormatter(pieChartIncome));
-//        data.setValueTextSize(12f);
-//        data.setValueTextColor(Color.BLACK);
-//
-//        pieChartIncome.setData(data);
-//        pieChartIncome.invalidate();
-//        pieChartIncome.animateY(1400, Easing.EaseInOutQuad);
-//    }
-//
-//    private void initPieChartExpense(){
-//        //setupPieChartExpense
-//        pieChartExpense.setDrawHoleEnabled(true);
-//        pieChartExpense.setUsePercentValues(true);
-//        pieChartExpense.setEntryLabelTextSize(12);
-//        pieChartExpense.setEntryLabelColor(Color.BLACK);
-////        pieChartExpense.setCenterText("Spending by Category");
-////        pieChartExpense.setCenterTextSize(24);
-//        pieChartExpense.getDescription().setEnabled(false);
-//
-//        Legend l = pieChartExpense.getLegend();
-//        l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
-//        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
-//        l.setOrientation(Legend.LegendOrientation.VERTICAL);
-//        l.setDrawInside(false);
-//        l.setEnabled(false);
-//
-//        //loadPieChartExpenseData
-//        ArrayList<Integer> colors = new ArrayList<>();
-//        for (int color: ColorTemplate.MATERIAL_COLORS) {
-//            colors.add(color);
-//        }
-//
-//        for (int color: ColorTemplate.VORDIPLOM_COLORS) {
-//            colors.add(color);
-//        }
-//
-//        PieDataSet dataSet = new PieDataSet(dataChartExpense, "");
-//        dataSet.setColors(colors);
-//
-//        PieData data = new PieData(dataSet);
-//        data.setDrawValues(true);
-//        data.setValueFormatter(new PercentFormatter(pieChartExpense));
-//        data.setValueTextSize(12f);
-//        data.setValueTextColor(Color.BLACK);
-//
-//        pieChartExpense.setData(data);
-//        pieChartExpense.invalidate();
-//        pieChartExpense.animateY(1400, Easing.EaseInOutQuad);
-//    }
-//
-//    private void initBarChartNetIncome(){
-//        BarDataSet barDataSet = new BarDataSet(dataChartNetIncome,"");
-//        barDataSet.setDrawIcons(false);
-//
-//        barChartNetIncome.setDrawBarShadow(false);
-//        barChartNetIncome.setDrawValueAboveBar(true);
-//
-//        barChartNetIncome.getDescription().setEnabled(false);
-//        barChartNetIncome.setPinchZoom(false);
-//        barChartNetIncome.setDrawGridBackground(false);
-//
-//        XAxis xAxis = barChartNetIncome.getXAxis();
-//        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-//        xAxis.setDrawGridLines(false);
-//
-//        BarData barData = new BarData();
-//        barData.addDataSet(barDataSet);
-//        barChartNetIncome.setData(barData);
-//        barChartNetIncome.animateY(1400);
-//        barChartNetIncome.invalidate();
-//    }
-//    private void initCharts(List<GroupTransaction> groupTransactionList){
-//        dataProcessingChart(groupTransactionList);
-//        initBarChartNetIncome();
-//        initPieChartIncome();
-//        initPieChartExpense();
-//    }
 
     private void initTransList(){
         selectedDate = new Date();

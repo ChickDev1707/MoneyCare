@@ -1,15 +1,21 @@
-package com.example.moneycare.ui.view.report;
+package com.example.moneycare.ui.view.report.fragment;
 
 import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.moneycare.R;
+import com.example.moneycare.data.custom.GroupTransaction;
+import com.example.moneycare.databinding.FragmentReportExpenseBinding;
+import com.example.moneycare.ui.view.report.adapter.ReportIncomeRecyclerViewAdapter;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
@@ -23,19 +29,39 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FragmentReportExpense extends Fragment {
+    private FragmentReportExpenseBinding binding;
+    private List<GroupTransaction> groupTransactionExpenseList;
     private     PieChart       pieChartExpense;
     private List<PieEntry> dataChartExpense;
-    public FragmentReportExpense(List data){
+    public FragmentReportExpense(List<GroupTransaction> groupTransactionList, List data){
+        this.groupTransactionExpenseList = new ArrayList<>();
+//        this.groupTransactionIncomeList = groupTransactionList;
+        for (GroupTransaction groupTransaction:groupTransactionList){
+            if (!groupTransaction.group.type){
+                this.groupTransactionExpenseList.add(groupTransaction);
+            }
+        }
         this.dataChartExpense = data;
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_report_expense, container, false);
-        pieChartExpense = view.findViewById(R.id.pieChartExpense1);
+//        View view = inflater.inflate(R.layout.fragment_report_expense, container, false);
+        binding = FragmentReportExpenseBinding.inflate(getLayoutInflater());
+
+        pieChartExpense = binding.pieChartExpense;
         initPieChartExpense();
-        return view;
+
+        RecyclerView transList = binding.reportListTransactionExpense;
+        LinearLayoutManager manager = new LinearLayoutManager(this.getContext());
+        transList.setLayoutManager(manager);
+        transList.setHasFixedSize(true);
+        transList.setAdapter(new ReportIncomeRecyclerViewAdapter(groupTransactionExpenseList));
+
+
+        return binding.getRoot();
     }
     private void initPieChartExpense(){
         //setupPieChartExpense

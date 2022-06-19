@@ -1,4 +1,4 @@
-package com.example.moneycare.ui.view.report;
+package com.example.moneycare.ui.view.report.fragment;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -10,15 +10,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
-import com.example.moneycare.R;
 import com.example.moneycare.data.custom.GroupTransaction;
 import com.example.moneycare.databinding.FragmentReportIncomeBinding;
+import com.example.moneycare.ui.view.report.adapter.ReportIncomeRecyclerViewAdapter;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
@@ -51,7 +49,7 @@ public class FragmentReportIncome extends Fragment {
 //        View view = inflater.inflate(R.layout.fragment_report_income, container, false);
         binding = FragmentReportIncomeBinding.inflate(getLayoutInflater());
 
-        pieChartIncome = binding.pieChartIncome1;
+        pieChartIncome = binding.pieChartIncome;
         initPieChartIncome();
 
         RecyclerView transList = binding.reportListTransactionIncome;

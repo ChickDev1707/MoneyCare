@@ -1,8 +1,7 @@
-package com.example.moneycare.ui.view.report;
+package com.example.moneycare.ui.view.report.adapter;
 
 import android.graphics.Bitmap;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -12,7 +11,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.moneycare.data.custom.GroupTransaction;
-import com.example.moneycare.data.model.UserTransaction;
 import com.example.moneycare.databinding.ReportItemBinding;
 import com.example.moneycare.utils.ImageUtil;
 

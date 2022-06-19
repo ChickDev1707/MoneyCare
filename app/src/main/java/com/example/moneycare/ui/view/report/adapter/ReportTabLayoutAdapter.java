@@ -1,28 +1,17 @@
-package com.example.moneycare.ui.view.report;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+package com.example.moneycare.ui.view.report.adapter;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.lifecycle.Lifecycle;
-import androidx.lifecycle.ReportFragment;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-import com.example.moneycare.R;
 import com.example.moneycare.data.custom.GroupTransaction;
-import com.example.moneycare.data.model.Group;
-import com.example.moneycare.databinding.GroupItemBinding;
-import com.github.mikephil.charting.charts.BarChart;
+import com.example.moneycare.ui.view.report.fragment.FragmentReportExpense;
+import com.example.moneycare.ui.view.report.fragment.FragmentReportIncome;
+import com.example.moneycare.ui.view.report.fragment.FragmentReportNetIncome;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.PieEntry;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ReportTabLayoutAdapter extends FragmentStateAdapter {
@@ -47,7 +36,7 @@ public class ReportTabLayoutAdapter extends FragmentStateAdapter {
             case 1:
                 return new FragmentReportIncome(groupTransactionList, dataChartIncome);
             case 2:
-                return new FragmentReportExpense(dataChartExpense);
+                return new FragmentReportExpense(groupTransactionList, dataChartExpense);
             default:
                 return new FragmentReportNetIncome(dataChartNetIncome);
 
