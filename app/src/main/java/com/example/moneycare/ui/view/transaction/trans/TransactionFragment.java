@@ -273,10 +273,6 @@ public class TransactionFragment extends Fragment {
         editor.putString(getString(R.string.pref_key_current_wallet), walletId);
         editor.apply();
     }
-    public void handleSelectWallet(String walletId){
-        setWalletToPreference(walletId);
-        viewModel.fetchWallet(walletId, this::updateWalletUI);
-    }
     public void initElements(){
         showTransList();
         initWalletFromPreference();
