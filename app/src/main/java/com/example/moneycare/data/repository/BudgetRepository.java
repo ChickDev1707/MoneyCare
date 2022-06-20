@@ -36,7 +36,7 @@ public class BudgetRepository {
         userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
     }
 
-    public void fetchBudgetsInMonth(FirestoreListCallback callback){
+    public void fetchBudgetsInMonth(FirestoreListCallback<Budget> callback){
         Query query =  db.collection("users").document(userId).collection("budgets")
                 .whereGreaterThanOrEqualTo("date", DateTimeUtil.getFirstDateOfMonth())
                 .whereLessThanOrEqualTo("date", DateTimeUtil.getLastDateOfMonth());

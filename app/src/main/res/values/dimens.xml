@@ -12,7 +12,6 @@
     <dimen name="font_size_extra_small">12sp</dimen>
 
     <dimen name="card_elevation">3dp</dimen>
-
     <dimen name="text_field_bottom_margin">12dp</dimen>
     <dimen name="form_margin_top">40dp</dimen>
 </resources>

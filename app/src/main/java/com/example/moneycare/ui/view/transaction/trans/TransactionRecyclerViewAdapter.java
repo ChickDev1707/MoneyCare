@@ -2,7 +2,6 @@ package com.example.moneycare.ui.view.transaction.trans;
 
 import androidx.appcompat.widget.PopupMenu;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
@@ -26,6 +25,7 @@ import com.example.moneycare.ui.view.MainActivity;
 import com.example.moneycare.utils.Converter;
 import com.example.moneycare.utils.DateTimeUtil;
 import com.example.moneycare.utils.ToastUtil;
+import com.example.moneycare.utils.appinterface.ReloadTransactionActivity;
 
 import java.util.List;
 
@@ -35,8 +35,8 @@ import java.util.List;
 public class TransactionRecyclerViewAdapter extends RecyclerView.Adapter<TransactionRecyclerViewAdapter.ViewHolder> {
 
     private List<UserTransaction> transactions;
-    private Group           group;
-    private MainActivity        activity;
+    private Group group;
+    private ReloadTransactionActivity baseActivity;
     private UserTransaction transaction;
 
     public TransactionRecyclerViewAdapter(Group group, List<UserTransaction> items) {
@@ -47,16 +47,16 @@ public class TransactionRecyclerViewAdapter extends RecyclerView.Adapter<Transac
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         ViewHolder viewHolder = new ViewHolder(TransactionItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
-        activity = (MainActivity) viewHolder.itemView.getContext();
         return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
+        this.baseActivity = (ReloadTransactionActivity) holder.transactionItem.getContext();
         transaction = transactions.get(position);
         initTransactionMoney(holder.transactionMoney, transaction);
 
-        holder.transactionDate.setText(DateTimeUtil.getDateString(activity, transaction.date));
+        holder.transactionDate.setText(DateTimeUtil.getDateString(baseActivity, transaction.date));
         holder.transactionDay.setText(Integer.toString(DateTimeUtil.getDay(transaction.date)));
         holder.transactionNote.setText(transaction.note);
         initItemClickEvent(holder);
@@ -74,15 +74,15 @@ public class TransactionRecyclerViewAdapter extends RecyclerView.Adapter<Transac
         holder.transactionItem.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                showPopup(activity, v);
+                showPopup(baseActivity, v);
                 return false;
             }
         });
     }
     private void openUpdateTransaction(){
-        Intent intent = new Intent(activity, UpdateTransactionActivity.class);
+        Intent intent = new Intent(baseActivity, UpdateTransactionActivity.class);
         intent.putExtra("transaction", transaction);
-        activity.startActivity(intent);
+        baseActivity.startActivity(intent);
     }
     public void showPopup(Context context, View v) {
         PopupMenu popup = new PopupMenu(context, v);
@@ -96,10 +96,10 @@ public class TransactionRecyclerViewAdapter extends RecyclerView.Adapter<Transac
                     TransactionRepository transactionRepository = new TransactionRepository();
                     transactionRepository.deleteTransaction(transaction,
                             data-> {
-                                reloadTransactionList();
-                                ToastUtil.showToast(activity, "Xóa giao dịch thành công");
+                                baseActivity.reloadTransactionList();
+                                ToastUtil.showToast(baseActivity, "Xóa giao dịch thành công");
                             },
-                            data-> ToastUtil.showToast(activity, "Lỗi! Xóa giao dịch thất bại"));
+                            data-> ToastUtil.showToast(baseActivity, "Lỗi! Xóa giao dịch thất bại"));
                 }
                 return false;
             }
@@ -108,14 +108,7 @@ public class TransactionRecyclerViewAdapter extends RecyclerView.Adapter<Transac
         inflater.inflate(R.menu.crud_menu, popup.getMenu());
         popup.show();
     }
-    private void reloadTransactionList(){
-        Fragment navHostFragment = activity.getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
-        Fragment firstFragment = navHostFragment.getChildFragmentManager().getFragments().get(0);
-        if(firstFragment.getClass().equals(TransactionFragment.class)){
-            TransactionFragment fragment = (TransactionFragment) firstFragment;
-            fragment.initElements();
-        }
-    }
+
     private void initTransactionMoney(TextView transactionMoney, UserTransaction transaction){
         Context context = transactionMoney.getContext();
         transactionMoney.setText(Converter.toFormattedMoney(context, transaction.money));
