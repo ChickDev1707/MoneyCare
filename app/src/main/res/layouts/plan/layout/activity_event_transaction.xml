@@ -17,7 +17,7 @@
         >
         <include android:id="@+id/event_trans_tool_bar" layout="@layout/basic_app_bar" />
         <LinearLayout
-            android:visibility="visible"
+            android:visibility="invisible"
             android:id="@+id/event_trans_container"
             android:layout_below="@id/event_trans_tool_bar"
             android:layout_width="match_parent"

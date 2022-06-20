@@ -170,7 +170,7 @@ public class UpdateEventActivity extends AppCompatActivity {
                 eventVM.updateEvent(eventUpdated.id);
                 Intent intent = getIntent();
                 intent.putExtra("eventUpdated", new Event(eventUpdated.id, eventVM.eventName.getValue(),  eventVM.endDate.getValue(),
-                        ImageUtil.toBase64( eventVM.image.getValue()), eventVM.wallet.getValue().id, "ongoing" ));
+                        eventVM.image.getValue() == null?"" : ImageUtil.toBase64(eventVM.image.getValue()), eventVM.wallet.getValue().id, "ongoing" ));
                 UpdateEventActivity.this.setResult(Activity.RESULT_OK, intent);
                 UpdateEventActivity.this.finish();
             }

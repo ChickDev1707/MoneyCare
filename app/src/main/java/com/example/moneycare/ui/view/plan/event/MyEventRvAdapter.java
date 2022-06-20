@@ -11,7 +11,11 @@ import android.widget.TextView;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.moneycare.data.custom.GroupTransaction;
 import com.example.moneycare.data.model.Event;
+import com.example.moneycare.data.model.UserTransaction;
+import com.example.moneycare.data.repository.EventRepository;
+import com.example.moneycare.data.repository.TransactionRepository;
 import com.example.moneycare.databinding.EventItemBinding;
 import com.example.moneycare.utils.DateTimeUtil;
 import com.example.moneycare.utils.ImageLoader;
@@ -23,7 +27,8 @@ public class MyEventRvAdapter extends RecyclerView.Adapter<MyEventRvAdapter.View
 
 
     private List<Event> events = new ArrayList<Event>();
-    private EventActivity activity;
+    private EventActivity         activity;
+    private TransactionRepository repository;
     public MyEventRvAdapter() {
 
     }
@@ -33,6 +38,7 @@ public class MyEventRvAdapter extends RecyclerView.Adapter<MyEventRvAdapter.View
         this.events = events;
         this.activity =activity;
         this.toDetailEventActivity = launcher;
+        repository = new TransactionRepository();
 
     }
     @Override
@@ -44,7 +50,25 @@ public class MyEventRvAdapter extends RecyclerView.Adapter<MyEventRvAdapter.View
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.eventName.setText(events.get(position).name);
         holder.daysLeft.setText("Còn " + DateTimeUtil.daysLeft(events.get(position).endDate) + " ngày");
-//        holder.spent.setText(Convert.convertToThousandsSeparator());
+        repository.getTransactionsByEvent(events.get(position).id, groupTransactions -> {
+            Long total = 0L;
+          for (GroupTransaction groupTransaction : groupTransactions){
+              if(groupTransaction.group.type == true){
+                  total += groupTransaction.getTotalMoney();
+              }else {
+                  total -= groupTransaction.getTotalMoney();
+              }
+          }
+          if(total <= 0) {
+              total = -total;
+              holder.money.setText(total.toString());
+              holder.lbMoney.setText("Đã chi:");
+          }
+          else{
+              holder.money.setText(total.toString());
+              holder.lbMoney.setText("Thu vào:");
+          }
+        });
         if(events.get(position).image != ""){
             ImageLoader imageLoader = new ImageLoader(holder.imgView);
             imageLoader.execute(events.get(position).image);
@@ -67,7 +91,8 @@ public class MyEventRvAdapter extends RecyclerView.Adapter<MyEventRvAdapter.View
         public final TextView eventName;
         public final TextView daysLeft;
         public final ImageView imgView;
-        public final TextView spent;
+        public final TextView money;
+        public final TextView lbMoney;
         public final RelativeLayout relativeLayout;
 
         public ViewHolder(EventItemBinding binding) {
@@ -75,7 +100,8 @@ public class MyEventRvAdapter extends RecyclerView.Adapter<MyEventRvAdapter.View
             eventName = binding.eventName;
             imgView = binding.imgItem;
             relativeLayout = binding.itemContainer;
-            spent = binding.spent;
+            money = binding.money;
+            lbMoney = binding.lbMoney;
             daysLeft = binding.daysLeft;
         }
 

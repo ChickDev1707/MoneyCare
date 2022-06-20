@@ -63,7 +63,7 @@ public class SelectEventRvAdapter extends RecyclerView.Adapter<SelectEventRvAdap
             eventItem = binding.itemContainer;
             eventName = binding.eventName;
             imgView = binding.imgItem;
-            spent = binding.spent;
+            spent = binding.money;
             daysLeft = binding.daysLeft;
         }
 

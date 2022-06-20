@@ -63,12 +63,12 @@ public class EventViewModel extends ViewModel {
 
     public void addEvent(){
         Event newEvent = new Event(eventName.getValue(), endDate.getValue(),
-                ImageUtil.toBase64(image.getValue()),"", "ongoing" );
+                image.getValue() == null ? "" : ImageUtil.toBase64(image.getValue()),"", "ongoing" );
         repository.insertEvent(newEvent);
     }
     public void updateEvent(String idEvent){
         Event event = new Event(idEvent, eventName.getValue(), endDate.getValue(),
-                ImageUtil.toBase64(image.getValue()),wallet.getValue().id, "ongoing" );
+                image.getValue() == null?"" : ImageUtil.toBase64(image.getValue()),wallet.getValue().id, "ongoing" );
         repository.updateEvent(event);
     }
 

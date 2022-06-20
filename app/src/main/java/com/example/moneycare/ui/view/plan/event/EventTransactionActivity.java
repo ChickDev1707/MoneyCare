@@ -63,7 +63,7 @@ public class EventTransactionActivity extends AppCompatActivity {
 
 //        id = getIntent().getStringExtra("idEvent");
         transactionRepository.getTransactionsByEvent("",groupTransactions -> {
-            layoutLoading.setVisibility(View.GONE);
+            layoutLoading.setVisibility(View.INVISIBLE);
             RecyclerView transList = binding.eventTransactionList;
             if(groupTransactions.size() == 0){
                 layoutEmpty.setVisibility(View.VISIBLE);

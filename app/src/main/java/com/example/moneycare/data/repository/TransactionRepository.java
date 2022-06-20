@@ -281,11 +281,13 @@ public class TransactionRepository {
             }
         });
     }
+
+    //for event
     public void getTransactionsByEvent(String idEvent, FirestoreListCallback<GroupTransaction> callback){
         CollectionReference colRef =  db.collection("users")
                 .document(currentUserId).collection("transactions");
         colRef
-//                .whereEqualTo("event", idEvent)
+                .whereEqualTo("eventId", idEvent)
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
@@ -298,7 +300,7 @@ public class TransactionRepository {
                     getGroupTransactionList(transactions, callback);
                 }
             }
-
         });
     }
+
 }
