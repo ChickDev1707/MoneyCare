@@ -29,7 +29,7 @@ public class WalletManageRvAdapter extends WalletMainRvAdapter{
             public void onClick(View view) {
                 Intent intent = new Intent(activity, UpdateWalletActivity.class);
                 intent.putExtra("wallet", wallet);
-                ((ManageWalletActivity) activity).getReloadWalletListLauncher().launch(intent);
+                activity.startActivity(intent);
             }
         });
     }

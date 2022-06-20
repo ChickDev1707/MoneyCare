@@ -34,4 +34,7 @@ public class Converter {
         return appMoney.toString();
     }
 
+    public static String toPercent(float value, float total){
+        return String.format("%.1f", value*100.0/total)+"%";
+    }
 }

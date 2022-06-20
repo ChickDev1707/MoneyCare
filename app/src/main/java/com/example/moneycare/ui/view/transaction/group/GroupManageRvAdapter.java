@@ -25,7 +25,7 @@ public class GroupManageRvAdapter extends GroupMainRvAdapter{
     private void startUpdateGroup(Group group){
         Intent intent = new Intent(activity, UpdateGroupActivity.class);
         intent.putExtra("group", group);
-        ((ManageGroupActivity) activity).getReloadGroupListLauncher().launch(intent);
+        activity.startActivity(intent);
     }
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {

@@ -143,6 +143,27 @@
                         />
 
                 </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_height="match_parent"
+                    android:layout_width="match_parent"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+                    app:boxBackgroundColor="@android:color/transparent"
+                    app:startIconDrawable="@drawable/ic_event_24"
+                    android:hint="Chọn sự kiện"
+                    app:endIconMode="clear_text"
+                    android:layout_marginBottom="@dimen/text_field_bottom_margin"
+                    >
+                    <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                        android:clickable="true"
+                        android:id="@+id/new_trans_event"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="none"
+                        android:enabled="@{updateTransVM.updateMode ? true : false}"
+                        android:text="@={updateTransVM.event.name}"
+                        android:focusable="true" />
+
+                </com.google.android.material.textfield.TextInputLayout>
                 <Button
                     android:id="@+id/update_trans_btn"
                     android:layout_width="wrap_content"

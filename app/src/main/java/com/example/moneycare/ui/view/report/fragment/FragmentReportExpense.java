@@ -12,10 +12,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.moneycare.R;
 import com.example.moneycare.data.custom.GroupTransaction;
 import com.example.moneycare.databinding.FragmentReportExpenseBinding;
-import com.example.moneycare.ui.view.report.adapter.ReportIncomeRecyclerViewAdapter;
+import com.example.moneycare.ui.view.report.adapter.ReportExpenseRecyclerViewAdapter;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
@@ -33,15 +32,16 @@ public class FragmentReportExpense extends Fragment {
     private List<GroupTransaction> groupTransactionExpenseList;
     private     PieChart       pieChartExpense;
     private List<PieEntry> dataChartExpense;
-    public FragmentReportExpense(List<GroupTransaction> groupTransactionList, List data){
+    private long totalMoneyExpense;
+    public FragmentReportExpense(List<GroupTransaction> groupTransactionList, List data, long totalMoneyExpense){
         this.groupTransactionExpenseList = new ArrayList<>();
-//        this.groupTransactionIncomeList = groupTransactionList;
         for (GroupTransaction groupTransaction:groupTransactionList){
             if (!groupTransaction.group.type){
                 this.groupTransactionExpenseList.add(groupTransaction);
             }
         }
         this.dataChartExpense = data;
+        this.totalMoneyExpense = totalMoneyExpense;
     }
 
     @Override
@@ -50,27 +50,18 @@ public class FragmentReportExpense extends Fragment {
         // Inflate the layout for this fragment
 //        View view = inflater.inflate(R.layout.fragment_report_expense, container, false);
         binding = FragmentReportExpenseBinding.inflate(getLayoutInflater());
-
         pieChartExpense = binding.pieChartExpense;
         initPieChartExpense();
-
-        RecyclerView transList = binding.reportListTransactionExpense;
-        LinearLayoutManager manager = new LinearLayoutManager(this.getContext());
-        transList.setLayoutManager(manager);
-        transList.setHasFixedSize(true);
-        transList.setAdapter(new ReportIncomeRecyclerViewAdapter(groupTransactionExpenseList));
-
-
+        loadRVGroupTransIncome();
         return binding.getRoot();
     }
-    private void initPieChartExpense(){
-        //setupPieChartExpense
+    private void setupPieChartExpense(){
         pieChartExpense.setDrawHoleEnabled(true);
         pieChartExpense.setUsePercentValues(true);
-        pieChartExpense.setEntryLabelTextSize(12);
+        pieChartExpense.setEntryLabelTextSize(14);
         pieChartExpense.setEntryLabelColor(Color.BLACK);
-//        pieChartExpense.setCenterText("Spending by Category");
-//        pieChartExpense.setCenterTextSize(24);
+        pieChartExpense.setCenterText("Tổng số: " + this.totalMoneyExpense);
+        pieChartExpense.setCenterTextSize(24);
         pieChartExpense.getDescription().setEnabled(false);
 
         Legend l = pieChartExpense.getLegend();
@@ -79,8 +70,8 @@ public class FragmentReportExpense extends Fragment {
         l.setOrientation(Legend.LegendOrientation.VERTICAL);
         l.setDrawInside(false);
         l.setEnabled(false);
-
-        //loadPieChartExpenseData
+    }
+    private void loadPieChartExpenseData() {
         ArrayList<Integer> colors = new ArrayList<>();
         for (int color: ColorTemplate.MATERIAL_COLORS) {
             colors.add(color);
@@ -96,11 +87,23 @@ public class FragmentReportExpense extends Fragment {
         PieData data = new PieData(dataSet);
         data.setDrawValues(true);
         data.setValueFormatter(new PercentFormatter(pieChartExpense));
-        data.setValueTextSize(12f);
+        data.setValueTextSize(14f);
         data.setValueTextColor(Color.BLACK);
 
         pieChartExpense.setData(data);
         pieChartExpense.invalidate();
         pieChartExpense.animateY(1400, Easing.EaseInOutQuad);
     }
+    private void initPieChartExpense(){
+        setupPieChartExpense();
+        loadPieChartExpenseData();
+    }
+    private void loadRVGroupTransIncome(){
+        RecyclerView transList = binding.reportListTransactionExpense;
+        LinearLayoutManager manager = new LinearLayoutManager(this.getContext());
+        transList.setLayoutManager(manager);
+        transList.setHasFixedSize(true);
+        transList.setAdapter(new ReportExpenseRecyclerViewAdapter(groupTransactionExpenseList));
+    }
+
 }

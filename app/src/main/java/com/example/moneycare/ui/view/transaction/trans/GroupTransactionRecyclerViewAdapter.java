@@ -28,6 +28,12 @@ public class GroupTransactionRecyclerViewAdapter extends RecyclerView.Adapter<Gr
         this.groupTransactions = items;
     }
 
+    public void GroupTransactionItemBinding(List<GroupTransaction> newGroupTransList){
+        this.groupTransactions.clear();
+        this.groupTransactions = newGroupTransList;
+        notifyDataSetChanged();
+    }
+
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new ViewHolder(GroupTransactionItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
@@ -51,12 +57,6 @@ public class GroupTransactionRecyclerViewAdapter extends RecyclerView.Adapter<Gr
     @Override
     public int getItemCount() {
         return groupTransactions.size();
-    }
-
-    public void GroupTransactionItemBinding(List<GroupTransaction> newGroupTransList){
-        this.groupTransactions.clear();
-        this.groupTransactions = newGroupTransList;
-        notifyDataSetChanged();
     }
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final TextView groupNameView;

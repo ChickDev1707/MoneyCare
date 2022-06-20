@@ -18,12 +18,12 @@ import android.provider.MediaStore;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import com.example.moneycare.R;
 import com.example.moneycare.data.model.Wallet;
 import com.example.moneycare.databinding.ActivityUpdateWalletBinding;
 import com.example.moneycare.ui.viewmodel.transaction.UpdateWalletViewModel;
+import com.example.moneycare.utils.ToastUtil;
 import com.example.moneycare.utils.ValidationUtil;
 
 import org.jetbrains.annotations.NotNull;
@@ -88,12 +88,10 @@ public class UpdateWalletActivity extends AppCompatActivity {
                 viewModel.deleteWallet(data->{
                     UpdateWalletActivity.this.setResult(Activity.RESULT_OK);
                     UpdateWalletActivity.this.finish();
-                    Toast toast =  Toast.makeText(UpdateWalletActivity.this, "Xóa ví thành công", Toast.LENGTH_SHORT);
-                    toast.show();
+                    ToastUtil.showToast(UpdateWalletActivity.this, "Xóa ví thành công");
                 },
                 data->{
-                    Toast toast =  Toast.makeText(UpdateWalletActivity.this, "Lỗi! Xóa ví thất bại", Toast.LENGTH_SHORT);
-                    toast.show();
+                    ToastUtil.showToast(UpdateWalletActivity.this, "Lỗi! Xóa ví thất bại");
                 });
                 return true;
             default:
@@ -118,7 +116,6 @@ public class UpdateWalletActivity extends AppCompatActivity {
     private void handleSelectImage(Uri selectedImage){
         try {
             Bitmap bitmapImg = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
-            binding.walletImageView.setImageBitmap(bitmapImg);
             viewModel.setImage(selectedImage, bitmapImg);
         } catch (IOException e) {
             e.printStackTrace();
@@ -137,12 +134,10 @@ public class UpdateWalletActivity extends AppCompatActivity {
                     viewModel.updateWallet(data->{
                         UpdateWalletActivity.this.setResult(Activity.RESULT_OK);
                         UpdateWalletActivity.this.finish();
-                        Toast toast =  Toast.makeText(UpdateWalletActivity.this, "Cập nhật ví thành công", Toast.LENGTH_SHORT);
-                        toast.show();
+                        ToastUtil.showToast(UpdateWalletActivity.this, "Cập nhật ví thành công");
                     },
                     data->{
-                        Toast toast =  Toast.makeText(UpdateWalletActivity.this, "Lỗi! Cập nhật ví thất bại", Toast.LENGTH_SHORT);
-                        toast.show();
+                        ToastUtil.showToast(UpdateWalletActivity.this, "Lỗi! Cập nhật ví thất bại");
                     });
                 }
             }
@@ -150,7 +145,6 @@ public class UpdateWalletActivity extends AppCompatActivity {
     }
     private boolean checkAllFields(){
         return ValidationUtil.checkEmpty(binding.updateWalletName) &&
-                ValidationUtil.checkEmpty(binding.updateWalletMoney) &&
-                ValidationUtil.checkEmpty(binding.walletImgPicker);
+                ValidationUtil.checkEmpty(binding.updateWalletMoney);
     }
 }

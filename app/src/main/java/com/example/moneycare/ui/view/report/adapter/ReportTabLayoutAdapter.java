@@ -19,27 +19,31 @@ public class ReportTabLayoutAdapter extends FragmentStateAdapter {
     private List<BarEntry>     dataChartNetIncome;
     private List<PieEntry> dataChartIncome;
     private List<PieEntry>     dataChartExpense;
-    public ReportTabLayoutAdapter(@NonNull FragmentActivity fragmentActivity, List groupTransactionList, List dataChartNetIncome, List dataChartIncome, List dataChartExpense) {
+    private long totalMoneyIncome;
+    private long totalMoneyExpense;
+    private long totalMoneyNetIncome;
+
+    public ReportTabLayoutAdapter(@NonNull FragmentActivity fragmentActivity, List groupTransactionList, List dataChartNetIncome, List dataChartIncome, List dataChartExpense, long totalMoneyIncome, long totalMoneyExpense, long totalMoneyNetIncome) {
         super(fragmentActivity);
         this.groupTransactionList = groupTransactionList;
         this.dataChartNetIncome = dataChartNetIncome;
         this.dataChartIncome = dataChartIncome;
         this.dataChartExpense = dataChartExpense;
+        this.totalMoneyIncome = totalMoneyIncome;
+        this.totalMoneyExpense = totalMoneyExpense;
+        this.totalMoneyNetIncome = totalMoneyNetIncome;
     }
 
     @NonNull
     @Override
     public Fragment createFragment(int position) {
         switch (position) {
-            case 0:
-                return new FragmentReportNetIncome(dataChartNetIncome);
             case 1:
-                return new FragmentReportIncome(groupTransactionList, dataChartIncome);
+                return new FragmentReportIncome(groupTransactionList, dataChartIncome, totalMoneyIncome);
             case 2:
-                return new FragmentReportExpense(groupTransactionList, dataChartExpense);
+                return new FragmentReportExpense(groupTransactionList, dataChartExpense, totalMoneyExpense);
             default:
-                return new FragmentReportNetIncome(dataChartNetIncome);
-
+                return new FragmentReportNetIncome(dataChartNetIncome, totalMoneyNetIncome);
         }
     }
 

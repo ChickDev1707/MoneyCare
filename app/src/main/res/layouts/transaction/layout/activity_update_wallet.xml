@@ -6,6 +6,7 @@
             type="com.example.moneycare.ui.viewmodel.transaction.UpdateWalletViewModel" />
         <import type="android.view.View"/>
         <import type="com.example.moneycare.utils.Converter"/>
+        <import type="com.example.moneycare.utils.DataBindingAdapter"/>
     </data>
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -94,6 +95,7 @@
                         app:cardElevation="1dp"
                         >
                         <ImageView
+                            app:imageBitmap="@{updateWalletVM.image}"
                             android:id="@+id/wallet_image_view"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"

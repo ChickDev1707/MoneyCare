@@ -24,6 +24,7 @@ import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class FragmentReportIncome extends Fragment {
@@ -31,15 +32,17 @@ public class FragmentReportIncome extends Fragment {
     private List<GroupTransaction>      groupTransactionIncomeList;
     private PieChart       pieChartIncome;
     private List<PieEntry> dataChartIncome;
-    public FragmentReportIncome(List<GroupTransaction> groupTransactionList, List data){
+    private long totalMoneyIncome;
+    public FragmentReportIncome(List<GroupTransaction> groupTransactionList, List data, long totalMoneyIncome){
         this.groupTransactionIncomeList = new ArrayList<>();
-//        this.groupTransactionIncomeList = groupTransactionList;
-                for (GroupTransaction groupTransaction:groupTransactionList){
+        for (GroupTransaction groupTransaction:groupTransactionList){
             if (groupTransaction.group.type){
                 this.groupTransactionIncomeList.add(groupTransaction);
             }
         }
+//        this.groupTransactionIncomeList = sortTotalMoneyOfGroupTrans(this.groupTransactionIncomeList);
         this.dataChartIncome = data;
+        this.totalMoneyIncome = totalMoneyIncome;
     }
 
     @Override
@@ -48,36 +51,26 @@ public class FragmentReportIncome extends Fragment {
         // Inflate the layout for this fragment
 //        View view = inflater.inflate(R.layout.fragment_report_income, container, false);
         binding = FragmentReportIncomeBinding.inflate(getLayoutInflater());
-
         pieChartIncome = binding.pieChartIncome;
         initPieChartIncome();
+        loadRVGroupTransExpense();
+        return binding.getRoot();
+    }
 
+    private void loadRVGroupTransExpense() {
         RecyclerView transList = binding.reportListTransactionIncome;
         LinearLayoutManager manager = new LinearLayoutManager(this.getContext());
         transList.setLayoutManager(manager);
         transList.setHasFixedSize(true);
         transList.setAdapter(new ReportIncomeRecyclerViewAdapter(groupTransactionIncomeList));
-
-        return binding.getRoot();
     }
+
     private void initPieChartIncome(){
-        //setupPieChartIncome();
-        pieChartIncome.setDrawHoleEnabled(true);
-        pieChartIncome.setUsePercentValues(true);
-        pieChartIncome.setEntryLabelTextSize(12);
-        pieChartIncome.setEntryLabelColor(Color.BLACK);
-//        pieChartIncome.setCenterText("Spending by Category");
-//        pieChartIncome.setCenterTextSize(24);
-        pieChartIncome.getDescription().setEnabled(false);
+        setupPieChartIncome();
+        loadPieChartIncomeData();
+    }
 
-        Legend l = pieChartIncome.getLegend();
-        l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
-        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
-        l.setOrientation(Legend.LegendOrientation.VERTICAL);
-        l.setDrawInside(false);
-        l.setEnabled(false);
-
-        //loadPieChartIncomeData
+    private void loadPieChartIncomeData() {
         ArrayList<Integer> colors = new ArrayList<>();
         for (int color: ColorTemplate.MATERIAL_COLORS) {
             colors.add(color);
@@ -93,11 +86,28 @@ public class FragmentReportIncome extends Fragment {
         PieData data = new PieData(dataSet);
         data.setDrawValues(true);
         data.setValueFormatter(new PercentFormatter(pieChartIncome));
-        data.setValueTextSize(12f);
+        data.setValueTextSize(14f);
         data.setValueTextColor(Color.BLACK);
 
         pieChartIncome.setData(data);
         pieChartIncome.invalidate();
         pieChartIncome.animateY(1400, Easing.EaseInOutQuad);
+    }
+
+    private void setupPieChartIncome() {
+        pieChartIncome.setDrawHoleEnabled(true);
+        pieChartIncome.setUsePercentValues(true);
+        pieChartIncome.setEntryLabelTextSize(14);
+        pieChartIncome.setEntryLabelColor(Color.BLACK);
+        pieChartIncome.setCenterText("Tổng số: " + Long.toString(this.totalMoneyIncome));
+        pieChartIncome.setCenterTextSize(24);
+        pieChartIncome.getDescription().setEnabled(false);
+
+        Legend l = pieChartIncome.getLegend();
+        l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
+        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
+        l.setOrientation(Legend.LegendOrientation.VERTICAL);
+        l.setDrawInside(false);
+        l.setEnabled(false);
     }
 }

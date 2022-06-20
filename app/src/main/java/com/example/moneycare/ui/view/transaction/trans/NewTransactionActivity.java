@@ -15,8 +15,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Toast;
 
 import com.example.moneycare.R;
 import com.example.moneycare.data.model.Event;
@@ -26,6 +24,7 @@ import com.example.moneycare.databinding.ActivityNewTransactionBinding;
 import com.example.moneycare.ui.view.transaction.group.SelectGroupActivity;
 import com.example.moneycare.ui.viewmodel.transaction.NewTransactionViewModel;
 import com.example.moneycare.ui.viewmodel.transaction.WalletArrayAdapter;
+import com.example.moneycare.utils.ToastUtil;
 import com.example.moneycare.utils.ValidationUtil;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
@@ -123,11 +122,9 @@ public class NewTransactionActivity extends AppCompatActivity {
                     newTransViewModel.saveNewTransaction(data -> {
                         NewTransactionActivity.this.setResult(RESULT_OK);
                         NewTransactionActivity.this.finish();
-                        Toast toast =  Toast.makeText(NewTransactionActivity.this, "Thêm giao dịch thành công", Toast.LENGTH_SHORT);
-                        toast.show();
+                        ToastUtil.showToast(NewTransactionActivity.this, "Thêm giao dịch thành công");
                     }, data->{
-                        Toast toast =  Toast.makeText(NewTransactionActivity.this, "Lỗi! Thêm giao dịch thất bại", Toast.LENGTH_SHORT);
-                        toast.show();
+                        ToastUtil.showToast(NewTransactionActivity.this, "Lỗi! Thêm giao dịch thất bại");
                     });
                 }
             }
