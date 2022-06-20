@@ -58,7 +58,7 @@ public class GroupMainFragment extends Fragment {
         List<Group> groups1 = new ArrayList<>();
         List<Group> groups2 = new ArrayList<>();
         for(Group group: groups){
-            if(group.type){
+            if(!group.type){
                 groups1.add(group);
             }else groups2.add(group);
         }
@@ -66,8 +66,8 @@ public class GroupMainFragment extends Fragment {
         AppCompatActivity activity = (AppCompatActivity) getActivity();
         GroupListFragment frag1 = new GroupListFragment(activity, groups1);
         GroupListFragment frag2 = new GroupListFragment(activity, groups2);
-        adapter.addFragment("Khoản thu", frag1);
-        adapter.addFragment("Khoản chi", frag2);
+        adapter.addFragment("Khoản chi", frag1);
+        adapter.addFragment("Khoản thu", frag2);
         binding.groupViewPager.setAdapter(adapter);
 
         new TabLayoutMediator(binding.groupTabLayout, binding.groupViewPager,

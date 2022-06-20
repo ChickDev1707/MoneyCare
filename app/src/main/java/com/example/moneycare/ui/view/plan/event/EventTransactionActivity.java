@@ -5,23 +5,18 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
 
 import com.example.moneycare.R;
-import com.example.moneycare.data.repository.EventRepository;
 import com.example.moneycare.data.repository.TransactionRepository;
 import com.example.moneycare.databinding.ActivityEventTransactionBinding;
 import com.example.moneycare.ui.view.transaction.trans.GroupTransactionRecyclerViewAdapter;
-import com.example.moneycare.ui.view.transaction.trans.TransactionRecyclerViewAdapter;
 import com.example.moneycare.ui.viewmodel.plan.EventViewModel;
-import com.google.rpc.context.AttributeContext;
+import com.example.moneycare.utils.appinterface.ReloadTransactionActivity;
 
-public class EventTransactionActivity extends AppCompatActivity {
+public class EventTransactionActivity extends ReloadTransactionActivity {
 
     ActivityEventTransactionBinding binding;
     TransactionRepository transactionRepository;
@@ -37,7 +32,7 @@ public class EventTransactionActivity extends AppCompatActivity {
 
         init();
         initToolbar();
-        loadData();
+        reloadTransactionList();
     }
 
     private void init(){
@@ -55,7 +50,8 @@ public class EventTransactionActivity extends AppCompatActivity {
             }
         });
     }
-    private void loadData(){
+    @Override
+    public void reloadTransactionList(){
         //load list
         LinearLayout layoutContainer = findViewById(R.id.event_trans_container);
         LinearLayout layoutEmpty = findViewById(R.id.event_trans_empty);
@@ -76,5 +72,11 @@ public class EventTransactionActivity extends AppCompatActivity {
                 layoutContainer.setVisibility(View.VISIBLE);
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        reloadTransactionList();
     }
 }

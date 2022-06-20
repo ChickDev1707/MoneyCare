@@ -7,10 +7,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.moneycare.data.custom.GroupTransaction;
 import com.example.moneycare.databinding.GroupTransactionItemBinding;
+import com.example.moneycare.ui.view.MainActivity;
 import com.example.moneycare.utils.Converter;
 import com.example.moneycare.utils.ImageLoader;
 import com.example.moneycare.utils.ImageUtil;

@@ -11,6 +11,7 @@ import com.example.moneycare.data.model.Group;
 import com.example.moneycare.data.repository.BudgetRepository;
 import com.example.moneycare.data.repository.GroupRepository;
 import com.example.moneycare.data.repository.TransactionRepository;
+import com.example.moneycare.utils.appinterface.FirestoreListCallback;
 import com.example.moneycare.utils.appinterface.FirestoreMultiListCallback;
 
 import java.time.LocalDate;
@@ -106,21 +107,21 @@ public class BudgetViewModel extends ViewModel {
         }, startDate, idGroup);
     }
     public void fetchTransactionGroupsByBudget(FirestoreMultiListCallback callback){
-         groupRepository.fetchGroups(groups -> {
-             budgetRepository.fetchBudgetsInMonth(budgets -> {
-                 List<Group> groupList = new ArrayList<Group>();
-                 ((List<Budget>)budgets).forEach(element -> {
-                     String[] arr = element.getGroup_id().split("/");
-                     Group group = ((List<Group>)groups).stream()
-                             .filter(x -> x.id.equals(arr[arr.length - 1]))
-                             .findFirst()
-                             .orElse(null);
-                     if(group != null)
-                         groupList.add(group);
-                 });
-                 callback.onCallback(groupList, budgets);
-             });
-         });
+        groupRepository.fetchGroups(groups -> {
+            budgetRepository.fetchBudgetsInMonth(budgets -> {
+                List<Group> groupList = new ArrayList<Group>();
+                ((List<Budget>)budgets).forEach(element -> {
+                    String[] arr = element.getGroup_id().split("/");
+                    Group group = ((List<Group>)groups).stream()
+                            .filter(x -> x.id.equals(arr[arr.length - 1]))
+                            .findFirst()
+                            .orElse(null);
+                    if(group != null)
+                        groupList.add(group);
+                });
+                callback.onCallback(groupList, budgets);
+            });
+        });
     }
 
 }
