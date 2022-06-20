@@ -22,6 +22,7 @@ public class Converter {
 
     public static String toFormattedMoney(Context context, Long number){
         MoneyFormatter formatter = PrefUtil.getMoneyFormatter(context);
+        String str = formatMoney(formatter, number);
         return formatMoney(formatter, number);
     }
 

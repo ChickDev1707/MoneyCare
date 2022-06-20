@@ -77,7 +77,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="end"
-                            android:text="@{Converter.longToString(reportListVM.moneyIn)}"
+                            android:text="@{Converter.toFormattedMoney(context, reportListVM.moneyIn)}"
                             android:textColor="@color/green_main"
                             android:textSize="@dimen/font_size_normal" />
                     </LinearLayout>
@@ -105,7 +105,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="end"
-                            android:text="@{Converter.longToString(reportListVM.moneyOut)}"
+                            android:text="@{Converter.toFormattedMoney(context, reportListVM.moneyOut)}"
                             android:textColor="@color/red_main"
                             android:textSize="@dimen/font_size_normal"
                             android:textStyle="bold" />
@@ -148,7 +148,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="end"
-                            android:text="@{Converter.longToString(reportListVM.moneyTotal)}"
+                            android:text="@{Converter.toFormattedMoney(context, reportListVM.moneyTotal)}"
                             android:textColor="@color/blue_grey_main"
                             android:textSize="@dimen/font_size_normal"
                             android:textStyle="bold" />

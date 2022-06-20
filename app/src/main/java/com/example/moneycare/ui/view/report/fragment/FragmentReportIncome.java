@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import com.example.moneycare.data.custom.GroupTransaction;
 import com.example.moneycare.databinding.FragmentReportIncomeBinding;
 import com.example.moneycare.ui.view.report.adapter.ReportIncomeRecyclerViewAdapter;
+import com.example.moneycare.utils.Converter;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
@@ -99,7 +100,7 @@ public class FragmentReportIncome extends Fragment {
         pieChartIncome.setUsePercentValues(true);
         pieChartIncome.setEntryLabelTextSize(14);
         pieChartIncome.setEntryLabelColor(Color.BLACK);
-        pieChartIncome.setCenterText("Tổng số: " + Long.toString(this.totalMoneyIncome));
+        pieChartIncome.setCenterText("Tổng số: " + Converter.toFormattedMoney(getContext(),this.totalMoneyIncome));
         pieChartIncome.setCenterTextSize(22);
         pieChartIncome.getDescription().setEnabled(false);
 

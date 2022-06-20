@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import com.example.moneycare.data.custom.GroupTransaction;
 import com.example.moneycare.databinding.FragmentReportExpenseBinding;
 import com.example.moneycare.ui.view.report.adapter.ReportExpenseRecyclerViewAdapter;
+import com.example.moneycare.utils.Converter;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
@@ -60,7 +61,7 @@ public class FragmentReportExpense extends Fragment {
         pieChartExpense.setUsePercentValues(true);
         pieChartExpense.setEntryLabelTextSize(14);
         pieChartExpense.setEntryLabelColor(Color.BLACK);
-        pieChartExpense.setCenterText("Tổng số: " + this.totalMoneyExpense);
+        pieChartExpense.setCenterText("Tổng số: " + Converter.toFormattedMoney(getContext(),this.totalMoneyExpense));
         pieChartExpense.setCenterTextSize(22);
         pieChartExpense.getDescription().setEnabled(false);
 

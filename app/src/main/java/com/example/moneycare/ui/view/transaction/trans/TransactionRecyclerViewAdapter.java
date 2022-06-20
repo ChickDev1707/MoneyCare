@@ -111,7 +111,7 @@ public class TransactionRecyclerViewAdapter extends RecyclerView.Adapter<Transac
 
     private void initTransactionMoney(TextView transactionMoney, UserTransaction transaction){
         Context context = transactionMoney.getContext();
-        transactionMoney.setText(Converter.toFormattedMoney(context, transaction.money));
+//        transactionMoney.setText(Converter.toFormattedMoney(context, transaction.money));
         int color = group.type? ContextCompat.getColor(context, R.color.green_main) : ContextCompat.getColor(context, R.color.red_main);
         transactionMoney.setTextColor(color);
     }

@@ -63,7 +63,7 @@ public class MyBudgetGroupRecyclerViewAdapter extends RecyclerView.Adapter<MyBud
             public void onClick(View v) {
                 Intent i = new Intent(v.getContext(), BudgetDetailActivity.class);
                 i.putExtra("imgGroup", transactionGroups.get(position).image);
-                i.putExtra("groupItem", transactionGroups.get(position).name);
+                i.putExtra("groupName", transactionGroups.get(position).name);
                 i.putExtra("idBudget", budgets.get(position).getId());
                 i.putExtra("totalBudget", budgetsVM.totalBudget.getValue());
                 toDetailBudgetActivity.launch(i);

@@ -15,6 +15,7 @@ import com.example.moneycare.data.custom.GroupTransaction;
 import com.example.moneycare.data.model.Event;
 import com.example.moneycare.data.repository.TransactionRepository;
 import com.example.moneycare.databinding.EventItemBinding;
+import com.example.moneycare.utils.Converter;
 import com.example.moneycare.utils.ImageLoader;
 
 import java.util.ArrayList;
@@ -50,11 +51,11 @@ public class SelectEventRvAdapter extends RecyclerView.Adapter<SelectEventRvAdap
             }
             if(total <= 0) {
                 total = -total;
-                holder.money.setText(total.toString());
+                holder.money.setText(Converter.toFormattedMoney(holder.money.getContext(), total));
                 holder.lbMoney.setText("Đã chi:");
             }
             else{
-                holder.money.setText(total.toString());
+                holder.money.setText(Converter.toFormattedMoney(holder.money.getContext(), total));
                 holder.lbMoney.setText("Thu vào:");
             }
         });

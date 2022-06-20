@@ -47,16 +47,18 @@ public class AppMoney {
     public void setShortType(){
         String[] shortTypes = {"", "K", "M", "B", "T"};
         int index = getIndexShortTypeIndex();
-        value = (double) (money/(Math.pow(1000, index)));
-        shortType = shortTypes[index];
+        if(index != -1){
+            value = (double) (money/(Math.pow(1000, index)));
+            shortType = shortTypes[index];
+        }
     }
     private int getIndexShortTypeIndex(){
         int index = -1;
         if(money == 0) index = 0;
         else{
             long clone = money;
-            while(clone> 0){
-                clone= clone/1000;
+            while(clone != 0){
+                clone = clone/1000;
                 index++;
             }
         }

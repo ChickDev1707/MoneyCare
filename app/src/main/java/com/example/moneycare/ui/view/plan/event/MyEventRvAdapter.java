@@ -17,6 +17,7 @@ import com.example.moneycare.data.model.UserTransaction;
 import com.example.moneycare.data.repository.EventRepository;
 import com.example.moneycare.data.repository.TransactionRepository;
 import com.example.moneycare.databinding.EventItemBinding;
+import com.example.moneycare.utils.Converter;
 import com.example.moneycare.utils.DateTimeUtil;
 import com.example.moneycare.utils.ImageLoader;
 
@@ -61,11 +62,11 @@ public class MyEventRvAdapter extends RecyclerView.Adapter<MyEventRvAdapter.View
           }
           if(total <= 0) {
               total = -total;
-              holder.money.setText(total.toString());
+              holder.money.setText(Converter.toFormattedMoney(holder.money.getContext(), total));
               holder.lbMoney.setText("Đã chi:");
           }
           else{
-              holder.money.setText(total.toString());
+              holder.money.setText(Converter.toFormattedMoney(holder.money.getContext(), total));
               holder.lbMoney.setText("Thu vào:");
           }
         });
