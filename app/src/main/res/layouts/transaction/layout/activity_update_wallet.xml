@@ -28,9 +28,8 @@
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="@dimen/form_margin_top"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:contentPadding="@dimen/layout_padding"
@@ -47,14 +46,14 @@
                     app:boxBackgroundColor="@android:color/transparent"
                     app:startIconDrawable="@drawable/ic_account_balance_wallet_24"
                     android:hint="Tên ví"
-                    android:layout_marginBottom="@dimen/layout_padding"
+                    android:layout_marginBottom="@dimen/text_field_bottom_margin"
                     >
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/update_wallet_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/font_size_extra_large"
+                        android:textSize="@dimen/font_size_large"
                         android:enabled="@{updateWalletVM.updateMode ? true : false}"
                         android:text="@={updateWalletVM.wallet.name}"
                         />
@@ -67,14 +66,14 @@
                     app:boxBackgroundColor="@android:color/transparent"
                     app:startIconDrawable="@drawable/ic_money_24"
                     android:hint="Số tiền"
-                    android:layout_marginBottom="@dimen/layout_padding"
+                    android:layout_marginBottom="@dimen/text_field_bottom_margin"
                     >
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/update_wallet_money"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/font_size_normal"
+                        android:textSize="@dimen/font_size_large"
                         android:inputType="number"
                         android:enabled="@{updateWalletVM.updateMode ? true : false}"
                         android:text="@={Converter.longToString(updateWalletVM.wallet.money)}"
@@ -85,14 +84,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_marginBottom="@dimen/layout_padding"
+                    android:layout_marginBottom="@dimen/text_field_bottom_margin"
                     >
                     <com.google.android.material.card.MaterialCardView
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         app:cardCornerRadius="25dp"
                         android:layout_marginEnd="10dp"
-                        app:cardElevation="1dp"
+                        app:cardElevation="0dp"
                         >
                         <ImageView
                             app:imageBitmap="@{updateWalletVM.image}"

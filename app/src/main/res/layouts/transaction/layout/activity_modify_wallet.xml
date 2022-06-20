@@ -11,13 +11,13 @@
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="@dimen/form_margin_top"
         android:layout_marginBottom="20dp"
-        app:cardElevation="2dp">
+        app:cardElevation="@dimen/card_elevation">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/layout_padding"
+            android:padding="@dimen/text_field_bottom_margin"
             android:orientation="vertical"
             >
             <LinearLayout

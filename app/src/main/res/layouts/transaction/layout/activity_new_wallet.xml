@@ -21,7 +21,7 @@
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="@dimen/form_margin_top"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -40,14 +40,14 @@
                     app:boxBackgroundColor="@android:color/transparent"
                     app:startIconDrawable="@drawable/ic_account_balance_wallet_24"
                     android:hint="Tên ví"
-                    android:layout_marginBottom="@dimen/layout_padding"
+                    android:layout_marginBottom="@dimen/text_field_bottom_margin"
                     >
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/new_wallet_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/font_size_extra_large"
+                        android:textSize="@dimen/font_size_large"
                         android:text="@={newWalletVM.name}"
                         />
 
@@ -59,14 +59,14 @@
                     app:boxBackgroundColor="@android:color/transparent"
                     app:startIconDrawable="@drawable/ic_money_24"
                     android:hint="Số tiền"
-                    android:layout_marginBottom="@dimen/layout_padding"
+                    android:layout_marginBottom="@dimen/text_field_bottom_margin"
                     >
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/new_wallet_money"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/font_size_normal"
+                        android:textSize="@dimen/font_size_large"
                         android:text="@={`` + newWalletVM.money}"
                         />
 
@@ -75,7 +75,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_marginBottom="@dimen/layout_padding"
+                    android:layout_marginBottom="@dimen/text_field_bottom_margin"
                     >
                     <com.google.android.material.card.MaterialCardView
                         android:layout_width="50dp"

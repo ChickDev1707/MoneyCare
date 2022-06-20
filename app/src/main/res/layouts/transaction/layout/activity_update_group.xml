@@ -28,7 +28,7 @@
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="@dimen/form_margin_top"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -47,7 +47,7 @@
                     app:boxBackgroundColor="@android:color/transparent"
                     app:startIconDrawable="@drawable/ic_group_name_24"
                     android:hint="Tên nhóm"
-                    android:layout_marginBottom="@dimen/layout_padding"
+                    android:layout_marginBottom="@dimen/text_field_bottom_margin"
                     >
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -64,7 +64,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_marginBottom="@dimen/layout_padding"
+                    android:layout_marginBottom="@dimen/text_field_bottom_margin"
                     >
                     <com.google.android.material.card.MaterialCardView
                         android:layout_width="50dp"
@@ -109,7 +109,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:layout_marginBottom="@dimen/layout_padding"
+                    android:layout_marginBottom="@dimen/text_field_bottom_margin"
                     >
                     <TextView
                         android:layout_width="match_parent"
