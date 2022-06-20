@@ -23,7 +23,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
                     <LinearLayout
-                        android:visibility="visible"
+                        android:id="@+id/event_ongoing"
+                        android:visibility="invisible"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
@@ -45,6 +46,7 @@
                         </androidx.recyclerview.widget.RecyclerView>
                     </LinearLayout>
                     <LinearLayout
+                        android:id="@+id/event_end"
                         android:visibility="visible"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

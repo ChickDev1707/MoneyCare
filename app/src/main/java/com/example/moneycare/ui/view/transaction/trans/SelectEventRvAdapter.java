@@ -11,19 +11,24 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.moneycare.data.custom.GroupTransaction;
 import com.example.moneycare.data.model.Event;
+import com.example.moneycare.data.repository.TransactionRepository;
 import com.example.moneycare.databinding.EventItemBinding;
+import com.example.moneycare.utils.ImageLoader;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class SelectEventRvAdapter extends RecyclerView.Adapter<SelectEventRvAdapter.ViewHolder>{
     private List<Event> events = new ArrayList<Event>();
+    TransactionRepository repository;
 
     AppCompatActivity activity;
     public SelectEventRvAdapter(AppCompatActivity activity, List<Event> events) {
         this.events = events;
         this.activity = activity;
+        repository = new TransactionRepository();
     }
     @Override
     public SelectEventRvAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -34,8 +39,30 @@ public class SelectEventRvAdapter extends RecyclerView.Adapter<SelectEventRvAdap
     public void onBindViewHolder(ViewHolder holder, int position) {
         Event event = events.get(position);
         holder.eventName.setText(events.get(position).name);
-        holder.daysLeft.setText("remaining");
+        repository.getTransactionsByEvent(events.get(position).id, groupTransactions -> {
+            Long total = 0L;
+            for (GroupTransaction groupTransaction : groupTransactions){
+                if(groupTransaction.group.type == true){
+                    total += groupTransaction.getTotalMoney();
+                }else {
+                    total -= groupTransaction.getTotalMoney();
+                }
+            }
+            if(total <= 0) {
+                total = -total;
+                holder.money.setText(total.toString());
+                holder.lbMoney.setText("Đã chi:");
+            }
+            else{
+                holder.money.setText(total.toString());
+                holder.lbMoney.setText("Thu vào:");
+            }
+        });
 
+        if(events.get(position).image != ""){
+            ImageLoader imageLoader = new ImageLoader(holder.imgView);
+            imageLoader.execute(events.get(position).image);
+        }
         holder.eventItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -55,7 +82,8 @@ public class SelectEventRvAdapter extends RecyclerView.Adapter<SelectEventRvAdap
         public final TextView eventName;
         public final TextView daysLeft;
         public final ImageView imgView;
-        public final TextView spent;
+        public final TextView money;
+        public final TextView lbMoney;
         public final RelativeLayout eventItem;
 
         public ViewHolder(EventItemBinding binding) {
@@ -63,7 +91,8 @@ public class SelectEventRvAdapter extends RecyclerView.Adapter<SelectEventRvAdap
             eventItem = binding.itemContainer;
             eventName = binding.eventName;
             imgView = binding.imgItem;
-            spent = binding.money;
+            money = binding.money;
+            lbMoney = binding.lbMoney;
             daysLeft = binding.daysLeft;
         }
 

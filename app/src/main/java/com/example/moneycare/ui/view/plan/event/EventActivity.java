@@ -77,6 +77,8 @@ public class EventActivity extends AppCompatActivity {
         LinearLayout layoutContainer = findViewById(R.id.event_container);
         LinearLayout layoutEmpty = findViewById(R.id.event_empty);
         LinearLayout layoutLoading = findViewById(R.id.loading);
+        LinearLayout layoutOngoing = findViewById(R.id.event_ongoing);
+        LinearLayout layoutEnd = findViewById(R.id.event_end);
         repository.fetchEvents(events ->  {
             layoutLoading.setVisibility(View.INVISIBLE);
             if(events.size() > 0){
@@ -97,6 +99,8 @@ public class EventActivity extends AppCompatActivity {
                     }
                 }
 
+                layoutOngoing.setVisibility(eventsOngoing.size() > 0?View.VISIBLE : View.GONE);
+                layoutEnd.setVisibility(eventsEnd.size() > 0?View.VISIBLE : View.INVISIBLE);
                 listEventEndRv.setAdapter(new MyEventRvAdapter(eventsEnd, EventActivity.this, toDetailEventActivity));
                 listEventOngoingRv.setAdapter(new MyEventRvAdapter(eventsOngoing, EventActivity.this, toDetailEventActivity));
             }

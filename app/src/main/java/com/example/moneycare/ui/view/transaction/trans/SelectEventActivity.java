@@ -25,18 +25,12 @@ public class SelectEventActivity extends AppCompatActivity {
         repository = new EventRepository();
 
         repository.fetchEvents(events -> {
-            List<Event> eventsEnd = new ArrayList<Event>();
             List<Event> eventsOngoing = new ArrayList<Event>();
             for(Event event : (List<Event>)events){
-                if(event.status.equals("end")){
-                    eventsEnd.add(event);
-                }
-                else if(event.status.equals("ongoing")){
+                 if(event.status.equals("ongoing")){
                     eventsOngoing.add(event);
                 }
             }
-
-            binding.eventEndedList.setAdapter(new SelectEventRvAdapter(this, eventsEnd));
             binding.eventOngoingList.setAdapter(new SelectEventRvAdapter(this, eventsOngoing));
         });
     }

@@ -54,7 +54,7 @@ public class EventRepository {
     }
 
     public void fetchEventById(String id, FirestoreObjectCallback<Event> callback){
-        DocumentReference docRef = db.collection("events").document(id);
+        DocumentReference docRef = db.collection("users").document(idUser).collection("events").document(id);
         docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {

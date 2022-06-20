@@ -61,8 +61,8 @@ public class EventTransactionActivity extends AppCompatActivity {
         LinearLayout layoutEmpty = findViewById(R.id.event_trans_empty);
         LinearLayout layoutLoading = findViewById(R.id.loading);
 
-//        id = getIntent().getStringExtra("idEvent");
-        transactionRepository.getTransactionsByEvent("",groupTransactions -> {
+        String idEvent = getIntent().getStringExtra("idEvent");
+        transactionRepository.getTransactionsByEvent(idEvent, groupTransactions -> {
             layoutLoading.setVisibility(View.INVISIBLE);
             RecyclerView transList = binding.eventTransactionList;
             if(groupTransactions.size() == 0){
