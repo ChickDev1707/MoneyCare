@@ -29,7 +29,7 @@ public class GroupRepository {
 
     public GroupRepository(){
         db = FirebaseFirestore.getInstance();
-//        currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
     }
     public void fetchGroups(FirestoreListCallback<Group> callback){
 

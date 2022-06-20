@@ -43,7 +43,7 @@ public class EventViewModel extends ViewModel {
         repository = new EventRepository();
         imgUrl = new MutableLiveData<>("");
         eventName = new MutableLiveData<>("");
-        endDate = new MutableLiveData<Date>(null);
+        endDate = new MutableLiveData<Date>(new Date());
         Wallet walletDefault = new Wallet();
         walletDefault.name = "Tất cả các ví";
         wallet = new MutableLiveData<Wallet>(walletDefault);

@@ -13,16 +13,17 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="#EFEFF3"
             android:orientation="vertical"
             >
-            <include layout="@layout/basic_app_bar"/>
+            <include android:id="@+id/budget_app_bar" layout="@layout/basic_app_bar"/>
             <LinearLayout
+                android:layout_below="@id/budget_app_bar"
                 android:id="@+id/budget_container"
-                android:visibility="visible"
+                android:visibility="invisible"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
@@ -174,8 +175,9 @@
             <LinearLayout
                 android:visibility="invisible"
                 android:id="@+id/budget_empty"
-                android:layout_below="@id/basic_app_bar"
+                android:layout_below="@id/budget_app_bar"
                 android:gravity="center"
+                android:paddingHorizontal="@dimen/layout_padding"
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -184,6 +186,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
                 <TextView
+                    android:textAlignment="center"
                     android:textSize="@dimen/font_size_medium"
                     android:text="Không có ngân sách nào trong tháng này!"
                     android:layout_width="wrap_content"
@@ -192,10 +195,10 @@
             <include
                 android:layout_height="match_parent"
                 android:layout_width="match_parent"
-                android:layout_below="@id/basic_app_bar"
+                android:layout_below="@id/budget_app_bar"
                 layout="@layout/loading"
                 />
-        </LinearLayout>
+        </RelativeLayout>
         <include layout="@layout/floating_add_btn"/>
     </FrameLayout>
 </layout>

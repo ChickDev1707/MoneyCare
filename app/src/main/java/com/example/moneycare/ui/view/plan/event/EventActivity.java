@@ -73,16 +73,15 @@ public class EventActivity extends AppCompatActivity {
     private void  loadListEvent(){
         RecyclerView listEventOngoingRv = findViewById(R.id.event_list_ongoing);
         RecyclerView listEventEndRv = findViewById(R.id.event_list_end);
-        LinearLayout layoutOngoing = findViewById(R.id.event_ongoing);
-        LinearLayout layoutEnd = findViewById(R.id.event_end);
+
         LinearLayout layoutContainer = findViewById(R.id.event_container);
         LinearLayout layoutEmpty = findViewById(R.id.event_empty);
         LinearLayout layoutLoading = findViewById(R.id.loading);
         repository.fetchEvents(events ->  {
-            layoutLoading.setVisibility(View.GONE);
-            layoutContainer.setVisibility(View.VISIBLE);
+            layoutLoading.setVisibility(View.INVISIBLE);
             if(events.size() > 0){
                 layoutEmpty.setVisibility(View.INVISIBLE);
+                layoutContainer.setVisibility(View.VISIBLE);
                 List<Event> eventsEnd = new ArrayList<Event>();
                 List<Event> eventsOngoing = new ArrayList<Event>();
                 for(Event event : (List<Event>)events){
@@ -97,8 +96,6 @@ public class EventActivity extends AppCompatActivity {
                         eventsOngoing.add(event);
                     }
                 }
-                layoutOngoing.setVisibility(eventsOngoing.size() > 0 ?View.VISIBLE : View.INVISIBLE );
-                layoutEnd.setVisibility(eventsEnd.size() > 0 ?View.VISIBLE : View.INVISIBLE );
 
                 listEventEndRv.setAdapter(new MyEventRvAdapter(eventsEnd, EventActivity.this, toDetailEventActivity));
                 listEventOngoingRv.setAdapter(new MyEventRvAdapter(eventsOngoing, EventActivity.this, toDetailEventActivity));

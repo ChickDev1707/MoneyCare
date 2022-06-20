@@ -17,26 +17,26 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
                 <LinearLayout
-                    android:paddingHorizontal="@dimen/layout_padding"
-                    android:background="@color/white"
-                    android:visibility="visible"
+                    android:visibility="invisible"
                     android:id="@+id/event_container"
                     android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
                     <LinearLayout
-                        android:id="@+id/event_ongoing"
                         android:visibility="visible"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
                         <TextView
                             android:text="ĐANG ÁP DỤNG"
+                            android:paddingHorizontal="@dimen/layout_padding"
                             android:layout_marginTop="20dp"
                             android:layout_marginBottom="5dp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"/>
                         <androidx.recyclerview.widget.RecyclerView
+                            android:paddingHorizontal="@dimen/layout_padding"
+                            android:background="@color/white"
                             android:id="@+id/event_list_ongoing"
                             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                             tools:listitem="@layout/event_item"
@@ -45,18 +45,20 @@
                         </androidx.recyclerview.widget.RecyclerView>
                     </LinearLayout>
                     <LinearLayout
-                        android:id="@+id/event_end"
                         android:visibility="visible"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
                         <TextView
                             android:text="ĐÃ KẾT THÚC"
+                            android:paddingHorizontal="@dimen/layout_padding"
                             android:layout_marginTop="20dp"
                             android:layout_marginBottom="5dp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"/>
                         <androidx.recyclerview.widget.RecyclerView
+                            android:background="@color/white"
+                            android:paddingHorizontal="@dimen/layout_padding"
                             android:id="@+id/event_list_end"
                             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                             tools:listitem="@layout/event_item"
@@ -69,7 +71,7 @@
             <LinearLayout
                 android:visibility="invisible"
                 android:id="@+id/event_empty"
-                android:layout_below="@id/basic_app_bar"
+                android:layout_below="@id/event_app_bar"
                 android:gravity="center"
                 android:orientation="vertical"
                 android:layout_width="match_parent"
@@ -87,7 +89,7 @@
             <include
                 android:layout_height="match_parent"
                 android:layout_width="match_parent"
-                android:layout_below="@id/basic_app_bar"
+                android:layout_below="@id/event_app_bar"
                 layout="@layout/loading"
                 />
         </RelativeLayout>
