@@ -125,14 +125,15 @@
                         android:textAllCaps="false"
                         android:text="Xem báo cáo cho giai đoạn này"/>
                 </LinearLayout>
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/group_transaction_list_template"
                     android:name="com.example.moneycare.TransactionFragment"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false"
                     app:layoutManager="LinearLayoutManager"
                     tools:context=".ui.view.transaction.trans.TransactionFragment"
-                    android:nestedScrollingEnabled="false"
                     tools:listitem="@layout/group_transaction_item" />
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
