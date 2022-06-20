@@ -54,7 +54,7 @@ public class FragmentReportNetIncome extends Fragment {
         xAxis.setDrawGridLines(false);
         xAxis.setTextSize(14f);
         barChartNetIncome.getAxisLeft().setTextSize(14f);
-        barChartNetIncome.getAxisRight().setTextSize(14f);
+        barChartNetIncome.getAxisRight().setEnabled(false);
 
         BarData barData = new BarData();
         barData.addDataSet(barDataSet);

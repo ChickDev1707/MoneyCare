@@ -100,7 +100,7 @@ public class FragmentReportIncome extends Fragment {
         pieChartIncome.setEntryLabelTextSize(14);
         pieChartIncome.setEntryLabelColor(Color.BLACK);
         pieChartIncome.setCenterText("Tổng số: " + Long.toString(this.totalMoneyIncome));
-        pieChartIncome.setCenterTextSize(24);
+        pieChartIncome.setCenterTextSize(22);
         pieChartIncome.getDescription().setEnabled(false);
 
         Legend l = pieChartIncome.getLegend();
