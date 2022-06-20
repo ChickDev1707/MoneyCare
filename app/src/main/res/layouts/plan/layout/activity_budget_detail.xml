@@ -34,7 +34,7 @@
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="20dp"
+                    android:layout_marginBottom="@dimen/font_size_medium"
                     >
                     <ImageView
                         android:id="@+id/img_item_detail"
@@ -65,7 +65,7 @@
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:text="Giới hạn"
-                            android:textSize="@dimen/font_size_large" />
+                            android:textSize="@dimen/font_size_medium" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -74,7 +74,7 @@
                             android:layout_centerVertical="true"
                             android:id="@+id/tv_limit_of_month"
                             android:text="@{Converter.toFormattedMoney(context, budgetVM.limitOfMonth)}"
-                            android:textSize="@dimen/font_size_large" />
+                            android:textSize="@dimen/font_size_medium" />
 
                     </RelativeLayout>
                     <com.google.android.material.divider.MaterialDivider
@@ -92,11 +92,11 @@
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:text="Tổng đã chi"
-                            android:textSize="@dimen/font_size_large" />
+                            android:textSize="@dimen/font_size_medium" />
                         <TextView
                             android:id="@+id/tv_total_spend"
                             android:text="@{Converter.toFormattedMoney(context, budgetVM.totalSpentByGroup)}"
-                            android:textSize="@dimen/font_size_large"
+                            android:textSize="@dimen/font_size_medium"
                             android:layout_centerVertical="true"
                             android:layout_alignParentRight="true"
                             android:layout_width="wrap_content"
@@ -120,7 +120,7 @@
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:text="Nên chi hàng ngày"
-                            android:textSize="@dimen/font_size_large" />
+                            android:textSize="@dimen/font_size_medium" />
 
                         <TextView
                             android:id="@+id/tv_spend_per_day"
@@ -131,7 +131,7 @@
                             android:textColor="@color/green_main"
                             android:textStyle="bold"
                             android:text="@{Converter.toFormattedMoney(context, budgetVM.spendPerDay)}"
-                            android:textSize="@dimen/font_size_large" />
+                            android:textSize="@dimen/font_size_medium" />
                     </RelativeLayout>
                 </LinearLayout>
             </LinearLayout>

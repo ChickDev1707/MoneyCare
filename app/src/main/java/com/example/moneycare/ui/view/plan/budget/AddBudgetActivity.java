@@ -56,7 +56,6 @@ public class AddBudgetActivity extends AppCompatActivity {
                         ImageView imgView = findViewById(R.id.img_item_select_group);
                         ImageLoader imageLoader = new ImageLoader(imgView);
                         imageLoader.execute(group.image);
-                        imgView.setBackgroundColor(0xFFFFFF);
                     }
                 }
             });

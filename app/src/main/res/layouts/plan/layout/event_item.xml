@@ -19,14 +19,15 @@
         >
         <androidx.cardview.widget.CardView
             android:id="@+id/card_img"
-            android:layout_width="@dimen/icon_size_medium"
-            android:layout_height="@dimen/icon_size_medium"
+            android:layout_width="@dimen/icon_size_large"
+            android:layout_height="@dimen/icon_size_large"
             android:layout_marginRight="@dimen/default_margin_end"
             android:layout_centerVertical="true"
-            app:cardCornerRadius="30dp">
+            app:cardElevation="0dp"
+            android:backgroundTint="@color/blue_grey_main"
+            app:cardCornerRadius="25dp">
             <ImageView
                 android:id="@+id/img_item"
-                android:background="#DABEBE"
                 android:scaleType="centerCrop"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>

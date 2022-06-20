@@ -41,7 +41,7 @@
                         <androidx.cardview.widget.CardView
                             android:layout_width="@dimen/icon_size_large"
                             android:layout_height="@dimen/icon_size_large"
-                            app:cardCornerRadius="30dp">
+                            app:cardCornerRadius="25dp">
                             <ImageView
                                 android:id="@+id/select_event_img"
                                 android:layout_width="match_parent"
@@ -68,7 +68,6 @@
                         app:boxBackgroundColor="@android:color/transparent"
                         style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
                         android:hint="Tên sự kiện"
-                        android:layout_marginBottom="@dimen/layout_padding"
                         >
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/txt_add_event_name"
@@ -79,10 +78,6 @@
                             />
                     </com.google.android.material.textfield.TextInputLayout>
                 </RelativeLayout>
-                <com.google.android.material.divider.MaterialDivider
-                    android:background="#949494"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"/>
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

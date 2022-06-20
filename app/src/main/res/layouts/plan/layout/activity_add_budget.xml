@@ -28,7 +28,8 @@
                     android:layout_height="@dimen/icon_size_large"
                     android:layout_marginTop="5dp"
                     android:layout_marginRight="20dp"
-                    app:cardCornerRadius="30dp">
+                    android:backgroundTint="@color/blue_grey_main"
+                    app:cardCornerRadius="25dp">
                     <ImageView
                         android:id="@+id/img_item_select_group"
                         android:layout_width="match_parent"

@@ -23,4 +23,5 @@
 
     <color name="green_main">#09af00</color>
     <color name="red_main">#eb0e0e</color>
+    <color name="background_light">#EFEFF3</color>
 </resources>

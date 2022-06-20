@@ -13,7 +13,7 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#EFEFF3"
+        android:background="@color/gray_100"
         >
         <include android:id="@+id/event_trans_tool_bar" layout="@layout/basic_app_bar" />
         <LinearLayout
@@ -21,8 +21,7 @@
             android:id="@+id/event_trans_container"
             android:layout_below="@id/event_trans_tool_bar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingBottom="@dimen/layout_bottom_padding">
+            android:layout_height="match_parent">
             <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -35,8 +34,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:paddingBottom="@dimen/layout_padding"
-                        android:paddingHorizontal="@dimen/layout_padding"
+                        android:padding="@dimen/layout_padding"
                         android:background="@color/white"
                         android:layout_marginBottom="30dp"
                         >
@@ -47,9 +45,7 @@
                             android:textSize="@dimen/font_size_large"
                             android:textStyle="bold"
                             android:textColor="@color/blue_grey_main"
-                            android:drawablePadding="5dp"
-                            android:layout_marginTop="@dimen/layout_padding"
-                            android:layout_marginBottom="@dimen/layout_padding"
+                            android:layout_marginBottom="@dimen/text_field_bottom_margin"
                             />
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -89,14 +85,10 @@
                                 android:layout_weight="1"
                                 android:text="@{eventVM.moneyOut.toString()}"/>
                         </LinearLayout>
-                        <View
-                            android:layout_width="wrap_content"
-                            android:layout_height="2dp"
-                            android:gravity="end"
-                            android:layout_weight="1"
-                            android:layout_marginTop="5dp"
-                            android:layout_marginBottom="5dp"
-                            android:background="@color/gray_100" />
+                        <com.google.android.material.divider.MaterialDivider
+                            android:layout_marginVertical="5dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
