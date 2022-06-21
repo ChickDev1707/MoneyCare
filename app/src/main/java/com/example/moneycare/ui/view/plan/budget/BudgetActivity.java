@@ -32,40 +32,6 @@ public class BudgetActivity extends AppCompatActivity {
     private RecyclerView budgetGroupList;
     private ActivityBudgetBinding binding;
 
-    ActivityResultLauncher<Intent> toDetailBudgetActivity = registerForActivityResult(
-             new ActivityResultContracts.StartActivityForResult(),
-                     new ActivityResultCallback<ActivityResult>() {
-        @Override
-        public void onActivityResult(ActivityResult result) {
-            if (result.getResultCode() == Activity.RESULT_OK) {
-                // There are no request codes
-                Intent data = result.getData();
-                if(data != null){
-                    Long totalBudget = data.getLongExtra("totalBudget", 0L);
-                    budgetVM.totalBudget.setValue(totalBudget);
-                    budgetVM.spendableMoney.setValue(budgetVM.totalBudget.getValue() - budgetVM.totalSpent.getValue());
-                }
-                else {
-                    finish();
-                    startActivity(getIntent());
-                }
-            }
-        }
-    });
-
-    ActivityResultLauncher<Intent> toAddBudgetActivity = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            new ActivityResultCallback<ActivityResult>() {
-                @Override
-                public void onActivityResult(ActivityResult result) {
-                    if (result.getResultCode() == Activity.RESULT_OK) {
-                        // There are no request codes
-                       finish();
-                       startActivity(getIntent());
-                    }
-                }
-            });
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,14 +46,13 @@ public class BudgetActivity extends AppCompatActivity {
         initAddBudgetBtn();
         loadListBudget();
 
-
     }
 
     private void loadListBudget(){
         budgetGroupList = findViewById(R.id.budget_gr_list);
 
         MyBudgetGroupRecyclerViewAdapter adapter = new MyBudgetGroupRecyclerViewAdapter();
-        adapter.toDetailBudgetActivity = toDetailBudgetActivity;
+//        adapter.toDetailBudgetActivity = toDetailBudgetActivity;
         adapter.budgetsVM = budgetVM;
 
         budgetVM.fetchTransactionGroupsByBudget((groups, budgets) ->{
@@ -140,15 +105,14 @@ public class BudgetActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(BudgetActivity.this, AddBudgetActivity.class);
-                List<String> arrGroups = new ArrayList<String>();
-                if(budgetVM.activeGroups != null){
-                    for(Group gr:budgetVM.activeGroups){
-                        arrGroups.add(gr.id);
-                    }
-                    intent.putExtra("activeGroups", arrGroups.toArray(new String[0]));
-                }
-                toAddBudgetActivity.launch(intent);
+                startActivity(intent);
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadListBudget();
     }
 }

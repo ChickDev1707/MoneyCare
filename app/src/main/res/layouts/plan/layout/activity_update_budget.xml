@@ -8,10 +8,11 @@
         <variable
             name="budgetVM"
             type="com.example.moneycare.ui.viewmodel.plan.BudgetViewModel" />
+        <import type="com.example.moneycare.utils.Converter"/>
     </data>
     <LinearLayout
         android:orientation="vertical"
-        android:background="#EFEFF3"
+        android:background="@color/gray_100"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <include layout="@layout/basic_app_bar"/>
@@ -80,8 +81,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textSize="@dimen/font_size_large"
-                        android:text="0"
-                        android:inputType="number"
+                        android:text="@={Converter.longToString(budgetVM.moneyLimit)}"
                         />
 
                 </com.google.android.material.textfield.TextInputLayout>

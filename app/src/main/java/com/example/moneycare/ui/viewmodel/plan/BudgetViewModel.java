@@ -96,7 +96,7 @@ public class BudgetViewModel extends ViewModel {
                transactionRepository.getTotalSpendByGroup(total -> {
                    totalSpent.setValue(totalSpent.getValue() + (Long)total);
                    spendableMoney.setValue(totalBudget.getValue() - totalSpent.getValue());
-               },budget.getDate(), budget.getGroup_id());
+               },budget.getDate(), budget.getGroup());
            }
         });
     }
@@ -111,7 +111,7 @@ public class BudgetViewModel extends ViewModel {
             budgetRepository.fetchBudgetsInMonth(budgets -> {
                 List<Group> groupList = new ArrayList<Group>();
                 ((List<Budget>)budgets).forEach(element -> {
-                    String[] arr = element.getGroup_id().split("/");
+                    String[] arr = element.getGroup().split("/");
                     Group group = ((List<Group>)groups).stream()
                             .filter(x -> x.id.equals(arr[arr.length - 1]))
                             .findFirst()

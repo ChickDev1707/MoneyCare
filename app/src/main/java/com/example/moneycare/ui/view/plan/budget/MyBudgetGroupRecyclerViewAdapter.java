@@ -25,18 +25,10 @@ public class MyBudgetGroupRecyclerViewAdapter extends RecyclerView.Adapter<MyBud
 
     private List<Group> transactionGroups = new ArrayList<Group>();
     private List<Budget> budgets = new ArrayList<Budget>();
-    public ActivityResultLauncher<Intent> toDetailBudgetActivity;
+//    public ActivityResultLauncher<Intent> toDetailBudgetActivity;
     public BudgetViewModel budgetsVM;
 
     public MyBudgetGroupRecyclerViewAdapter() {
-    }
-
-    public List<Budget> getBudgets() {
-        return budgets;
-    }
-
-    public List<Group> getTransactionGroups() {
-        return transactionGroups;
     }
 
     public void setBudgets(List<Budget> budgets) {
@@ -61,12 +53,12 @@ public class MyBudgetGroupRecyclerViewAdapter extends RecyclerView.Adapter<MyBud
         holder.groupItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(v.getContext(), BudgetDetailActivity.class);
-                i.putExtra("imgGroup", transactionGroups.get(position).image);
-                i.putExtra("groupName", transactionGroups.get(position).name);
-                i.putExtra("idBudget", budgets.get(position).getId());
-                i.putExtra("totalBudget", budgetsVM.totalBudget.getValue());
-                toDetailBudgetActivity.launch(i);
+                Intent intent = new Intent(v.getContext(), BudgetDetailActivity.class);
+                intent.putExtra("imgGroup", transactionGroups.get(position).image);
+                intent.putExtra("groupName", transactionGroups.get(position).name);
+                intent.putExtra("idBudget", budgets.get(position).getId());
+                intent.putExtra("totalBudget", budgetsVM.totalBudget.getValue());
+                holder.groupItem.getContext().startActivity(intent);
             }
         });
     }

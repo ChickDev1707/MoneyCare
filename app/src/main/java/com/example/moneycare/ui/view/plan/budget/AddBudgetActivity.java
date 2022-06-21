@@ -37,7 +37,6 @@ import java.util.List;
 
 public class AddBudgetActivity extends AppCompatActivity {
 
-    BudgetRepository budgetRepository;
     NewBudgetViewModel viewModel;
     ActivityAddBudgetBinding binding;
     List<String> activeGroups = new ArrayList<String>();
@@ -51,7 +50,7 @@ public class AddBudgetActivity extends AppCompatActivity {
                         // There are no request codes
                         Intent data = result.getData();
                         Group group = data.getParcelableExtra("group");
-                        viewModel.groupSelected.setValue(group);
+                        viewModel.selectedGroup.setValue(group);
 
                         ImageView imgView = findViewById(R.id.img_item_select_group);
                         ImageLoader imageLoader = new ImageLoader(imgView);
@@ -69,7 +68,6 @@ public class AddBudgetActivity extends AppCompatActivity {
         if(tmp != null){
             activeGroups = Arrays.asList(tmp);
         }
-        init();
 
         viewModel = new ViewModelProvider(this).get(NewBudgetViewModel.class);
         binding = ActivityAddBudgetBinding.inflate(getLayoutInflater());
@@ -80,8 +78,6 @@ public class AddBudgetActivity extends AppCompatActivity {
 
         initToolbar();
         initSelectGroupEvent();
-        //Enter money
-        initEnterMoney();
         initButtonAdd();
 
     }
@@ -119,71 +115,9 @@ public class AddBudgetActivity extends AppCompatActivity {
         });
     }
 
-    private void initEnterMoney(){
-        EditText moneyEditText= findViewById(R.id.money_txt);
-        moneyEditText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable view) {
-                if(convertToNumber(view.toString()) >= 0) {
-                    moneyEditText.removeTextChangedListener(this);
-                    String str = null;
-                    try {
-                        // The comma in the format specifier does the trick
-                        DecimalFormat decimalFormat = new DecimalFormat("#,###");
-                        str =  decimalFormat.format(convertToNumber(view.toString()));
-                    } catch (NumberFormatException e) {
-                        System.out.println(e);
-                    }
-                    moneyEditText.setText(str);
-                    viewModel.moneyLimit.setValue(convertToNumber(view.toString()));
-                    moneyEditText.setSelection(moneyEditText.getText().length());
-                    moneyEditText.addTextChangedListener(this);
-                }else {
-                    moneyEditText.setText("0");
-                }
-            }
-        });
-    }
-
-    public Long convertToNumber(String str){
-        try {
-            String[] arrs = str.split(",");
-            return Long.valueOf(String.join("", arrs));
-        }
-        catch(Exception e){
-            return -1L;
-        }
-    }
-
-    private void init(){
-        budgetRepository = new BudgetRepository();
-    }
-
     private void handleAdd(){
-        if(viewModel.groupSelected.getValue() != null){
-            Budget budget = new Budget();
-            budget.setDate(Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant()));
-            budget.setBudget(viewModel.moneyLimit.getValue());
-            String groupId;
-            if(viewModel.groupSelected.getValue().isDefault == true){
-                groupId = "/transaction-groups/" + viewModel.groupSelected.getValue().id;
-            }
-            else {
-                groupId = "users/" + budgetRepository.userId + "/transaction-groups/" + viewModel.groupSelected.getValue().id;
-            }
-            budget.setGroup_id(groupId);
-            budgetRepository.insertBudget(budget);
-            AddBudgetActivity.this.setResult(Activity.RESULT_OK);
+        if(viewModel.selectedGroup.getValue() != null){
+            viewModel.saveNewBudget();
             AddBudgetActivity.this.finish();
         }
 

@@ -31,7 +31,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <androidx.recyclerview.widget.RecyclerView
-                android:paddingHorizontal="@dimen/layout_padding"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 android:id="@+id/select_group_budget_list"
                 tools:listitem="@layout/group_item"

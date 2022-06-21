@@ -87,7 +87,7 @@ public class BudgetDetailActivity extends AppCompatActivity {
         budgetRepository.fetchBudgetById(budget -> {
             budgetsVM.limitOfMonth.setValue(((Budget)budget).getBudgetOfMonth());
             //Tổng đã chi
-            budgetsVM.fetchTransactionsByGroup(((Budget)budget).getDate(),((Budget)budget).getGroup_id());
+            budgetsVM.fetchTransactionsByGroup(((Budget)budget).getDate(),((Budget)budget).getGroup());
         }, idBudget);
     }
     private void initToolbar(){
@@ -131,5 +131,11 @@ public class BudgetDetailActivity extends AppCompatActivity {
             default:
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadData();
     }
 }

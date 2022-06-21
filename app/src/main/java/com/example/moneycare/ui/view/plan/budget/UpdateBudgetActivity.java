@@ -45,7 +45,6 @@ public class UpdateBudgetActivity extends AppCompatActivity {
         money = intent.getLongExtra("money",0L);
 
 
-
         budgetsVM = new ViewModelProvider(this).get(BudgetViewModel.class);
         binding = ActivityUpdateBudgetBinding.inflate(getLayoutInflater());
         binding.setBudgetVM(budgetsVM);
@@ -54,7 +53,6 @@ public class UpdateBudgetActivity extends AppCompatActivity {
 
         loadDataWhenUpdate();
         initToolbar();
-        initEnterMoney();
         initButtonUpdate();
     }
 
@@ -82,68 +80,19 @@ public class UpdateBudgetActivity extends AppCompatActivity {
         ImageView imgView = findViewById(R.id.update_budget_img_group);
         ImageLoader imageLoader = new ImageLoader(imgView);
         imageLoader.execute(imgGroup);
-        imgView.setBackgroundColor(0xFFFFFF);
 
         Group group = new Group();
         group.name = groupName;
         budgetsVM.groupSelected.setValue(group);
         binding.updateBudgetGroupName.setEnabled(false);
 
-        DecimalFormat decimalFormat = new DecimalFormat("#,###");
-        EditText moneyEditText = findViewById(R.id.update_money_txt);
-        moneyEditText.setText(decimalFormat.format(money));
+        budgetsVM.moneyLimit.setValue(money);
     }
 
     private void handleUpdate(){
          budgetRepository.updateBudget(idBudget,  budgetsVM.moneyLimit.getValue());
-        Intent intent = new Intent();
-        intent.putExtra("money", budgetsVM.moneyLimit.getValue());
-        UpdateBudgetActivity.this.setResult(Activity.RESULT_OK, intent);
+
         UpdateBudgetActivity.this.finish();
     }
 
-    private void initEnterMoney(){
-        EditText moneyEditText= findViewById(R.id.update_money_txt);
-        moneyEditText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable view) {
-                if(convertToNumber(view.toString()) >= 0) {
-                    moneyEditText.removeTextChangedListener(this);
-                    String str = null;
-                    try {
-                        // The comma in the format specifier does the trick
-                        DecimalFormat decimalFormat = new DecimalFormat("#,###");
-                        str =  decimalFormat.format(convertToNumber(view.toString()));
-                    } catch (NumberFormatException e) {
-                        System.out.println(e);
-                    }
-                    moneyEditText.setText(str);
-                    budgetsVM.moneyLimit.setValue(convertToNumber(view.toString()));
-                    moneyEditText.setSelection(moneyEditText.getText().length());
-                    moneyEditText.addTextChangedListener(this);
-                }else {
-                    moneyEditText.setText("0");
-                }
-            }
-        });
-    }
-    public static Long convertToNumber(String str){
-        try {
-            String[] arrs = str.split(",");
-            return Long.valueOf(String.join("", arrs));
-        }
-        catch(Exception e){
-            return -1L;
-        }
-    }
 }
