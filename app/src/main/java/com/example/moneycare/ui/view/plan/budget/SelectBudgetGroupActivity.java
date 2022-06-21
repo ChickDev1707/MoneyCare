@@ -45,8 +45,10 @@ public class SelectBudgetGroupActivity extends AppCompatActivity {
         repository.fetchGroups((groups) ->{
             LinearLayout layoutContainer = findViewById(R.id.select_group_budget_list_layout);
             LinearLayout layoutEmpty = findViewById(R.id.select_group_budget_list_empty_layout);
+            LinearLayout layoutLoading = findViewById(R.id.loading);
             List<Group> availableGroups = new ArrayList<Group>();
             for (Group gr :(List<Group>)groups) {
+                layoutLoading.setVisibility(View.INVISIBLE);
                 if(!activeGroups.contains(gr.id) && gr.type == false){
                     availableGroups.add(gr);
                 }

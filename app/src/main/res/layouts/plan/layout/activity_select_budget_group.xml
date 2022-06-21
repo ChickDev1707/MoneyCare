@@ -39,7 +39,7 @@
                 android:layout_height="match_parent"/>
         </LinearLayout>
         <LinearLayout
-            android:visibility="visible"
+            android:visibility="invisible"
             android:id="@+id/select_group_budget_list_empty_layout"
             android:gravity="center"
             android:orientation="vertical"
@@ -55,5 +55,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
         </LinearLayout>
+        <include layout="@layout/loading"/>
     </RelativeLayout>
 </LinearLayout>

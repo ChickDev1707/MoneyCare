@@ -19,8 +19,12 @@
             android:background="@color/gray_100"
             android:orientation="vertical"
             >
-            <include android:id="@+id/budget_app_bar" layout="@layout/basic_app_bar"/>
+
+            <include
+                android:id="@+id/budget_app_bar"
+                layout="@layout/basic_app_bar" />
             <LinearLayout
+                android:visibility="invisible"
                 android:layout_below="@id/budget_app_bar"
                 android:id="@+id/budget_container"
                 android:layout_width="match_parent"
