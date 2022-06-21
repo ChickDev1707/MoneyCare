@@ -20,7 +20,7 @@ import java.util.List;
 public class TransactionViewModel extends ViewModel {
 
     private TransactionRepository transactionRepository;
-    private WalletRepository walletRepository;
+    public WalletRepository walletRepository;
     public MutableLiveData<String> timeTitle;
     public MutableLiveData<Long> moneyIn;
     public MutableLiveData<Long> moneyOut;
@@ -65,10 +65,5 @@ public class TransactionViewModel extends ViewModel {
         moneyIn.setValue(in);
         moneyOut.setValue(out);
     }
-    public void fetchWallet(String id, FirestoreObjectCallback<Wallet> callback){
-        this.walletRepository.fetchWallet(id, callback);
-    }
-    public void fetchFirstWallet(FirestoreObjectCallback<Wallet> callback){
-        this.walletRepository.fetchFirstWallet(callback);
-    }
+
 }

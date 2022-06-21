@@ -244,13 +244,20 @@ public class TransactionFragment extends Fragment {
         String walletId = getWalletFromPreference();
         if(walletId.equals("")){
             // no pref
-            viewModel.fetchFirstWallet(wallet->{
-                updateWalletUI(wallet);
-                setWalletToPreference(wallet.id);
-            });
+            initWalletForEmptyPref();
         }else{
-            viewModel.fetchWallet(walletId, this::updateWalletUI);
+            viewModel.walletRepository.fetchWallet(walletId, this::updateWalletUI);
         }
+    }
+    private void initWalletForEmptyPref(){
+        viewModel.walletRepository.countWallets(noWallets->{
+            if(noWallets> 0){
+                viewModel.walletRepository.fetchFirstWallet(firstWallet->{
+                    updateWalletUI(firstWallet);
+                    setWalletToPreference(firstWallet.id);
+                });
+            }else updateWalletUI(new Wallet(null, "Tên ví", 0, ""));
+        });
     }
     private void updateWalletUI(Wallet wallet){
         binding.appBarLayout.walletName.setText(wallet.name);
@@ -258,8 +265,7 @@ public class TransactionFragment extends Fragment {
 
         if(!wallet.image.equals("")){
             Bitmap walletBimapImg = ImageUtil.toBitmap(wallet.image);
-            BitmapDrawable walletBitmapDrawable = new BitmapDrawable(getResources(), walletBimapImg);
-            binding.appBarLayout.walletIconBtn.setBackground(walletBitmapDrawable);
+            binding.appBarLayout.walletIconBtn.setImageBitmap(walletBimapImg);
         }
     }
     private String getWalletFromPreference(){

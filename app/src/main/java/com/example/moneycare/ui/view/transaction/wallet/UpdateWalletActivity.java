@@ -162,6 +162,7 @@ public class UpdateWalletActivity extends AppCompatActivity {
     }
     private void deleteWallet(){
         viewModel.deleteWallet(data->{
+            if(isWalletCurrentSelected()) clearWalletFromPref();
             UpdateWalletActivity.this.finish();
             ToastUtil.showToast(UpdateWalletActivity.this, "Xóa ví thành công");
         },

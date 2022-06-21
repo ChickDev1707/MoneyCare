@@ -68,6 +68,15 @@ public class WalletRepository {
             }
         });
     }
+    public void countWallets(FirestoreObjectCallback<Integer> callback){
+        CollectionReference walletsRef = db.collection("users").document(currentUserId).collection("wallets");
+        walletsRef.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot snapshot) {
+                callback.onCallback(snapshot.size());
+            }
+        });
+    }
     public void fetchFirstWallet(FirestoreObjectCallback<Wallet> callback){
         CollectionReference walletsRef = db.collection("users").document(currentUserId).collection("wallets");
         walletsRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
