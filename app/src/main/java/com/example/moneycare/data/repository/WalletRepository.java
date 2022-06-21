@@ -1,10 +1,13 @@
 package com.example.moneycare.data.repository;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
+import com.example.moneycare.data.model.Event;
 import com.example.moneycare.data.model.Group;
 import com.example.moneycare.data.model.UserTransaction;
 import com.example.moneycare.data.model.Wallet;
+import com.example.moneycare.utils.FirestoreUtil;
 import com.example.moneycare.utils.appinterface.FirestoreListCallback;
 import com.example.moneycare.utils.appinterface.FirestoreObjectCallback;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -136,19 +139,69 @@ public class WalletRepository {
     }
 
     public void deleteWallet(Wallet wallet, FirestoreObjectCallback<Void> successCallback, FirestoreObjectCallback<Void> failureCallback){
-        DocumentReference walletRef = db.collection("users").document(currentUserId).collection("wallets").document(wallet.id);
-        walletRef.delete()
-        .addOnSuccessListener(new OnSuccessListener<Void>() {
+        deleteTransactionsOfWallet(wallet);
+        deleteEventsOfWallet(wallet);
+//        DocumentReference walletRef = db.collection("users").document(currentUserId).collection("wallets").document(wallet.id);
+//        walletRef.delete()
+//        .addOnSuccessListener(new OnSuccessListener<Void>() {
+//            @Override
+//            public void onSuccess(Void aVoid) {
+//
+//                successCallback.onCallback(null);
+//            }
+//        }).addOnFailureListener(new OnFailureListener() {
+//            @Override
+//            public void onFailure(@NonNull Exception e) {
+//                failureCallback.onCallback(null);
+//            }
+//        });
+    }
+    private void deleteTransactionsOfWallet(Wallet wallet){
+        CollectionReference colRef =  db.collection("users").document(currentUserId).collection("transactions");
+        colRef.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
-            public void onSuccess(Void aVoid) {
-                successCallback.onCallback(null);
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                failureCallback.onCallback(null);
+            public void onSuccess(QuerySnapshot snapshot) {
+                List<UserTransaction> transactions = new ArrayList<UserTransaction>();
+                for (DocumentSnapshot doc : snapshot.getDocuments()) {
+                    UserTransaction transaction = UserTransaction.fromMap(doc.getId(), doc.getData());
+                    String walletId = FirestoreUtil.getReferenceFromPath(transaction.wallet).getId();
+                    if (wallet.id.equals(walletId)) transactions.add(transaction);
+                }
+                deleteTransactions(transactions);
             }
         });
+    }
+    private void deleteEventsOfWallet(Wallet wallet){
+        CollectionReference colRef =  db.collection("users").document(currentUserId).collection("events");
+        colRef.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot snapshot) {
+                List<Event> events = new ArrayList<Event>();
+                for (DocumentSnapshot doc : snapshot.getDocuments()) {
+                    Event event = Event.fromMap(doc.getId(), doc.getData());
+                    if(event.wallet == null) events.add(event);
+                    else{
+                        String walletId = FirestoreUtil.getReferenceFromPath(event.wallet).getId();
+                        if (wallet.id.equals(walletId));
+                    }
+                }
+                deleteEvents(events);
+            }
+        });
+    }
+    public void deleteTransactions(List<UserTransaction> transactions){
+        for (int i = 0; i<transactions.size(); i++){
+            UserTransaction trans = transactions.get(i);
+            DocumentReference docRef = db.collection("users").document(currentUserId).collection("transactions").document(trans.id);
+            docRef.delete();
+        }
+    }
+    public void deleteEvents(List<Event> events){
+        for (int i = 0; i<events.size(); i++){
+            Event event = events.get(i);
+            DocumentReference docRef = db.collection("users").document(currentUserId).collection("events").document(event.id);
+            docRef.delete();
+        }
     }
     private String getWalletPath(String walletId){
         return String.format("users/%s/wallets/%s", currentUserId, walletId);

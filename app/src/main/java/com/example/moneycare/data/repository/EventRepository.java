@@ -1,6 +1,7 @@
 package com.example.moneycare.data.repository;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.example.moneycare.data.model.Event;
 import com.example.moneycare.data.model.Budget;
@@ -8,6 +9,8 @@ import com.example.moneycare.data.model.Event;
 import com.example.moneycare.data.model.Group;
 import com.example.moneycare.data.model.UserTransaction;
 import com.example.moneycare.utils.DateTimeUtil;
+import com.example.moneycare.utils.FirestoreUtil;
+import com.example.moneycare.utils.appenum.DeleteType;
 import com.example.moneycare.utils.appinterface.FirestoreListCallback;
 import com.example.moneycare.utils.appinterface.FirestoreObjectCallback;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -19,10 +22,13 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.Transaction;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -114,14 +120,69 @@ public class EventRepository {
                 });
     }
 
-    public void deleteEvent(String idEvent){
-        DocumentReference docRef = db.collection("users").document(idUser).collection("events").document(idEvent);
+    public void deleteEvent(String eventId, DeleteType type, FirestoreListCallback<Void> successCallback, FirestoreListCallback<Void> failureCallback){
+        DocumentReference docRef = db.collection("users").document(idUser).collection("events").document(eventId);
         docRef.delete()
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        System.out.println("delete budgets success");
-                    }
-                });
+        .addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                deleteEventWithType(eventId, type);
+                successCallback.onCallback(null);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                failureCallback.onCallback(null);
+            }
+        });
+    }
+    private void deleteEventWithType(String eventId, DeleteType type){
+        if(type == DeleteType.DEEP_DELETE){
+            deleteTransactionsOfEvent(eventId, this::deleteTransactions);
+        }else{
+            deleteTransactionsOfEvent(eventId, this::clearEventFromTransactions);
+        }
+    }
+    private void deleteTransactionsOfEvent(String eventId, FirestoreListCallback<UserTransaction> callback){
+        CollectionReference colRef =  db.collection("users").document(idUser).collection("transactions");
+        colRef.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot snapshot) {
+                List<UserTransaction> transactions = new ArrayList<UserTransaction>();
+                for(DocumentSnapshot doc:snapshot.getDocuments()){
+                    UserTransaction trans = UserTransaction.fromMap(doc.getId(), doc.getData());
+                    if(trans.eventId.equals(eventId)) transactions.add(trans);
+                }
+                callback.onCallback(transactions);
+            }
+        });
+    }
+    private void deleteTransactions(List<UserTransaction> transactions){
+        TransactionRepository transactionRepository = new TransactionRepository();
+        for(UserTransaction transaction:transactions){
+            transactionRepository.deleteTransaction(transaction, new FirestoreObjectCallback<Void>() {
+                @Override
+                public void onCallback(Void data) { }
+            }, new FirestoreObjectCallback<Void>() {
+                @Override
+                public void onCallback(Void data) { }
+            });
+        }
+    }
+    private void clearEventFromTransactions(List<UserTransaction> transactions){
+        for(UserTransaction transaction:transactions){
+            clearTransactionEvent(transaction);
+        }
+    }
+    private void clearTransactionEvent(UserTransaction userTransaction){
+        DocumentReference transactionRef = db.collection("users").document(idUser).collection("transactions").document(userTransaction.id);
+        db.runTransaction(new Transaction.Function<Object>() {
+            @Nullable
+            @Override
+            public Object apply(@NonNull Transaction transaction) throws FirebaseFirestoreException {
+                transaction.update(transactionRef, "eventId", "");
+                return null;
+            }
+        });
     }
 }

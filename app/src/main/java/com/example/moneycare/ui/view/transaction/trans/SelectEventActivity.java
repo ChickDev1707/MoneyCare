@@ -1,8 +1,10 @@
 package com.example.moneycare.ui.view.transaction.trans;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.os.Bundle;
+import android.view.View;
 
 import com.example.moneycare.R;
 import com.example.moneycare.data.model.Event;
@@ -32,6 +34,19 @@ public class SelectEventActivity extends AppCompatActivity {
                 }
             }
             binding.eventOngoingList.setAdapter(new SelectEventRvAdapter(this, eventsOngoing));
+        });
+        initToolbar();
+    }
+    private void initToolbar(){
+        Toolbar toolbar = findViewById(R.id.basic_app_bar);
+        toolbar.setTitle("Chọn sự kiện");
+        this.setSupportActionBar(toolbar);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // back button pressed
+                onBackPressed();
+            }
         });
     }
 }

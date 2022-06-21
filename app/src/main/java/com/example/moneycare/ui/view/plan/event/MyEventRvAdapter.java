@@ -8,13 +8,10 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import androidx.activity.result.ActivityResultLauncher;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.moneycare.data.custom.GroupTransaction;
 import com.example.moneycare.data.model.Event;
-import com.example.moneycare.data.model.UserTransaction;
-import com.example.moneycare.data.repository.EventRepository;
 import com.example.moneycare.data.repository.TransactionRepository;
 import com.example.moneycare.databinding.EventItemBinding;
 import com.example.moneycare.utils.Converter;
@@ -26,21 +23,14 @@ import java.util.List;
 
 public class MyEventRvAdapter extends RecyclerView.Adapter<MyEventRvAdapter.ViewHolder> {
 
-
     private List<Event> events = new ArrayList<Event>();
     private EventActivity         activity;
     private TransactionRepository repository;
-    public MyEventRvAdapter() {
 
-    }
-    public ActivityResultLauncher<Intent> toDetailEventActivity;
-    public MyEventRvAdapter(List<Event> events, EventActivity activity,
-                            ActivityResultLauncher<Intent> launcher) {
+    public MyEventRvAdapter(List<Event> events, EventActivity activity) {
         this.events = events;
         this.activity =activity;
-        this.toDetailEventActivity = launcher;
         repository = new TransactionRepository();
-
     }
     @Override
     public MyEventRvAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -79,7 +69,7 @@ public class MyEventRvAdapter extends RecyclerView.Adapter<MyEventRvAdapter.View
             public void onClick(View v) {
                 Intent intent = new Intent(activity, EventDetailActivity.class);
                 intent.putExtra("eventSelected", events.get(position));
-                toDetailEventActivity.launch(intent);
+                activity.startActivity(intent);
             }
         });
     }

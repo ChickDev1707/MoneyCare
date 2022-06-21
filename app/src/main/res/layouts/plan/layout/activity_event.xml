@@ -36,7 +36,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"/>
                         <androidx.recyclerview.widget.RecyclerView
-                            android:paddingHorizontal="@dimen/layout_padding"
                             android:background="@color/white"
                             android:id="@+id/event_list_ongoing"
                             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
@@ -60,7 +59,6 @@
                             android:layout_height="wrap_content"/>
                         <androidx.recyclerview.widget.RecyclerView
                             android:background="@color/white"
-                            android:paddingHorizontal="@dimen/layout_padding"
                             android:id="@+id/event_list_end"
                             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                             tools:listitem="@layout/event_item"

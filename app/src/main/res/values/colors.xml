@@ -23,5 +23,7 @@
 
     <color name="green_main">#09af00</color>
     <color name="red_main">#eb0e0e</color>
+    <color name="red_medium">#EA2027</color>
+    <color name="orange_main">#e67e22</color>
     <color name="background_light">#EFEFF3</color>
 </resources>

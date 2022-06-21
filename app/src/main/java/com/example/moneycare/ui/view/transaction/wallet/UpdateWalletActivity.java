@@ -10,7 +10,9 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -33,6 +35,7 @@ import java.io.IOException;
 public class UpdateWalletActivity extends AppCompatActivity {
     private UpdateWalletViewModel viewModel;
     private ActivityUpdateWalletBinding binding;
+    private Wallet currentWallet;
     ActivityResultLauncher<Intent> launcher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
@@ -85,14 +88,7 @@ public class UpdateWalletActivity extends AppCompatActivity {
                 viewModel.switchUpdateMode();
                 return true;
             case R.id.delete_item:
-                viewModel.deleteWallet(data->{
-                    UpdateWalletActivity.this.setResult(Activity.RESULT_OK);
-                    UpdateWalletActivity.this.finish();
-                    ToastUtil.showToast(UpdateWalletActivity.this, "Xóa ví thành công");
-                },
-                data->{
-                    ToastUtil.showToast(UpdateWalletActivity.this, "Lỗi! Xóa ví thất bại");
-                });
+                deleteWallet();
                 return true;
             default:
         }
@@ -107,8 +103,7 @@ public class UpdateWalletActivity extends AppCompatActivity {
             }
         });
     }
-    private void selectImage()
-    {
+    private void selectImage() {
         // Defining Implicit Intent to mobile gallery
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         launcher.launch(intent);
@@ -121,9 +116,10 @@ public class UpdateWalletActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+
     private void initWalletData(){
-        Wallet wallet = (Wallet) getIntent().getParcelableExtra("wallet");
-        viewModel.initWallet(wallet);
+        currentWallet = (Wallet) getIntent().getParcelableExtra("wallet");
+        viewModel.initWallet(currentWallet);
     }
     private void initUpdateWalletBtn(){
         binding.updateWalletBtn.setOnClickListener(new View.OnClickListener() {
@@ -142,6 +138,28 @@ public class UpdateWalletActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+    private void deleteWallet(){
+        viewModel.deleteWallet(data->{
+            UpdateWalletActivity.this.setResult(Activity.RESULT_OK);
+            UpdateWalletActivity.this.finish();
+            if(isWalletCurrentSelected()) clearWalletFromPref();
+            ToastUtil.showToast(UpdateWalletActivity.this, "Xóa ví thành công");
+        },
+        data->{
+            ToastUtil.showToast(UpdateWalletActivity.this, "Lỗi! Xóa ví thất bại");
+        });
+    }
+    private boolean isWalletCurrentSelected(){
+        SharedPreferences sharedPref = this.getSharedPreferences(getString(R.string.transaction_preference), Context.MODE_PRIVATE);
+        String savedWalletId = sharedPref.getString(getString(R.string.pref_key_current_wallet), "");
+        return currentWallet.id.equals(savedWalletId);
+    }
+    private void clearWalletFromPref(){
+        SharedPreferences sharedPref = this.getSharedPreferences(getString(R.string.transaction_preference), Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString(getString(R.string.pref_key_current_wallet), "");
+        editor.apply();
     }
     private boolean checkAllFields(){
         return ValidationUtil.checkEmpty(binding.updateWalletName) &&
