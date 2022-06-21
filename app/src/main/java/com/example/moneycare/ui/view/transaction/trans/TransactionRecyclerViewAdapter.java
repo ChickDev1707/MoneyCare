@@ -37,7 +37,6 @@ public class TransactionRecyclerViewAdapter extends RecyclerView.Adapter<Transac
     private List<UserTransaction> transactions;
     private Group group;
     private ReloadTransactionActivity baseActivity;
-    private UserTransaction transaction;
 
     public TransactionRecyclerViewAdapter(Group group, List<UserTransaction> items) {
         this.transactions = items;
@@ -53,45 +52,40 @@ public class TransactionRecyclerViewAdapter extends RecyclerView.Adapter<Transac
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         this.baseActivity = (ReloadTransactionActivity) holder.transactionItem.getContext();
-        transaction = transactions.get(position);
+        UserTransaction transaction = transactions.get(position);
         initTransactionMoney(holder.transactionMoney, transaction);
 
         holder.transactionDate.setText(DateTimeUtil.getDateString(baseActivity, transaction.date));
         holder.transactionDay.setText(Integer.toString(DateTimeUtil.getDay(transaction.date)));
         holder.transactionNote.setText(transaction.note);
-        initItemClickEvent(holder);
-        initItemLongClickEvent(holder);
+        initItemClickEvent(holder, transaction);
+        initItemLongClickEvent(holder, transaction);
     }
-    private void initItemClickEvent(ViewHolder holder){
+    private void initItemClickEvent(ViewHolder holder, UserTransaction transaction){
         holder.transactionItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openUpdateTransaction();
+                openUpdateTransaction(transaction);
             }
         });
     }
-    private void initItemLongClickEvent(ViewHolder holder) {
+    private void initItemLongClickEvent(ViewHolder holder, UserTransaction transaction) {
         holder.transactionItem.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                showPopup(baseActivity, v);
+                showPopup(baseActivity, v, transaction);
                 return false;
             }
         });
     }
-    private void openUpdateTransaction(){
-        Intent intent = new Intent(baseActivity, UpdateTransactionActivity.class);
-        intent.putExtra("transaction", transaction);
-        baseActivity.startActivity(intent);
-    }
-    public void showPopup(Context context, View v) {
+    public void showPopup(Context context, View v, UserTransaction transaction) {
         PopupMenu popup = new PopupMenu(context, v);
         popup.setGravity(Gravity.CENTER);
         popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 if(item.getItemId() == R.id.transaction_edit_item){
-                    openUpdateTransaction();
+                    openUpdateTransaction(transaction);
                 }else if(item.getItemId() == R.id.transaction_delete_item){
                     TransactionRepository transactionRepository = new TransactionRepository();
                     transactionRepository.deleteTransaction(transaction,
@@ -107,6 +101,11 @@ public class TransactionRecyclerViewAdapter extends RecyclerView.Adapter<Transac
         MenuInflater inflater = popup.getMenuInflater();
         inflater.inflate(R.menu.crud_menu, popup.getMenu());
         popup.show();
+    }
+    private void openUpdateTransaction(UserTransaction transaction){
+        Intent intent = new Intent(baseActivity, UpdateTransactionActivity.class);
+        intent.putExtra("transaction", transaction);
+        baseActivity.startActivity(intent);
     }
 
     private void initTransactionMoney(TextView transactionMoney, UserTransaction transaction){
