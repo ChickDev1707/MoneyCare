@@ -10,6 +10,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -86,18 +88,38 @@ public class UpdateGroupActivity extends AppCompatActivity {
                 viewModel.switchUpdateMode();
                 return true;
             case R.id.delete_item:
-                viewModel.deleteGroup(data->{
-                    UpdateGroupActivity.this.setResult(RESULT_OK);
-                    UpdateGroupActivity.this.finish();
-                    ToastUtil.showToast(UpdateGroupActivity.this, "Xóa nhóm thành công");
-                },
-                data->{
-                    ToastUtil.showToast(UpdateGroupActivity.this, "Lỗi! Xóa nhóm thất bại");
-                });
+                showDeleteDialog();
                 return true;
             default:
         }
         return super.onOptionsItemSelected(item);
+    }
+    private void showDeleteDialog(){
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        dialog.setTitle("Bạn có muốn xóa nhóm?")
+                .setMessage("Bạn cũng sẽ xóa tất cả giao dịch thuộc nhóm này và hành động này không thể hoàn tác.");
+
+        setDialogEvent(dialog);
+        dialog.show();
+    }
+    private void setDialogEvent(AlertDialog.Builder dialog){
+        dialog.setPositiveButton("XÓA", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                deleteGroup();
+            }
+        });
+        dialog.setNegativeButton("HỦY", null);
+    }
+    private void deleteGroup(){
+        viewModel.deleteGroup(data->{
+            UpdateGroupActivity.this.setResult(RESULT_OK);
+            UpdateGroupActivity.this.finish();
+            ToastUtil.showToast(UpdateGroupActivity.this, "Xóa nhóm thành công");
+        },
+        data->{
+            ToastUtil.showToast(UpdateGroupActivity.this, "Lỗi! Xóa nhóm thất bại");
+        });
     }
     private void initImagePicker(){
         binding.groupImgPicker.setOnClickListener(new View.OnClickListener() {

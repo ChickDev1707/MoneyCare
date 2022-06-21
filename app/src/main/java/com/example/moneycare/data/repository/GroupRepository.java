@@ -1,8 +1,12 @@
 package com.example.moneycare.data.repository;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.example.moneycare.data.model.Group;
+import com.example.moneycare.data.model.UserTransaction;
+import com.example.moneycare.utils.DateTimeUtil;
+import com.example.moneycare.utils.FirestoreUtil;
 import com.example.moneycare.utils.appinterface.FirestoreListCallback;
 import com.example.moneycare.utils.appinterface.FirestoreObjectCallback;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -17,6 +21,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.Transaction;
+import com.google.firebase.firestore.WriteBatch;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -122,10 +127,10 @@ public class GroupRepository {
     }
     public void deleteGroup(Group group, FirestoreObjectCallback<Void> successCallback, FirestoreObjectCallback<Void> failureCallback){
         DocumentReference docRef = db.collection("users").document(currentUserId).collection("transaction-groups").document(group.id);
-        docRef.delete()
-        .addOnSuccessListener(new OnSuccessListener<Void>() {
+        docRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
+                deleteTransactionsOfGroup(group);
                 successCallback.onCallback(null);
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -135,4 +140,50 @@ public class GroupRepository {
             }
         });
     }
+    private void deleteTransactionsOfGroup(Group group){
+        CollectionReference colRef =  db.collection("users").document(currentUserId).collection("transactions");
+        colRef.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot snapshot) {
+                List<UserTransaction> transactions = new ArrayList<UserTransaction>();
+                for (DocumentSnapshot doc : snapshot.getDocuments()) {
+                    UserTransaction transaction = UserTransaction.fromMap(doc.getId(), doc.getData());
+                    String transGroupId = FirestoreUtil.getReferenceFromPath(transaction.group).getId();
+                    if (group.id.equals(transGroupId)) transactions.add(transaction);
+                }
+                deleteTransactions(group, transactions, null);
+            }
+        });
+
+    }
+    private void deleteTransactions(Group group, List<UserTransaction> transactions, FirestoreObjectCallback<Void> callback){
+        for (int i = 0; i<transactions.size(); i++){
+            UserTransaction trans = transactions.get(i);
+            deleteTransaction(group, trans);
+        }
+    }
+    private void deleteTransaction(Group group, UserTransaction userTransaction){
+        DocumentReference docRef = db.collection("users").document(currentUserId).collection("transactions").document(userTransaction.id);
+        db.runTransaction(new Transaction.Function<Void>() {
+            @Nullable
+            @Override
+            public Void apply(@NonNull Transaction transaction) throws FirebaseFirestoreException {
+                DocumentReference walletRef = FirestoreUtil.getReferenceFromPath(userTransaction.wallet);
+                DocumentSnapshot walletSnapshot = transaction.get(walletRef);
+
+                Long walletMoney = walletSnapshot.getLong("money");
+                walletMoney = group.type? walletMoney - userTransaction.money: walletMoney + userTransaction.money;
+
+                transaction.update(walletRef, "money", walletMoney);
+                transaction.delete(docRef);
+                return null;
+            }
+        }).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                System.out.println("delete");
+            }
+        });
+    }
+
 }

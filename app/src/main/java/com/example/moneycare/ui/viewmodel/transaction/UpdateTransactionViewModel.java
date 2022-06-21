@@ -10,6 +10,7 @@ import com.example.moneycare.data.repository.EventRepository;
 import com.example.moneycare.data.repository.GroupRepository;
 import com.example.moneycare.data.repository.TransactionRepository;
 import com.example.moneycare.data.repository.WalletRepository;
+import com.example.moneycare.utils.FirestoreUtil;
 import com.example.moneycare.utils.appinterface.FirestoreObjectCallback;
 
 public class UpdateTransactionViewModel extends ViewModel {
@@ -48,8 +49,7 @@ public class UpdateTransactionViewModel extends ViewModel {
         if(!transaction.eventId.equals("")) this.eventRepository.fetchEventById(transaction.eventId, eventData-> event.setValue(eventData));
     }
     private String getWalletIdFromPath(String walletPath){
-        String[] params = walletPath.split("/");
-        return params[params.length - 1];
+        return FirestoreUtil.getReferenceFromPath(walletPath).getId();
         // wallet id is the last segment in wallet path
     }
     public void switchUpdateMode(){
