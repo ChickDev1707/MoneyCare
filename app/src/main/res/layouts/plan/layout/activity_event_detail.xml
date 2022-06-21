@@ -98,29 +98,6 @@
                             android:text="Còn 3 ngày"
                             android:textSize="@dimen/font_size_extra_small" />
                     </RelativeLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center_vertical"
-                        android:layout_marginBottom="@dimen/text_field_bottom_margin"
-                        >
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_marginHorizontal="10dp"
-                            android:drawableLeft="@drawable/ic_wallet_32" />
-
-                        <TextView
-                            android:id="@+id/event_detail_wallet"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_toRightOf="@id/icon_calendar"
-                            android:text="@{eventVM.wallet.name}"
-                            android:textSize="@dimen/font_size_normal" />
-                    </LinearLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
             <androidx.cardview.widget.CardView

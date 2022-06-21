@@ -1,6 +1,5 @@
 package com.example.moneycare.ui.viewmodel.plan;
 
-import android.app.AlertDialog;
 import android.graphics.Bitmap;
 import android.net.Uri;
 
@@ -9,8 +8,6 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.moneycare.data.custom.GroupTransaction;
 import com.example.moneycare.data.model.Event;
-import com.example.moneycare.data.model.Group;
-import com.example.moneycare.data.model.Wallet;
 import com.example.moneycare.data.repository.EventRepository;
 import com.example.moneycare.utils.ImageUtil;
 
@@ -24,7 +21,6 @@ public class EventViewModel extends ViewModel {
     public MutableLiveData<String> imgUrl;
     public MutableLiveData<String> eventName;
     public MutableLiveData<Date> endDate;
-    public MutableLiveData<Wallet> wallet;
     public EventRepository repository;
 
     //even transactions
@@ -44,9 +40,6 @@ public class EventViewModel extends ViewModel {
         imgUrl = new MutableLiveData<>("");
         eventName = new MutableLiveData<>("");
         endDate = new MutableLiveData<Date>(new Date());
-        Wallet walletDefault = new Wallet();
-        walletDefault.name = "Tất cả các ví";
-        wallet = new MutableLiveData<Wallet>(walletDefault);
         image = new MutableLiveData<>();
 
         eventSelected = new MutableLiveData<Event>(null);
@@ -62,13 +55,13 @@ public class EventViewModel extends ViewModel {
     }
 
     public void addEvent(){
-        Event newEvent = new Event(eventName.getValue(), endDate.getValue(),
-                image.getValue() == null ? "" : ImageUtil.toBase64(image.getValue()),"", "ongoing" );
+        Event newEvent = new Event(null, eventName.getValue(), endDate.getValue(),
+                image.getValue() == null ? "" : ImageUtil.toBase64(image.getValue()), "ongoing" );
         repository.insertEvent(newEvent);
     }
     public void updateEvent(String idEvent){
         Event event = new Event(idEvent, eventName.getValue(), endDate.getValue(),
-                image.getValue() == null?"" : ImageUtil.toBase64(image.getValue()),wallet.getValue().id, "ongoing" );
+                image.getValue() == null?"" : ImageUtil.toBase64(image.getValue()), "ongoing" );
         repository.updateEvent(event);
     }
 

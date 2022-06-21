@@ -18,22 +18,13 @@ public class Event implements Parcelable {
     public String name;
     public Date endDate;
     public String image;
-    public String wallet;
     public String status; // ongoing |  end
     public Event(){}
-    public Event(String id, String name, Date date, String image, String wallet, String status){
+    public Event(String id, String name, Date date, String image, String status){
         this.id = id;
         this.name = name;
         this.endDate = date;
         this.image = image;
-        this.wallet = (wallet == null? "": wallet);
-        this.status = status;
-    }
-    public Event( String name, Date date, String image, String wallet, String status){
-        this.name = name;
-        this.endDate = date;
-        this.image = image;
-        this.wallet = (wallet == null? "": wallet);
         this.status = status;
     }
 
@@ -42,7 +33,6 @@ public class Event implements Parcelable {
         name = in.readString();
         endDate = (java.util.Date) in.readSerializable();
         image = in.readString();
-        wallet = in.readString();
         status = in.readString();
     }
 
@@ -65,10 +55,6 @@ public class Event implements Parcelable {
         result.put("name", name);
         result.put("image", image);
         result.put("endDate", new Timestamp(endDate));
-        if(wallet != ""){
-            wallet = "users/" + idUser + "/wallets" + wallet;
-            result.put("wallet", FirestoreUtil.getReferenceFromPath(wallet));
-        }
         result.put("status", status);
         return result;
     }
@@ -81,7 +67,6 @@ public class Event implements Parcelable {
                 map.get("name").toString(),
                 ts.toDate(),
                 map.get("image").toString(),
-                walletObj != null ?((DocumentReference) map.get("wallet")).getPath() : "",
                 map.get("status").toString()
         );
     }
@@ -97,7 +82,6 @@ public class Event implements Parcelable {
         parcel.writeString(name);
         parcel.writeSerializable(endDate);
         parcel.writeString(image);
-        parcel.writeString(wallet);
         parcel.writeString(status);
     }
 }

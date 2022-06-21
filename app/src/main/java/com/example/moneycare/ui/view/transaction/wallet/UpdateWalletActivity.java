@@ -10,7 +10,9 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -24,6 +26,7 @@ import android.view.View;
 import com.example.moneycare.R;
 import com.example.moneycare.data.model.Wallet;
 import com.example.moneycare.databinding.ActivityUpdateWalletBinding;
+import com.example.moneycare.ui.view.transaction.group.UpdateGroupActivity;
 import com.example.moneycare.ui.viewmodel.transaction.UpdateWalletViewModel;
 import com.example.moneycare.utils.ToastUtil;
 import com.example.moneycare.utils.ValidationUtil;
@@ -88,7 +91,7 @@ public class UpdateWalletActivity extends AppCompatActivity {
                 viewModel.switchUpdateMode();
                 return true;
             case R.id.delete_item:
-                deleteWallet();
+                showDeleteDialog();
                 return true;
             default:
         }
@@ -139,11 +142,27 @@ public class UpdateWalletActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void showDeleteDialog(){
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        dialog.setTitle("Bạn có muốn xóa ví?")
+                .setMessage("Bạn cũng sẽ xóa tất cả giao dịch thuộc ví này và hành động này không thể hoàn tác.");
+
+        setDialogEvent(dialog);
+        dialog.show();
+    }
+    private void setDialogEvent(AlertDialog.Builder dialog){
+        dialog.setPositiveButton("XÓA", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                deleteWallet();
+            }
+        });
+        dialog.setNegativeButton("HỦY", null);
+    }
     private void deleteWallet(){
         viewModel.deleteWallet(data->{
-            UpdateWalletActivity.this.setResult(Activity.RESULT_OK);
             UpdateWalletActivity.this.finish();
-            if(isWalletCurrentSelected()) clearWalletFromPref();
             ToastUtil.showToast(UpdateWalletActivity.this, "Xóa ví thành công");
         },
         data->{

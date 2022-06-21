@@ -5,7 +5,6 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.DialogTitle;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -18,18 +17,11 @@ import android.provider.MediaStore;
 import android.view.View;
 
 import com.example.moneycare.R;
-import com.example.moneycare.data.model.Wallet;
-import com.example.moneycare.databinding.ActivityAddBudgetBinding;
 import com.example.moneycare.databinding.ActivityAddEventBinding;
-import com.example.moneycare.ui.view.plan.budget.AddBudgetActivity;
 import com.example.moneycare.ui.view.transaction.wallet.SelectWalletActivity;
 import com.example.moneycare.ui.viewmodel.plan.EventViewModel;
-import com.example.moneycare.ui.viewmodel.transaction.NewGroupViewModel;
-import com.example.moneycare.utils.DateTimeUtil;
-import com.example.moneycare.utils.ImageUtil;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
-import com.google.android.material.textfield.TextInputEditText;
 
 import java.io.IOException;
 import java.util.Date;
@@ -37,18 +29,6 @@ import java.util.Date;
 public class AddEventActivity extends AppCompatActivity {
     private ActivityAddEventBinding binding;
     private EventViewModel eventVM;
-    private ActivityResultLauncher<Intent> toSelectWalletActivity = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            new ActivityResultCallback<ActivityResult>() {
-                @Override
-                public void onActivityResult(ActivityResult result) {
-                    if (result.getResultCode() == Activity.RESULT_OK) {
-                        // There are no request codes
-                        Intent data = result.getData();
-                       eventVM.wallet.setValue(data.getParcelableExtra("wallet"));
-                    }
-                }
-            });
 
     ActivityResultLauncher<Intent> launcher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
@@ -74,7 +54,6 @@ public class AddEventActivity extends AppCompatActivity {
 
         initToolbar();
         initPickDateInput();
-        initSelectWallet();
         initImagePicker();
         handleAddEvent();
     }
@@ -113,15 +92,6 @@ public class AddEventActivity extends AppCompatActivity {
         });
     }
 
-    private void initSelectWallet(){
-        binding.addEventWallet.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(AddEventActivity.this, SelectWalletActivity.class);
-                toSelectWalletActivity.launch(intent);
-            }
-        });
-    }
     private void initImagePicker(){
         binding.selectEventImg.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -136,7 +106,7 @@ public class AddEventActivity extends AppCompatActivity {
     private void handleSelectImage(Uri selectedImage){
         try {
             Bitmap bitmapImg = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
-            binding.selectEventImg.setImageBitmap(bitmapImg);
+            binding.eventImg.setImageBitmap(bitmapImg);
             eventVM.setImage(selectedImage, bitmapImg);
         } catch (IOException e) {
             e.printStackTrace();

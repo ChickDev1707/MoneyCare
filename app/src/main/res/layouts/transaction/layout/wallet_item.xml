@@ -42,7 +42,7 @@
                 android:layout_height="wrap_content"
                 android:text="Cash"
                 android:textColor="@color/black"
-                android:textSize="@dimen/font_size_small"
+                android:textSize="@dimen/font_size_normal"
                 />
 
             <TextView

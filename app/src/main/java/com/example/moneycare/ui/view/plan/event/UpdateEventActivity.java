@@ -34,19 +34,6 @@ public class UpdateEventActivity extends AppCompatActivity {
     private ActivityUpdateEventBinding binding;
     private EventViewModel eventVM;
     private Event eventUpdated;
-    private String walletName;
-    private ActivityResultLauncher<Intent> toSelectWalletActivity = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            new ActivityResultCallback<ActivityResult>() {
-                @Override
-                public void onActivityResult(ActivityResult result) {
-                    if (result.getResultCode() == Activity.RESULT_OK) {
-                        // There are no request codes
-                        Intent data = result.getData();
-                        eventVM.wallet.setValue(data.getParcelableExtra("wallet"));
-                    }
-                }
-            });
 
     ActivityResultLauncher<Intent> launcher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
@@ -72,12 +59,10 @@ public class UpdateEventActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         eventUpdated = intent.getParcelableExtra("event");
-        walletName = intent.getStringExtra("walletName");
 
         loadData();
         initToolbar();
         initPickDateInput();
-        initSelectWallet();
         initImagePicker();
         handleUpdateEvent();
     }
@@ -85,10 +70,8 @@ public class UpdateEventActivity extends AppCompatActivity {
     private void loadData(){
         eventVM.eventName.setValue(eventUpdated.name);
         eventVM.endDate.setValue(eventUpdated.endDate);
-        Wallet wallet = new Wallet();
-        wallet.name = walletName;
-        eventVM.wallet.setValue(wallet);
-        ImageLoader imageLoader = new ImageLoader(binding.selectEventUpdateImg);
+
+        ImageLoader imageLoader = new ImageLoader(binding.eventImg);
         imageLoader.execute(eventUpdated.image);
         eventVM.image.setValue(ImageUtil.toBitmap(eventUpdated.image));
     }
@@ -130,15 +113,6 @@ public class UpdateEventActivity extends AppCompatActivity {
         });
     }
 
-    private void initSelectWallet(){
-        binding.updateEventWallet.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(UpdateEventActivity.this, SelectWalletActivity.class);
-                toSelectWalletActivity.launch(intent);
-            }
-        });
-    }
     private void initImagePicker(){
         binding.selectEventUpdateImg.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -153,7 +127,7 @@ public class UpdateEventActivity extends AppCompatActivity {
     private void handleSelectImage(Uri selectedImage){
         try {
             Bitmap bitmapImg = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
-            binding.selectEventUpdateImg.setImageBitmap(bitmapImg);
+            binding.eventImg.setImageBitmap(bitmapImg);
             eventVM.setImage(selectedImage, bitmapImg);
         } catch (IOException e) {
             e.printStackTrace();
@@ -168,10 +142,6 @@ public class UpdateEventActivity extends AppCompatActivity {
                     return;
                 }
                 eventVM.updateEvent(eventUpdated.id);
-                Intent intent = getIntent();
-                intent.putExtra("eventUpdated", new Event(eventUpdated.id, eventVM.eventName.getValue(),  eventVM.endDate.getValue(),
-                        eventVM.image.getValue() == null?"" : ImageUtil.toBase64(eventVM.image.getValue()), eventVM.wallet.getValue().id, "ongoing" ));
-                UpdateEventActivity.this.setResult(Activity.RESULT_OK, intent);
                 UpdateEventActivity.this.finish();
             }
         });

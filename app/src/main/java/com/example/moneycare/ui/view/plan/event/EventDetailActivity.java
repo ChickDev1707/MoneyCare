@@ -68,19 +68,6 @@ public class EventDetailActivity extends AppCompatActivity {
             eventVM.endDate.setValue(event.endDate);
             binding.daysLeftEventDetail.setText("Còn " + DateTimeUtil.daysLeft(event.endDate) + " ngày");
 
-            if(!event.wallet.isEmpty()){
-                TransactionRepository transactionRepository = new TransactionRepository();
-                String walletId = FirestoreUtil.getReferenceFromPath(event.wallet).getId();
-                walletRepository.fetchWallet(walletId, wallet -> {
-                    eventVM.wallet.setValue(wallet);
-                });
-            }
-            else{
-                Wallet wallet = new Wallet();
-                wallet.name = "Tất cả các ví";
-                eventVM.wallet.setValue(wallet);
-            }
-
             ImageLoader imageLoader = new ImageLoader(binding.imgItemEventDetail);
             imageLoader.execute(event.image);
         });
@@ -138,8 +125,6 @@ public class EventDetailActivity extends AppCompatActivity {
             case R.id.update_item:
                 Intent intent = new Intent(EventDetailActivity.this, UpdateEventActivity.class);
                 intent.putExtra("event", eventSelected);
-                Wallet wallet = eventVM.wallet.getValue();
-                intent.putExtra("walletName",wallet.name);
                 startActivity(intent);
                 return true;
             case R.id.delete_item:
