@@ -10,6 +10,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -23,6 +25,7 @@ import com.example.moneycare.data.repository.BudgetRepository;
 import com.example.moneycare.databinding.ActivityBudgetDetailBinding;
 import com.example.moneycare.ui.viewmodel.plan.BudgetViewModel;
 import com.example.moneycare.utils.ImageLoader;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 
 public class BudgetDetailActivity extends AppCompatActivity {
@@ -124,9 +127,23 @@ public class BudgetDetailActivity extends AppCompatActivity {
                 toUpdateBudgetActivity.launch(intent);
                 return true;
             case R.id.delete_item:
-                budgetRepository.deleteBudget(idBudget);
-                BudgetDetailActivity.this.setResult(Activity.RESULT_OK);
-                BudgetDetailActivity.this.finish();
+                new MaterialAlertDialogBuilder(BudgetDetailActivity.this)
+                        .setTitle("Cảnh báo").setMessage("Bạn có chắc muốn xóa ngân sách này hay không?")
+                        .setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                return;
+                            }
+                        })
+                        .setPositiveButton("Xóa", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                budgetRepository.deleteBudget(idBudget);
+                                BudgetDetailActivity.this.setResult(Activity.RESULT_OK);
+                                BudgetDetailActivity.this.finish();
+                            }
+                        })
+                        .show();
                 return true;
             default:
         }
