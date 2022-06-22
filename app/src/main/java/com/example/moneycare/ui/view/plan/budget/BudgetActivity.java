@@ -49,12 +49,11 @@ public class BudgetActivity extends AppCompatActivity {
     }
 
     private void loadListBudget(){
+        budgetVM.init();
         budgetGroupList = findViewById(R.id.budget_gr_list);
 
         MyBudgetGroupRecyclerViewAdapter adapter = new MyBudgetGroupRecyclerViewAdapter();
-//        adapter.toDetailBudgetActivity = toDetailBudgetActivity;
         adapter.budgetsVM = budgetVM;
-
         budgetVM.fetchTransactionGroupsByBudget((groups, budgets) ->{
             LinearLayout layoutContainer = findViewById(R.id.budget_container);
             LinearLayout layoutEmpty = findViewById(R.id.budget_empty);
@@ -77,7 +76,11 @@ public class BudgetActivity extends AppCompatActivity {
                 });
                 budgetVM.activeGroups = groups;
                 budgetVM.totalBudget.setValue(sum[0]);
-                budgetVM.getTotalSpentInMonth();
+                budgetVM.getTotalSpentInMonth(total -> {
+                    budgetVM.totalSpent.setValue((Long)total);
+                    budgetVM.spendableMoney.setValue(budgetVM.totalBudget.getValue() - (Long)total);
+                });
+                budgetVM.activeGroups = groups;
             }
             else if(groups.size() == 0){
                 layoutEmpty.setVisibility(View.VISIBLE);
@@ -105,6 +108,11 @@ public class BudgetActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(BudgetActivity.this, AddBudgetActivity.class);
+                ArrayList<String> arrs = new ArrayList<String>();
+                for (Group gr : budgetVM.activeGroups){
+                    arrs.add(gr.id);
+                }
+                intent.putStringArrayListExtra("activeGroups",arrs);
                 startActivity(intent);
             }
         });

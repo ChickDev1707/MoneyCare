@@ -81,6 +81,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textSize="@dimen/font_size_large"
+                        android:inputType="number"
                         android:text="@={Converter.longToString(budgetVM.moneyLimit)}"
                         />
 

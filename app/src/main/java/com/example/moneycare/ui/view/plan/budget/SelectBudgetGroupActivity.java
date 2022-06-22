@@ -30,10 +30,8 @@ public class SelectBudgetGroupActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         Intent intent = getIntent();
-        String[] tmp = intent.getStringArrayExtra("activeGroups");
-        if(tmp != null){
-            activeGroups = Arrays.asList(tmp);
-        }
+        activeGroups = intent.getStringArrayListExtra("activeGroups");
+
 
         repository = new GroupRepository();
 
@@ -47,6 +45,7 @@ public class SelectBudgetGroupActivity extends AppCompatActivity {
             LinearLayout layoutEmpty = findViewById(R.id.select_group_budget_list_empty_layout);
             LinearLayout layoutLoading = findViewById(R.id.loading);
             List<Group> availableGroups = new ArrayList<Group>();
+
             for (Group gr :(List<Group>)groups) {
                 layoutLoading.setVisibility(View.INVISIBLE);
                 if(!activeGroups.contains(gr.id) && gr.type == false){

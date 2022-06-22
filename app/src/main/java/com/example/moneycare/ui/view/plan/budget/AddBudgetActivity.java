@@ -39,7 +39,7 @@ public class AddBudgetActivity extends AppCompatActivity {
 
     NewBudgetViewModel viewModel;
     ActivityAddBudgetBinding binding;
-    List<String> activeGroups = new ArrayList<String>();
+    ArrayList<String> activeGroups = new ArrayList<String>();
 
     ActivityResultLauncher<Intent> toGroupActivityLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
@@ -64,10 +64,7 @@ public class AddBudgetActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         Intent intent = getIntent();
-        String[] tmp = intent.getStringArrayExtra("activeGroups");
-        if(tmp != null){
-            activeGroups = Arrays.asList(tmp);
-        }
+        activeGroups = intent.getStringArrayListExtra("activeGroups");
 
         viewModel = new ViewModelProvider(this).get(NewBudgetViewModel.class);
         binding = ActivityAddBudgetBinding.inflate(getLayoutInflater());
@@ -109,7 +106,7 @@ public class AddBudgetActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(AddBudgetActivity.this, SelectBudgetGroupActivity.class);
-                intent.putExtra("activeGroups", activeGroups.toArray());
+                intent.putStringArrayListExtra("activeGroups", activeGroups);
                 toGroupActivityLauncher.launch(intent);
             }
         });
@@ -120,7 +117,6 @@ public class AddBudgetActivity extends AppCompatActivity {
             viewModel.saveNewBudget();
             AddBudgetActivity.this.finish();
         }
-
     }
 
 }

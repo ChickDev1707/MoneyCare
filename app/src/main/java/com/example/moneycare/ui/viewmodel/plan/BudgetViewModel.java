@@ -13,6 +13,7 @@ import com.example.moneycare.data.repository.GroupRepository;
 import com.example.moneycare.data.repository.TransactionRepository;
 import com.example.moneycare.utils.appinterface.FirestoreListCallback;
 import com.example.moneycare.utils.appinterface.FirestoreMultiListCallback;
+import com.example.moneycare.utils.appinterface.FirestoreObjectCallback;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -27,7 +28,7 @@ public class BudgetViewModel extends ViewModel {
     private BudgetRepository budgetRepository;
     private TransactionRepository transactionRepository;
 
-    public List<Group> activeGroups;
+    public List<Group> activeGroups = new ArrayList<Group>();
 
     //fragment budget
     public MutableLiveData<String> name = new MutableLiveData<String>();
@@ -90,12 +91,13 @@ public class BudgetViewModel extends ViewModel {
         spendPerDay.setValue(spd);
     }
 
-    public void getTotalSpentInMonth(){
+    public void getTotalSpentInMonth(FirestoreObjectCallback callback){
         budgetRepository.fetchBudgetsInMonth(budgets -> {
+            final Long[] total = {0L};
            for (Budget budget : (List<Budget>)budgets){
-               transactionRepository.getTotalSpendByGroup(total -> {
-                   totalSpent.setValue(totalSpent.getValue() + (Long)total);
-                   spendableMoney.setValue(totalBudget.getValue() - totalSpent.getValue());
+               transactionRepository.getTotalSpendByGroup(e -> {
+                   total[0] += (Long)e;
+                   callback.onCallback(total[0]);
                },budget.getDate(), budget.getGroup());
            }
         });
