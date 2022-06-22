@@ -72,7 +72,7 @@ public class FragmentReportExpense extends Fragment {
         pieChartExpense.setEntryLabelTextSize(14);
         pieChartExpense.setEntryLabelColor(Color.BLACK);
         pieChartExpense.setCenterText("Tổng số: " + Converter.toFormattedMoney(getContext(),this.totalMoneyExpense));
-        pieChartExpense.setCenterTextSize(22);
+        pieChartExpense.setCenterTextSize(20);
         pieChartExpense.getDescription().setEnabled(false);
 
         Legend l = pieChartExpense.getLegend();
