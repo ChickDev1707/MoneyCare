@@ -94,6 +94,7 @@ public class FragmentReportIncome extends Fragment {
         dataSet.setColors(colors);
         dataSet.setXValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
         dataSet.setYValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
+        dataSet.setSelectionShift(20f);
 
         PieData data = new PieData(dataSet);
         data.setDrawValues(true);
@@ -107,12 +108,13 @@ public class FragmentReportIncome extends Fragment {
     }
 
     private void setupPieChartIncome() {
+//        pieChartIncome.setTransparentCircleRadius(60f);
         pieChartIncome.setDrawHoleEnabled(true);
         pieChartIncome.setUsePercentValues(true);
-        pieChartIncome.setEntryLabelTextSize(14);
+        pieChartIncome.setEntryLabelTextSize(14f);
         pieChartIncome.setEntryLabelColor(Color.BLACK);
         pieChartIncome.setCenterText("Tổng số: " + Converter.toFormattedMoney(getContext(),this.totalMoneyIncome));
-        pieChartIncome.setCenterTextSize(22);
+        pieChartIncome.setCenterTextSize(20f);
         pieChartIncome.getDescription().setEnabled(false);
 
         Legend l = pieChartIncome.getLegend();

@@ -96,6 +96,7 @@ public class FragmentReportExpense extends Fragment {
         dataSet.setColors(colors);
         dataSet.setXValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
         dataSet.setYValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
+        dataSet.setSelectionShift(20f);
 
         PieData data = new PieData(dataSet);
         data.setDrawValues(true);

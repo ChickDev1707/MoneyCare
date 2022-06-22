@@ -20,7 +20,7 @@ import java.util.List;
 public class ReportViewModel extends ViewModel {
 
     private TransactionRepository transactionRepository;
-    private WalletRepository walletRepository;
+    public WalletRepository walletRepository;
     public  MutableLiveData<String> timeTitle;
     public  MutableLiveData<Long>   moneyIn;
     public  MutableLiveData<Long>   moneyOut;

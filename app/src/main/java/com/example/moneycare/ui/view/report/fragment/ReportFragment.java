@@ -101,23 +101,8 @@ public class ReportFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-//        View view = inflater.inflate(R.layout.fragment_report, container, false);
-        viewModel = new ViewModelProvider(this).get(ReportViewModel.class);
-        binding = FragmentReportBinding.inflate(getLayoutInflater());
-        binding.setReportListVM(viewModel);
-        binding.setLifecycleOwner(this);
-        timeFrameMode = DAY;
-
-        groupTransactionList = new ArrayList<>();
-        dataChartNetIncome = new ArrayList<>();
-//        dataChartIncome = new ArrayList<>();
-//        dataChartExpense = new ArrayList<>();
-
-        Toolbar toolbar = binding.getRoot().findViewById(R.id.main_app_bar);
-        toolbar.setTitle("");
-        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
-
+        initLayout();
+        initToolbar();
         initTransactionSetting();
         initTransList();
         initOpenWalletListBtn();
@@ -125,19 +110,64 @@ public class ReportFragment extends Fragment{
 
         return binding.getRoot();
     }
+    public void initLayout(){
+        viewModel = new ViewModelProvider(this).get(ReportViewModel.class);
+        binding = FragmentReportBinding.inflate(getLayoutInflater());
+        binding.setReportListVM(viewModel);
+        binding.setLifecycleOwner(this);
+        timeFrameMode = DAY;
+        groupTransactionList = new ArrayList<>();
+        dataChartNetIncome = new ArrayList<>();
+    }
+    public void initToolbar(){
+        Toolbar toolbar = binding.getRoot().findViewById(R.id.main_app_bar);
+        toolbar.setTitle("");
+        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+    }
+    private void initTransList(){
+        selectedDate = new Date();
+        showTransList();
+    }
+    public void showTransList(){
+        viewModel.setUI(getContext(), timeFrameMode, selectedDate , groupTransactionList -> {
+            viewModel.initMoneyInAndOut(groupTransactionList);
+            dataProcessingChart(groupTransactionList);
+            initViewPager();
+        });
+    }
+    private void dataProcessingChart(List<GroupTransaction> groupTransactionList){
+        this.groupTransactionList.clear();
+        this.groupTransactionList = sortTotalMoneyOfGroupTrans(groupTransactionList);
+        dataChartNetIncome.clear();
+        switch (timeFrameMode) {
+            case DAY:
+                dataProcessingChartInDay(this.groupTransactionList);
+                break;
+            case MONTH:
+                dataProcessingChartInMonth(this.groupTransactionList);
+                break;
+            case YEAR:
+                dataProcessingChartInYear(this.groupTransactionList);
+                break;
+            default:
+                break;
+        }
+    }
     public List<GroupTransaction> sortTotalMoneyOfGroupTrans(List<GroupTransaction> groupTransactionList){
         List<GroupTransaction> groupTransactions = new ArrayList<>();
-        groupTransactions.add(groupTransactionList.get(0));
-        for (int i=1; i<groupTransactionList.size(); i++){
-            boolean iOK = true;
-            for (int j=0; j<groupTransactions.size();j++){
-                if (groupTransactions.get(j).getTotalMoney()<=groupTransactionList.get(i).getTotalMoney()){
-                    groupTransactions.add(j, groupTransactionList.get(i));
-                    iOK = false;
-                    break;
+        if (groupTransactionList.size()>0){
+            groupTransactions.add(groupTransactionList.get(0));
+            for (int i=1; i<groupTransactionList.size(); i++){
+                boolean iOK = true;
+                for (int j=0; j<groupTransactions.size();j++){
+                    if (groupTransactions.get(j).getTotalMoney()<=groupTransactionList.get(i).getTotalMoney()){
+                        groupTransactions.add(j, groupTransactionList.get(i));
+                        iOK = false;
+                        break;
+                    }
                 }
+                if (iOK) groupTransactions.add(groupTransactionList.get(i));
             }
-            if (iOK) groupTransactions.add(groupTransactionList.get(i));
         }
         return groupTransactions;
     }
@@ -212,26 +242,6 @@ public class ReportFragment extends Fragment{
             dataChartNetIncome.add(new BarEntry(i, dataValues[i]));
         }
     }
-    private void dataProcessingChart(List<GroupTransaction> groupTransactionList){
-        this.groupTransactionList.clear();
-        this.groupTransactionList = sortTotalMoneyOfGroupTrans(groupTransactionList);
-        dataChartNetIncome.clear();
-//        dataChartIncome.clear();
-//        dataChartExpense.clear();
-        switch (timeFrameMode) {
-            case DAY:
-                dataProcessingChartInDay(this.groupTransactionList);
-                break;
-            case MONTH:
-                dataProcessingChartInMonth(this.groupTransactionList);
-                break;
-            case YEAR:
-                dataProcessingChartInYear(this.groupTransactionList);
-                break;
-            default:
-                break;
-        }
-    }
     private void initViewPager(){
         tabLayout = binding.getRoot().findViewById(R.id.tabLayout);
         viewPager2 = binding.getRoot().findViewById(R.id.viewPager2);
@@ -252,17 +262,8 @@ public class ReportFragment extends Fragment{
             }
         }).attach();
     }
-    private void initTransList(){
-        selectedDate = new Date();
-        showTransList();
-    }
-    public void showTransList(){
-        viewModel.setUI(getContext(), timeFrameMode, selectedDate , groupTransactionList -> {
-            viewModel.initMoneyInAndOut(groupTransactionList);
-            dataProcessingChart(groupTransactionList);
-            initViewPager();
-        });
-    }
+
+
 
     @Override
     public void onCreateOptionsMenu(@NonNull @NotNull Menu menu, @NonNull @NotNull MenuInflater inflater) {
@@ -366,29 +367,46 @@ public class ReportFragment extends Fragment{
         editor.putInt(getString(R.string.pref_key_time_frame), timeFrameMode.getValue());
         editor.apply();
     }
-    public void initTransactionSetting(){
+    private void initTransactionSetting(){
         SharedPreferences sharedPref = getActivity().getSharedPreferences(getString(R.string.transaction_preference), Context.MODE_PRIVATE);
         int timeFrameValue = sharedPref.getInt(getString(R.string.pref_key_time_frame), 1);
-        timeFrameMode = getTimeFrame(timeFrameValue);
+        timeFrameMode = TransactionTimeFrame.getTimeFrame(timeFrameValue);
     }
     private void initOpenWalletListBtn(){
         binding.appBarLayout.walletIconBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent toSelectWalletIntent = new Intent(getActivity(), SelectWalletActivity.class);
-                startActivity(toSelectWalletIntent);
+                Intent intent = new Intent(getActivity(), SelectWalletActivity.class);
+                startActivity(intent);
             }
         });
     }
     private void initWalletFromPreference(){
         String walletId = getWalletFromPreference();
         if(walletId.equals("")){
-            viewModel.fetchFirstWallet(wallet->{
-                updateWalletUI(wallet);
-                setWalletToPreference(wallet.id);
-            });
+            // no pref
+            initWalletForEmptyPref();
         }else{
-            viewModel.fetchWallet(walletId, this::updateWalletUI);
+            viewModel.walletRepository.fetchWallet(walletId, this::updateWalletUI);
+        }
+    }
+    private void initWalletForEmptyPref(){
+        viewModel.walletRepository.countWallets(noWallets->{
+            if(noWallets> 0){
+                viewModel.walletRepository.fetchFirstWallet(firstWallet->{
+                    updateWalletUI(firstWallet);
+                    setWalletToPreference(firstWallet.id);
+                });
+            }else updateWalletUI(new Wallet(null, "Tên ví", 0, ""));
+        });
+    }
+    private void updateWalletUI(Wallet wallet){
+        binding.appBarLayout.walletName.setText(wallet.name);
+        binding.appBarLayout.walletMoney.setText(Converter.toFormattedMoney(getContext(), wallet.money));
+
+        if(!wallet.image.equals("")){
+            Bitmap walletBimapImg = ImageUtil.toBitmap(wallet.image);
+            binding.appBarLayout.walletIconBtn.setImageBitmap(walletBimapImg);
         }
     }
     private String getWalletFromPreference(){
@@ -396,26 +414,20 @@ public class ReportFragment extends Fragment{
         String walletId = sharedPref.getString(getString(R.string.pref_key_current_wallet), "");
         return walletId;
     }
-    private void updateWalletUI(Wallet wallet){
-        binding.appBarLayout.walletName.setText(wallet.name);
-        binding.appBarLayout.walletMoney.setText(Converter.toFormattedMoney(this.getContext(), wallet.money));
-
-        if(!wallet.image.equals("")){
-            Bitmap walletBimapImg = ImageUtil.toBitmap(wallet.image);
-            BitmapDrawable walletBitmapDrawable = new BitmapDrawable(getResources(), walletBimapImg);
-            binding.appBarLayout.walletIconBtn.setBackground(walletBitmapDrawable);
-        }
-    }
     private void setWalletToPreference(String walletId){
         SharedPreferences sharedPref = getActivity().getSharedPreferences(getString(R.string.transaction_preference), Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString(getString(R.string.pref_key_current_wallet), walletId);
         editor.apply();
     }
+    public void initElements(){
+        showTransList();
+        initWalletFromPreference();
+    }
 
     @Override
     public void onResume() {
         super.onResume();
-        showTransList();
+        initElements();
     }
 }
