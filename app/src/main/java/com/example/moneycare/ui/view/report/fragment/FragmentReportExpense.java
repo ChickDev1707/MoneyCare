@@ -34,15 +34,25 @@ public class FragmentReportExpense extends Fragment {
     private     PieChart       pieChartExpense;
     private List<PieEntry> dataChartExpense;
     private long totalMoneyExpense;
-    public FragmentReportExpense(List<GroupTransaction> groupTransactionList, List data, long totalMoneyExpense){
+    public FragmentReportExpense(List<GroupTransaction> groupTransactionList, long totalMoneyExpense){
+        this.totalMoneyExpense = totalMoneyExpense;
         this.groupTransactionExpenseList = new ArrayList<>();
+        this.dataChartExpense = new ArrayList<>();
+        long otherValue = 0;
         for (GroupTransaction groupTransaction:groupTransactionList){
             if (!groupTransaction.group.type){
                 this.groupTransactionExpenseList.add(groupTransaction);
+                if (groupTransaction.getTotalMoney()*1.0f/this.totalMoneyExpense >= 0.03f){
+                    this.dataChartExpense.add(new PieEntry(groupTransaction.getTotalMoney(), groupTransaction.group.name));
+                }
+                else {
+                    otherValue+=groupTransaction.getTotalMoney();
+                }
             }
         }
-        this.dataChartExpense = data;
-        this.totalMoneyExpense = totalMoneyExpense;
+        if (otherValue>0){
+            this.dataChartExpense.add(new PieEntry(otherValue, "..."));
+        }
     }
 
     @Override
@@ -84,6 +94,8 @@ public class FragmentReportExpense extends Fragment {
 
         PieDataSet dataSet = new PieDataSet(dataChartExpense, "");
         dataSet.setColors(colors);
+        dataSet.setXValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
+        dataSet.setYValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
 
         PieData data = new PieData(dataSet);
         data.setDrawValues(true);

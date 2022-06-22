@@ -38,7 +38,7 @@ public class FragmentReportNetIncome extends Fragment {
         return binding.getRoot();
     }
     private void initBarChartNetIncome(){
-        BarDataSet barDataSet = new BarDataSet(dataChartNetIncome,"Đơn vị Ngìn đồng");
+        BarDataSet barDataSet = new BarDataSet(dataChartNetIncome,"Đơn vị: Ngìn đồng");
         barDataSet.setValueTextSize(14f);
         barDataSet.setDrawIcons(false);
 

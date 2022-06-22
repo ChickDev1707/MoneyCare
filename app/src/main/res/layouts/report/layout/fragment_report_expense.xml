@@ -11,10 +11,11 @@
         android:id="@+id/pieChartExpense"
         android:layout_width="match_parent"
         android:layout_height="250dp"
-        android:layout_margin="8dp" />
+        />
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/layout_padding">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -25,7 +26,6 @@
                 android:name="com.example.moneycare.FragmentReportExpense"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
                 android:nestedScrollingEnabled="false"
                 app:layoutManager="LinearLayoutManager"
                 tools:context=".ui.view.report.fragment.FragmentReportExpense"

@@ -34,16 +34,25 @@ public class FragmentReportIncome extends Fragment {
     private PieChart       pieChartIncome;
     private List<PieEntry> dataChartIncome;
     private long totalMoneyIncome;
-    public FragmentReportIncome(List<GroupTransaction> groupTransactionList, List data, long totalMoneyIncome){
+    public FragmentReportIncome(List<GroupTransaction> groupTransactionList, long totalMoneyIncome){
+        this.totalMoneyIncome = totalMoneyIncome;
         this.groupTransactionIncomeList = new ArrayList<>();
+        this.dataChartIncome = new ArrayList<>();
+        long otherValue = 0;
         for (GroupTransaction groupTransaction:groupTransactionList){
             if (groupTransaction.group.type){
                 this.groupTransactionIncomeList.add(groupTransaction);
+                if (groupTransaction.getTotalMoney()*1.0f/this.totalMoneyIncome >= 0.03f){
+                    this.dataChartIncome.add(new PieEntry(groupTransaction.getTotalMoney(), groupTransaction.group.name));
+                }
+                else {
+                    otherValue+=groupTransaction.getTotalMoney();
+                }
             }
         }
-//        this.groupTransactionIncomeList = sortTotalMoneyOfGroupTrans(this.groupTransactionIncomeList);
-        this.dataChartIncome = data;
-        this.totalMoneyIncome = totalMoneyIncome;
+        if (otherValue>0){
+            this.dataChartIncome.add(new PieEntry(otherValue, "..."));
+        }
     }
 
     @Override
@@ -83,6 +92,8 @@ public class FragmentReportIncome extends Fragment {
 
         PieDataSet dataSet = new PieDataSet(dataChartIncome, "");
         dataSet.setColors(colors);
+        dataSet.setXValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
+        dataSet.setYValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
 
         PieData data = new PieData(dataSet);
         data.setDrawValues(true);

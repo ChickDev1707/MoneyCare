@@ -17,18 +17,18 @@ import java.util.List;
 public class ReportTabLayoutAdapter extends FragmentStateAdapter {
     private List<GroupTransaction> groupTransactionList;
     private List<BarEntry>     dataChartNetIncome;
-    private List<PieEntry> dataChartIncome;
-    private List<PieEntry>     dataChartExpense;
+//    private List<PieEntry> dataChartIncome;
+//    private List<PieEntry>     dataChartExpense;
     private long totalMoneyIncome;
     private long totalMoneyExpense;
     private long totalMoneyNetIncome;
 
-    public ReportTabLayoutAdapter(@NonNull FragmentActivity fragmentActivity, List groupTransactionList, List dataChartNetIncome, List dataChartIncome, List dataChartExpense, long totalMoneyIncome, long totalMoneyExpense, long totalMoneyNetIncome) {
+    public ReportTabLayoutAdapter(@NonNull FragmentActivity fragmentActivity, List groupTransactionList, List dataChartNetIncome, long totalMoneyIncome, long totalMoneyExpense, long totalMoneyNetIncome) {
         super(fragmentActivity);
         this.groupTransactionList = groupTransactionList;
         this.dataChartNetIncome = dataChartNetIncome;
-        this.dataChartIncome = dataChartIncome;
-        this.dataChartExpense = dataChartExpense;
+//        this.dataChartIncome = dataChartIncome;
+//        this.dataChartExpense = dataChartExpense;
         this.totalMoneyIncome = totalMoneyIncome;
         this.totalMoneyExpense = totalMoneyExpense;
         this.totalMoneyNetIncome = totalMoneyNetIncome;
@@ -39,9 +39,9 @@ public class ReportTabLayoutAdapter extends FragmentStateAdapter {
     public Fragment createFragment(int position) {
         switch (position) {
             case 1:
-                return new FragmentReportIncome(groupTransactionList, dataChartIncome, totalMoneyIncome);
+                return new FragmentReportIncome(groupTransactionList, totalMoneyIncome);
             case 2:
-                return new FragmentReportExpense(groupTransactionList, dataChartExpense, totalMoneyExpense);
+                return new FragmentReportExpense(groupTransactionList, totalMoneyExpense);
             default:
                 return new FragmentReportNetIncome(dataChartNetIncome, totalMoneyNetIncome);
         }

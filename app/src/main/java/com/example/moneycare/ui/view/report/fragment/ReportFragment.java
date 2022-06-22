@@ -71,8 +71,8 @@ public class ReportFragment extends Fragment{
     private ReportTabLayoutAdapter reportAdapter;
     private List<GroupTransaction> groupTransactionList;
     private List<BarEntry> dataChartNetIncome;
-    private List<PieEntry>    dataChartIncome;
-    private List<PieEntry> dataChartExpense;
+//    private List<PieEntry>    dataChartIncome;
+//    private List<PieEntry> dataChartExpense;
 
 
     /**
@@ -111,8 +111,8 @@ public class ReportFragment extends Fragment{
 
         groupTransactionList = new ArrayList<>();
         dataChartNetIncome = new ArrayList<>();
-        dataChartIncome = new ArrayList<>();
-        dataChartExpense = new ArrayList<>();
+//        dataChartIncome = new ArrayList<>();
+//        dataChartExpense = new ArrayList<>();
 
         Toolbar toolbar = binding.getRoot().findViewById(R.id.main_app_bar);
         toolbar.setTitle("");
@@ -148,12 +148,12 @@ public class ReportFragment extends Fragment{
         }
         if (timeFrameMode == DAY){
             for (GroupTransaction groupTransaction: groupTransactionList){
-                if(groupTransaction.group.type){
-                    dataChartIncome.add(new PieEntry(groupTransaction.getTotalMoney(), groupTransaction.group.name));
-                }
-                else{
-                    dataChartExpense.add(new PieEntry(groupTransaction.getTotalMoney(), groupTransaction.group.name));
-                }
+//                if(groupTransaction.group.type){
+//                    dataChartIncome.add(new PieEntry(groupTransaction.getTotalMoney(), groupTransaction.group.name));
+//                }
+//                else{
+//                    dataChartExpense.add(new PieEntry(groupTransaction.getTotalMoney(), groupTransaction.group.name));
+//                }
                 for (UserTransaction transaction:groupTransaction.transactionList){
                     if (groupTransaction.group.type)
                         dataValues[DateTimeUtil.getHour(transaction.date)]+=transaction.money/1000;
@@ -178,12 +178,12 @@ public class ReportFragment extends Fragment{
                 else
                     dataValues[DateTimeUtil.getDay(transaction.date)]-=transaction.money/1000;
             }
-            if(groupTransaction.group.type){
-                dataChartIncome.add(new PieEntry(groupTransaction.getTotalMoney(), groupTransaction.group.name));
-            }
-            else{
-                dataChartExpense.add(new PieEntry(groupTransaction.getTotalMoney(), groupTransaction.group.name));
-            }
+//            if(groupTransaction.group.type){
+//                dataChartIncome.add(new PieEntry(groupTransaction.getTotalMoney(), groupTransaction.group.name));
+//            }
+//            else{
+//                dataChartExpense.add(new PieEntry(groupTransaction.getTotalMoney(), groupTransaction.group.name));
+//            }
         }
         for (int i=1; i<= 31; i++){
             dataChartNetIncome.add(new BarEntry(i, dataValues[i]));
@@ -201,12 +201,12 @@ public class ReportFragment extends Fragment{
                 else
                     dataValues[DateTimeUtil.getMonth(transaction.date)]-=transaction.money/1000;
             }
-            if(groupTransaction.group.type){
-                dataChartIncome.add(new PieEntry(groupTransaction.getTotalMoney(), groupTransaction.group.name));
-            }
-            else{
-                dataChartExpense.add(new PieEntry(groupTransaction.getTotalMoney(), groupTransaction.group.name));
-            }
+//            if(groupTransaction.group.type){
+//                dataChartIncome.add(new PieEntry(groupTransaction.getTotalMoney(), groupTransaction.group.name));
+//            }
+//            else{
+//                dataChartExpense.add(new PieEntry(groupTransaction.getTotalMoney(), groupTransaction.group.name));
+//            }
         }
         for (int i=1; i<= 12; i++){
             dataChartNetIncome.add(new BarEntry(i, dataValues[i]));
@@ -216,8 +216,8 @@ public class ReportFragment extends Fragment{
         this.groupTransactionList.clear();
         this.groupTransactionList = sortTotalMoneyOfGroupTrans(groupTransactionList);
         dataChartNetIncome.clear();
-        dataChartIncome.clear();
-        dataChartExpense.clear();
+//        dataChartIncome.clear();
+//        dataChartExpense.clear();
         switch (timeFrameMode) {
             case DAY:
                 dataProcessingChartInDay(this.groupTransactionList);
@@ -235,7 +235,7 @@ public class ReportFragment extends Fragment{
     private void initViewPager(){
         tabLayout = binding.getRoot().findViewById(R.id.tabLayout);
         viewPager2 = binding.getRoot().findViewById(R.id.viewPager2);
-        reportAdapter = new ReportTabLayoutAdapter(this.getActivity(), groupTransactionList, dataChartNetIncome, dataChartIncome, dataChartExpense, viewModel.moneyIn.getValue(), viewModel.moneyOut.getValue(), viewModel.moneyTotal.getValue());
+        reportAdapter = new ReportTabLayoutAdapter(this.getActivity(), groupTransactionList, dataChartNetIncome, viewModel.moneyIn.getValue(), viewModel.moneyOut.getValue(), viewModel.moneyTotal.getValue());
         viewPager2.setAdapter(reportAdapter);
 
         new TabLayoutMediator(tabLayout, viewPager2, (tab, position) -> {
