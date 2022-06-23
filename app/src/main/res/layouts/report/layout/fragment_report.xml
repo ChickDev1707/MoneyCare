@@ -44,7 +44,6 @@
                         android:orientation="vertical"
                         android:paddingLeft="@dimen/layout_padding"
                         android:paddingRight="@dimen/layout_padding"
-                        android:paddingBottom="@dimen/layout_padding"
                         app:layout_constraintTop_toTopOf="parent">
 
                         <TextView
@@ -52,14 +51,46 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/layout_padding"
-                            android:layout_marginBottom="@dimen/layout_padding"
                             android:drawableLeft="@drawable/ic_time_24"
                             android:drawablePadding="5dp"
                             android:text="@{reportListVM.timeTitle}"
                             android:textColor="@color/blue_grey_main"
                             android:textSize="@dimen/font_size_large"
                             android:textStyle="bold" />
+                        <View
+                            android:id="@+id/view1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="2dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="5dp"
+                            android:layout_weight="1"
+                            android:background="@color/gray_100"
+                            android:gravity="end" />
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
 
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="start"
+                                android:text="Dòng tiền"
+                                android:textColor="@color/black"
+                                android:textStyle="bold"
+                                android:textSize="@dimen/font_size_extra_large" />
+
+<!--                            <TextView-->
+<!--                                android:layout_width="match_parent"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:layout_weight="1"-->
+<!--                                android:gravity="center"-->
+<!--                                android:text="@{Converter.toFormattedMoney(context, reportListVM.moneyTotal)}"-->
+<!--                                android:textColor="@color/blue_grey_main"-->
+<!--                                android:textSize="@dimen/font_size_normal"-->
+<!--                                android:textStyle="bold" />-->
+                        </LinearLayout>
                         <LinearLayout
                             android:id="@+id/linearLayout5"
                             android:layout_width="match_parent"
@@ -77,10 +108,9 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:gravity="end"
-                                android:text="@{Converter.toFormattedMoney(context, reportListVM.moneyIn)}"
-                                android:textColor="@color/green_main"
-                                android:textSize="@dimen/font_size_normal" />
+                                android:gravity="start"
+                                android:text="Tiền ra"
+                                android:textSize="@dimen/font_size_normal"/>
                         </LinearLayout>
 
                         <LinearLayout
@@ -93,14 +123,15 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:gravity="start"
-                                android:text="Tiền ra"
+                                android:text="@{Converter.toFormattedMoney(context, reportListVM.moneyIn)}"
+                                android:textColor="@color/green_main"
                                 android:textSize="@dimen/font_size_normal" />
 
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:gravity="end"
+                                android:gravity="start"
                                 android:text="@{Converter.toFormattedMoney(context, reportListVM.moneyOut)}"
                                 android:textColor="@color/red_main"
                                 android:textSize="@dimen/font_size_normal" />
@@ -119,28 +150,29 @@
 
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
 
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:gravity="start"
-                                android:text="Thu nhập ròng"
-                                android:textSize="@dimen/font_size_normal" />
+                                android:text="Khoản thu &amp; Khoản chi"
+                                android:textColor="@color/black"
+                                android:textStyle="bold"
+                                android:textSize="@dimen/font_size_extra_large" />
 
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:gravity="end"
-                                android:text="@{Converter.toFormattedMoney(context, reportListVM.moneyTotal)}"
-                                android:textColor="@color/blue_grey_main"
-                                android:textSize="@dimen/font_size_normal"
-                                android:textStyle="bold" />
+<!--                            <TextView-->
+<!--                                android:layout_width="match_parent"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:layout_weight="1"-->
+<!--                                android:gravity="center"-->
+<!--                                android:text="@{Converter.toFormattedMoney(context, reportListVM.moneyTotal)}"-->
+<!--                                android:textColor="@color/blue_grey_main"-->
+<!--                                android:textSize="@dimen/font_size_normal"-->
+<!--                                android:textStyle="bold" />-->
                         </LinearLayout>
-
-
                     </LinearLayout>
 
                     <com.google.android.material.tabs.TabLayout
@@ -149,7 +181,6 @@
                         android:layout_height="wrap_content"
                         android:paddingLeft="@dimen/layout_padding"
                         android:paddingRight="@dimen/layout_padding"
-                        android:paddingBottom="@dimen/layout_padding"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/linearLayout">
@@ -159,10 +190,9 @@
                     <androidx.viewpager2.widget.ViewPager2
                         android:id="@+id/viewPager2"
                         android:layout_width="match_parent"
-                        android:layout_height="485dp"
+                        android:layout_height="490dp"
                         android:paddingLeft="@dimen/layout_padding"
                         android:paddingRight="@dimen/layout_padding"
-                        android:paddingBottom="@dimen/layout_padding"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/tabLayout" />
 
